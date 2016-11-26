@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="utf-8"?>
+<cbinstall version="1.0" type="plugin" group="language" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="file:../../../../../validation/ahawow.xsd">
+	<name>ru-RU</name>
+	<author>CB Team</author>
+	<creationDate>2015-09-14</creationDate>
+	<copyright>(C) 2004-2015 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved</copyright>
+	<license>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2</license>
+	<authorEmail>cbteam@joomlapolis.com</authorEmail>
+	<authorUrl>http://www.joomlapolis.com</authorUrl>
+	<version>2.0.10</version>
+	<release>2.0.10.1.0.3</release>
+	<description>
+		<![CDATA[
+		<p>
+		Provides the <strong>Russian (Russia)</strong> language
+		for Community Builder 2.0.10 and its plugins.
+		<br />
+		For updates and translation projects please visit our
+		<a href="http://www.joomlapolis.com/cb-solutions/languages" target=""_blank">Joomlapolis Languages</a> page.
+		</p>
+		<hr />
+		<h5>
+		Translation Credits
+		</h5>
+		<p>
+		This translation was accomplished by the efforts of the various Russian (Russia)
+		<a href="https://www.transifex.com/organization/joomlapolis" title=""
+		target="_blank">Joomlapolis Transifex Project</a> teams.
+		</p>
+		<h5>
+		Completion Level
+		</h5>
+		<p>
+		Please consider
+		<a href="https://www.transifex.com/signin/" title="" target="_blank">getting a free account on Transifex</a> and
+		helping improve the quality and completeness of this translation effort.
+		</p>
+		<p>
+		The following Russian (Russia) projects (name is click-able) and resources were accessed to generate
+		this CB Language plugin:
+		</p>
+		<table border="1" style="width:100%">
+			<tr>
+				<th>Project</th>
+				<th>Resource</th>
+				<th>Completeness</th>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cb/" title="" target="_blank">Community Builder</a></td>
+				<td>admin_language.php</td>
+				<td>100%</td>
+			</tr>
+			<tr>
+				<td>language.php</td>
+				<td>100%</td>
+			</tr>
+			<tr>
+				<td><a href="https://www.transifex.com/projects/p/cbactivity/" title="" target="_blank">CB Activity</a></td>
+				<td>cbactivity-language.php</td>
+				<td>98%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbantispam/" title="" target="_blank">CB Antispam</a></td>
+				<td>cbantispam-admin_language.php</td>
+				<td>100%</td>
+			</tr>
+			<tr>
+				<td>cbantispam-language.php</td>
+				<td>9%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbautoactions/" title="" target="_blank">CB Auto Actions</a></td>
+				<td>cbautoactions-admin_language.php</td>
+				<td>35%</td>
+			</tr>
+			<tr>
+				<td>cbautoactions-language.php</td>
+				<td>18%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbautowelcome/" title="" target="_blank">CB Auto Welcome</a></td>
+				<td>cb.autowelcome-admin_language.php</td>
+				<td>100%</td>
+			</tr>
+			<tr>
+				<td>cb.autowelcome-language.php</td>
+				<td>100%</td>
+			</tr>
+			<tr>
+				<td><a href="https://www.transifex.com/projects/p/cbconditional/" title="" target="_blank">CB Conditional</a></td>
+				<td>cbconditional-language.php</td>
+				<td>30%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbconnect/" title="" target="_blank">CB Connect</a></td>
+				<td>cbconnect-admin_language.php</td>
+				<td>100%</td>
+			</tr>
+			<tr>
+				<td>cbconnect-language.php</td>
+				<td>22%</td>
+			</tr>
+			<tr>
+				<td><a href="https://www.transifex.com/projects/p/cbcorefieldsajax/" title="" target="_blank">CB Core Fields Ajax</a></td>
+				<td>cbcorefieldsajax-language.php</td>
+				<td>100%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbgallery/" title="" target="_blank">CB Gallery</a></td>
+				<td>cbgallery-admin_language.php</td>
+				<td>15%</td>
+			</tr>
+			<tr>
+				<td>cbgallery-language.php</td>
+				<td>22%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbgoogletranslate/" title="" target="_blank">CB Google Translate</a></td>
+				<td>cbgoogletranslate-admin_language.php</td>
+				<td>46%</td>
+			</tr>
+			<tr>
+				<td>cbgoogletranslate-language.php</td>
+				<td>9%</td>
+			</tr>
+			<tr>
+				<td><a href="https://www.transifex.com/projects/p/cbgravatarfield/language/" title="" target="_blank">CB Gravatar Field</a></td>
+				<td>cbgravatarfield-language.php</td>
+				<td>0%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbinvites/" title="" target="_blank">CB Invites</a></td>
+				<td>cbinvites-admin_language.php</td>
+				<td>100%</td>
+			</tr>
+			<tr>
+				<td>cbinvites-language.php</td>
+				<td>100%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cblastviewstab/" title="" target="_blank">CB Lastviews Tab</a></td>
+				<td>cb.lastviews-admin_language.php</td>
+				<td>37%</td>
+			</tr>
+			<tr>
+				<td>cb.lastviews-language.php</td>
+				<td>16%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbprivacy/" title="" target="_blank">CB Privacy</a></td>
+				<td>cbprivacy-admin_language.php</td>
+				<td>36%</td>
+			</tr>
+			<tr>
+				<td>cbprivacy-language.php</td>
+				<td>11%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbprofilebook/" title="" target="_blank">CB Profile Book</a></td>
+				<td>cb.profilebook-admin_language.php</td>
+				<td>0%</td>
+			</tr>
+			<tr>
+				<td>cb.profilebook-language.php</td>
+				<td>2%</td>
+			</tr>
+			<tr>
+				<td><a href="https://www.transifex.com/projects/p/cbpulog/" title="" target="_blank">CB Profile Update Logger</a></td>
+				<td>cb.pulog-language.php</td>
+				<td>3%</td>
+			</tr>
+			<tr>
+				<td><a href="https://www.transifex.com/projects/p/cbprogressfield/" title="" target="_blank">CB Progress Field</a></td>
+				<td>cbprogressfield-language.php</td>
+				<td>33%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbqueryfield/" title="" target="_blank">CB Query Field</a></td>
+				<td>cbqueryfield-admin_language.php</td>
+				<td>0%</td>
+			</tr>
+			<tr>
+				<td>cbqueryfield-language.php</td>
+				<td>14%</td>
+			</tr>
+			<tr>
+				<td rowspan="2"><a href="https://www.transifex.com/projects/p/cbreconfirmemail/" title="" target="_blank">CB Reconfirm Email</a></td>
+				<td>cbreconfirmemail-admin_language.php</td>
+				<td>80%</td>
+			</tr>
+			<tr>
+				<td>cbreconfirmemail-language.php</td>
+				<td>25%</td>
+			</tr>
+			<tr>
+				<td><a href="https://www.transifex.com/projects/p/cbtemplatechanger/" title="" target="_blank">CB Template Changer</a></td>
+				<td>cbtemplatechanger-language.php</td>
+				<td>25%</td>
+			</tr>
+		</table>
+		]]>
+	</description>
+	<files>
+		<filename plugin="ru-RU">language.php</filename>
+		<filename>index.html</filename>
+		<filename>admin_language.php</filename>
+		<foldername>cbplugin</foldername>
+	</files>
+	<params>
+	</params>
+	<database>
+	</database>
+</cbinstall>
+

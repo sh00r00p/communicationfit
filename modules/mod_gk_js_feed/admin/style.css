@@ -1,0 +1,52 @@
+/**
+ * GK JomSocial Feed -back-end stylesheet
+ * @package Joomla!
+ * @Copyright (C) 2007-2012 Gavick.com
+ * @ All rights reserved
+ * @ Joomla! is Free Software
+ * @ Released under GNU/GPL License :  http://www.gnu.org/copyleft/gpl.html
+ * @version $Revision:  GK5 1.0 $
+ **/
+ 
+::selection {
+	background: #415e7f;
+	color: #fff;
+}
+#gk_about_us {
+	max-width: 750px;
+	margin: 0 auto;
+}
+#gk_about_us a {
+	color: #415E7F;
+}
+#gk_about_us a:hover {
+	text-decoration: underline;
+}
+
+#moduleOptions > .accordion-group:first-child > .collapse.in {
+	min-height: 300px;
+}
+#moduleOptions .accordion-group {
+	max-width: 1050px;
+	margin: 0 auto 2px;
+}
+#jform_params_text_limit,
+#jform_params_photo_text_limit {
+	width: 108px;
+	-webkit-border-radius: 3px 0 0 3px;
+	-moz-border-radius: 3px 0 0 3px;
+	border-radius: 3px 0 0 3px;
+}
+#moduleOptions .btn-group > .btn {
+	min-width: 56px;
+}
+
+#jform_params_text_limit + span.add-on,
+#jform_params_photo_text_limit + span.add-on {
+	margin-left: -2px;
+}
+@media (max-width: 1050px) { 
+	#moduleOptions > .accordion-group > .collapse.in  {
+		min-height: auto;
+	}
+}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="1.6" type="plugin" group="system">
+	<name>System - GK Open Graph Article Parameters</name>
+	<author>www.gavick.com</author>
+	<creationDate>01 May 2010</creationDate>
+	<copyright>All Rights Reserved.</copyright>
+	<license>license GNU/GPLv3 http://www.gnu.org/licenses/gpl-3.0.html</license>
+	<authorEmail>test@gavick.com</authorEmail>
+	<authorUrl>http://www.gavick.com</authorUrl>
+	<version>1.0</version>
+	<description>Plugin which adds additional article options for GavickPro templates</description>	
+	<files>
+			<filename plugin="plg_gk_opengraph">plg_gk_opengraph.php</filename>
+			<filename plugin="plg_gk_opengraph">parameters.xml</filename>
+	</files>
+	<config>		
+		<fields name="params" >			
+		<fieldset name="basic" addfieldpath="plugins/editors-xtd/gk_typography/gk_typography/elements">				
+			<field name="og:title" type="text" default="" label="Title" description="Title of the article"/>
+			<field name="og:type" type="text" default="website" label="Type" description="Type of the content (usually just 'website')"/>
+			<field name="og:image" type="media" default="" label="Article thumbnail" description="Thumbnail image of the article" />
+			<field name="og:site_name" type="text" default="" label="Site name" description="Name of your website"/>
+			<field name="og:description" type="textarea" rows="5" cols="40" default="" label="Description" description="Additiona description for article"/>
+		</fieldset>		
+		</fields>	
+	</config>		
+</extension>

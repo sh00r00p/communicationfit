@@ -1,0 +1,272 @@
+/*
+#------------------------------------------------------------------------
+# (M)Social - August Joomla! template (for Joomla 2.5)
+#
+# Copyright (C) 2007-2013 Gavick.com. All Rights Reserved.
+# License: Copyrighted Commercial Software
+# Website: http://www.gavick.com
+# Support: support@gavick.com 
+*/
+ 
+/* Base for all menus */
+#gkMainMenu {
+	float: right;
+	margin-top: 0;
+	padding: 0;
+	width: auto;
+}
+#gkMainMenu .gkMenu {
+	display: block;
+	margin: 0;
+	position: relative;
+}
+#gkMainMenu .gkMenu > ul > li {
+	clear: none!important;
+	float: left;
+	font-size: 13px;
+	font-weight: 500;
+	height: 62px;
+	line-height: 63px;
+	margin-left: 14px;
+	text-transform: uppercase;
+	width: auto;
+}
+#gkMainMenu .gkMenu > ul > li > a {
+	color: #969696;
+	display: block;
+	height: 62px;
+	line-height: 63px;
+	padding: 0;
+}
+#gkMainMenu .gkMenu > ul > li a small {
+	display: block;
+	font-size: 11px;
+	line-height: 12px;
+}
+#gkMainMenu .gkMenu > ul > li > .childcontent,
+#gkMainMenu .gkMenu > ul > li > .childcontent .childcontent {
+	border: none;
+	position: absolute;
+	left: -999em;
+	z-index: 999;
+}
+#gkMainMenu .gkMenu > ul > li > .childcontent {
+	border-top: none;
+}
+#gkMainMenu .gkMenu > ul > li > .childcontent .gkcol {
+	float: left;
+}
+#gkMainMenu .gkMenu > ul > li:hover > .childcontent,
+#gkMainMenu .gkMenu > ul > li:hover > .childcontent li:hover > .childcontent {
+	left: inherit;
+}
+#gkMainMenu .gkMenu > ul > li .childcontent {
+	margin-left: -20px;
+	margin-top: 0;
+}
+#gkMainMenu .gkMenu > ul > li .childcontent .childcontent {
+	border: 1px solid #333;
+	margin-left: 160px;
+	margin-top: -35px!important;
+	overflow: visible!important
+}
+
+/* main menu CSS */
+#gkMainMenu .gkMenu > ul {
+	margin: 0;
+	padding: 0;
+}
+#gkMainMenu .gkMenu a:hover,
+#gkMainMenu .gkMenu a:active,
+#gkMainMenu .gkMenu a:focus,
+#gkMainMenu .gkMenu li.active > a {
+	color: #fff;
+}
+#gkMainMenu .gkMenu > ul li div.childcontent {
+	background: #272727;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#gkMainMenu .gkMenu > ul li div.childcontent-inner {
+	background: #fff;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+}
+#gkMainMenu .gkMenu > ul li > .childcontent .gkcol {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	padding-bottom: 0;
+}
+#gkMainMenu .gkMenu > ul li div.childcontent li {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	line-height: 1;
+	margin: 0;
+	padding: 0;
+
+}
+#gkMainMenu .gkMenu > ul li div.childcontent ul { 
+	padding: 10px 0;
+}
+
+#gkMainMenu .gkMenu > ul li div.childcontent a {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	color: #969696;
+	display: block;
+	font-size: 13px;
+	padding: 10px 20px;
+	text-transform: none;
+}
+#gkMainMenu .gkMenu > ul li div.childcontent a:active,
+#gkMainMenu .gkMenu > ul li div.childcontent a:focus,
+#gkMainMenu .gkMenu > ul li div.childcontent a:hover {
+	color: #fff;
+}
+#gkMainMenu .gkMenu > ul li li div.childcontent small {
+	color: #666;
+	font-weight: normal;
+	padding-top: 5px;
+}
+#gkMainMenu .gkMenu > ul li div.childcontent li.group {
+	padding: 0;
+	margin: 0;
+	height: auto;
+	border: none !important;
+	background: none;
+}
+#gkMainMenu .gkMenu > ul li div.childcontent header {
+	padding: 10px 16px 6px 16px;
+	display: block;
+	color: #fff;
+	margin: 0;
+	font-weight: 400!important;
+}
+#gkMainMenu .gkMenu > ul li div.childcontent header a {
+	font-size: 16px;
+	line-height: 24px;
+	padding: 8px 0 4px;
+	text-transform: uppercase;
+	border-bottom: 2px solid #e5e5e5;
+}
+#gkMainMenu .gkMenu > ul li div.childcontent header small {
+	display: block;
+	text-transform: none;
+}
+#gkMainMenu .gkMenu li .module p {
+	font-size: 12px;
+	line-height: 18px;
+}
+
+/* hide mobile menu */
+#gkMobileMenu {
+	display: none;
+}
+
+/* Menu Overlay type */
+#gkMainMenu.gkMenuOverlay ul .childcontent {
+	display: none!important;
+}
+
+#gkMenuOverlay {
+	background: #fff;
+	background: rgba(255, 255, 255, 0.97);
+	display: none;
+	-webkit-transition: all .5s ease-out;
+	-moz-transition: all .5s ease-out;
+	-ms-transition: all .5s ease-out;
+	-o-transition: all .5s ease-out;
+	transition: all .5s ease-out;
+	width: 100%;
+}
+
+#gkMenuOverlay.open {
+	display: block;
+	min-height: 100%;
+	position: fixed;
+	top: 0;
+	width: 100%;
+	z-index: 10001;
+}
+
+#gkMenuOverlayWrap {
+	left: 50%;
+	margin: 0 0 0 -482px;
+	max-width: 964px;
+	position: absolute;
+	top: 0;
+	width: 100%;
+	z-index: 10002;
+}
+
+#gkMenuOverlayWrap > div {
+	padding: 0;
+	width: 100%;
+}
+
+#gkMenuOverlayHeader {
+	color: #272727;
+	font-size: 32px;
+	font-weight: 500;
+	line-height: 140px;
+	margin: 0;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+#gkMenuOverlayClose {
+	color: #db4a37;
+	cursor: pointer;
+	font-size: 26px;
+	line-height: 144px;
+	position: absolute;
+	right: 0;
+}
+
+#gkMenuOverlayContent {
+	border-bottom: 1px solid #e5e5e5;
+	margin-bottom: 140px;
+}
+
+#gkMenuOverlayContent .gkcol {
+	width: 100%;
+}
+
+#gkMenuOverlayContent .gkcol header,
+#gkMenuOverlayContent .gkcol li small {
+	display: none;
+}
+
+#gkMenuOverlayContent .gkcol li {
+	border-top: 1px solid #e5e5e5;
+	font-size: 26px;
+	line-height: 74px;
+	text-align: center;
+}
+
+#gkMenuOverlayContent .gkcol li.group {
+	border-top: none;
+}
+
+#gkMenuOverlayContent .gkcol li a {
+	color: #777;
+	display: inline-block;
+	line-height: 74px;
+}
+
+#gkMenuOverlayContent .gkcol li a:active,
+#gkMenuOverlayContent .gkcol li a:focus,
+#gkMenuOverlayContent .gkcol li a:hover {
+	color: #db4a37;
+}
+
+#gkMenuOverlayContent .gkcol li li {
+	font-size: 20px;
+	font-weight: 300;
+	line-height: 60px;
+}

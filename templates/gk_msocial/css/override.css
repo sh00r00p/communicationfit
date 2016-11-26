@@ -1,0 +1,160 @@
+/*
+#------------------------------------------------------------------------
+# (M)Social - August Joomla! template (for Joomla 2.5)
+#
+# Copyright (C) 2007-2013 Gavick.com. All Rights Reserved.
+# License: Copyrighted Commercial Software
+# Website: http://www.gavick.com
+# Support: support@gavick.com 
+*/
+
+/* Here you can include your override CSS styles */
+
+#gkToolbar {
+	left: -260px;
+	margin-top: -180px;
+	position: fixed;
+	top: 50%;
+	-webkit-transition: left .3s ease-out;
+	-moz-transition: left .3s ease-out;
+	-ms-transition: left .3s ease-out;
+	-o-transition: left .3s ease-out;
+	transition: left .3s ease-out;
+	width: 260px;
+	z-index: 1000;
+}
+
+#gkToolbar.hidden {
+	left: -320px;
+}
+
+#gkToolbar.active {
+	left: 0;
+}
+
+#gkToolbar > div {
+	background: #fff;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	border-left: none;
+	padding: 14px;
+	position: relative;
+	width: 260px;
+}
+
+#gkToolbar label {
+	clear: both;
+	display: block;
+	font-size: 12px;
+	padding: 5px 0;
+}
+
+#gkToolbar select {
+	width: 90%;
+}
+
+#gkHandler {
+	background: #fff;
+	border: 1px solid #ddd;
+	border-left: none;
+	color: #333;
+	cursor: pointer;
+	font-size: 26px;
+	height: 40px;
+	line-height: 40px;
+	position: absolute;
+	right: -40px;
+	text-align: center;
+	top: -1px;
+	width: 40px;
+}
+
+#gkHandler > i {
+	color: #555;
+	padding-right: 0!important;
+}
+
+#gkToolbar h2 {
+	font-size: 16px;
+	font-weight: 600;
+	margin-bottom: 16px;
+	text-transform: uppercase;
+}
+
+#gkStyleArea {
+	float: left;
+	margin: 16px 0!important;
+}
+
+#gkStyleArea a {
+	display: block;
+	float: left;
+	height: 14px;
+	margin: 1px 8px 0 0;
+	width: 14px;
+}
+
+#gkStyleArea a:hover {
+	-webkit-transform: scale(1.2);
+	-moz-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	-o-transform: scale(1.2);
+	transform: scale(1.2);
+}
+
+@media (max-width: 600px) {
+	#gkToolbar {
+		display: none;
+	}
+}
+
+#gkPatternArea  {
+	overflow: hidden;
+	padding: 5px;
+}
+
+#gkPatternArea > a {
+	float: left;
+	height: 40px;
+	margin: 6px;
+	text-indent: -9999px;
+	-webkit-transform: scale(1.0);
+	-moz-transform: scale(1.0);
+	-ms-transform: scale(1.0);
+	-o-transform: scale(1.0);
+	transform: scale(1.0);
+	-webkit-transition: all .3s ease-out;
+	-moz-transition: all .3s ease-out;
+	-ms-transition: all .3s ease-out;
+	-o-transition: all .3s ease-out;
+	transition: all .3s ease-out;
+	width: 40px;
+}
+
+#gkPatternArea > a:hover {
+	-webkit-transform: scale(1.2);
+	-moz-transform: scale(1.2);
+	-ms-transform: scale(1.2);
+	-o-transform: scale(1.2);
+	transform: scale(1.2);
+}
+
+#gkPattern1 { background-image: url('../images/patterns/mini_pattern1.png'); }
+#gkPattern2 { background-image: url('../images/patterns/mini_pattern2.png'); }
+#gkPattern3 { background-image: url('../images/patterns/mini_pattern3.png'); }
+#gkPattern4 { background-image: url('../images/patterns/mini_pattern4.png'); }
+#gkPattern5 { background-image: url('../images/patterns/mini_pattern5.png'); }
+#gkPattern6 { background-image: url('../images/patterns/mini_pattern6.png'); }
+#gkPattern7 { background-image: url('../images/patterns/mini_pattern7.png'); }
+#gkPattern8 { background-image: url('../images/patterns/mini_pattern8.png'); }
+#gkPattern9 { background-image: url('../images/patterns/mini_pattern9.png'); }
+#gkPattern10 { background-image: url('../images/patterns/mini_pattern10.png'); }
+#gkPattern11 { background-image: url('../images/patterns/mini_pattern11.png'); }
+#gkPattern12 { background-image: url('../images/patterns/mini_pattern12.png'); }
+
+#bgStyle,
+#menuType {
+	margin-bottom: 20px;
+}

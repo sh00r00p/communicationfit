@@ -1,0 +1,41 @@
+/*
+#------------------------------------------------------------------------
+# (M)Social - August Joomla! template (for Joomla 2.5)
+#
+# Copyright (C) 2007-2013 Gavick.com. All Rights Reserved.
+# License: Copyrighted Commercial Software
+# Website: http://www.gavick.com
+# Support: support@gavick.com 
+*/
+
+#gkFooter {
+	text-align: center;
+}
+
+#gkStyleArea {
+	float: none;
+	margin: 0;
+}
+
+#gkFooterNav {
+	line-height: 1.0;
+}
+
+#gkFooterNav,
+#gkCopyrights {
+	clear: both;
+	display: block;
+	float: none!important;
+	margin: 0 auto;
+	overflow: hidden;
+	padding: 10px 0;
+}
+
+#gkFooterNav > ul {
+	display: inline-block;
+}
+
+#gkMenuOverlayWrap {
+	margin:  0 0 0 -360px!important;
+	max-width: 720px!important;
+}

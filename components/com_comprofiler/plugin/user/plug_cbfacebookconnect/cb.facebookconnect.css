@@ -1,0 +1,38 @@
+.jpcool_dialog ul.cbMenuULlist li.cbMenu_UE_MENU_FBC_UNJOIN a,
+.module ul.cbMenuULlist li.cbMenu_UE_MENU_FBC_UNJOIN a {
+	background: url( images/icon.gif ) no-repeat 2px 2px;
+	display: block;
+}
+
+.jpcool_dialog ul.cbMenuULlist li.cbMenu_UE_MENU_FBC_UNJOIN a:hover,
+.module ul.cbMenuULlist li.cbMenu_UE_MENU_FBC_UNJOIN a:hover {
+	background: #d8dfea url( images/icon.gif ) no-repeat 2px 2px;
+}
+
+.fbc_button {
+	background-image: url( images/button.png );
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	cursor: pointer;
+	height: 21px;
+	width: 89px;
+	padding-left: 20px;
+	margin-top: 2px;
+	margin-bottom: 2px;
+	border-width: 0px;
+	color: white;
+	font-size: 10px;
+	font-weight: bold;
+}
+
+.fbc_button_small {
+	background-image: url( images/button.png );
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	cursor: pointer;
+	height: 21px;
+	width: 20px;
+	margin-left: 2px;
+	margin-right: 2px;
+	border-width: 0px;
+}

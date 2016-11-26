@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cbinstall version="1.0.0" type="plugin" group="user">
+	<name>CB Facebook Connect</name>
+	<author>Kyle L. (aka Krileon), Beat and Nick</author>
+	<creationDate>2010-03-19</creationDate>
+	<copyright>(C) 2005-2010 joomlapolis.com</copyright>
+	<license>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2</license>
+	<authorUrl>www.joomlapolis.com</authorUrl>
+	<version>1.2.2</version>
+	<description>CB Facebook Connect 1.1: A cb login authentication integration plugin for facebook.</description>
+	<files>
+		<filename plugin="cb.facebookconnect">cb.facebookconnect.php</filename>
+		<filename>cb.facebookconnect.css</filename>
+		<filename>index.html</filename>
+		<filename>api/facebook.php</filename>
+		<filename>api/index.html</filename>
+		<filename>images/icon.gif</filename>
+		<filename>images/button.png</filename>
+		<filename>images/index.html</filename>
+	</files>
+	<fieldtypes>
+		<field type="facebook_userid" label="Facebook" unique="true">
+			<database version="1">
+				<table name="#__comprofiler" class="moscomprofiler" maintable="true" strict="false" drop="never" shared="true">
+					<columns>
+						<column name="" nametype="namesuffix" type="sql:bigint(20)" unsigned="true" null="true" default="NULL" />
+					</columns>
+					<indexes strict="false">
+						<index name="" nametype="namesuffix">
+							<column name="" nametype="namesuffix" />
+						</index>
+					</indexes>
+				</table>
+			</database>
+			<params>
+			</params>
+		</field>
+	</fieldtypes>
+	<params>
+		<param name="fb_instructions" type="custom" class="cbfacebookconnectPlugin" method="loadInstructions" default="" label="" description="" />
+		<fieldset name="fb_app" label="Application" description="">
+			<param name="fb_app_id" type="text" size="20" default="" label="Application ID" description="" />
+			<param name="fb_app_apikey" type="text" size="35" default="" label="API Key" description="" />
+			<param name="fb_app_secretkey" type="text" size="35" default="" label="Application Secret" description="" />
+		</fieldset>
+		<fieldset name="fb_reg" label="Registration" description="">
+			<param name="fb_reg_approve" type="list" default="2" label="Require Admin Approval" description="Require all Facebook user registrations to be approved by an administrator.">
+				<option value="0">No (override CB)</option>
+				<option value="1">Yes (override CB)</option>
+				<option value="2">Default (CB setting)</option>
+			</param>
+			<param name="fb_reg_confirm" type="list" default="0" label="Require Email Confirmation" description="Set &quot;yes&quot; to send an email to Facebook user upon registration with a confirmation link.">
+				<option value="0">No (override CB)</option>
+				<option value="1">Default (CB setting)</option>
+			</param>
+		</fieldset>
+	</params>
+	<tabs>
+		<tab type="existingSytemTab" class="getContactTab">
+			<fields>
+				<field type="facebook_userid" title="Facebook ID" name="fb_userid" description="Your Facebook ID allowing API calls; if unauthorized only public calls will validate." registration="0" readonly="1" profile="0" />
+			</fields>
+		</tab>
+	</tabs>
+	<database>
+	</database>
+</cbinstall>

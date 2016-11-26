@@ -1,0 +1,295 @@
+/*
+#------------------------------------------------------------------------
+# (M)Social - August Joomla! template (for Joomla 2.5)
+#
+# Copyright (C) 2007-2013 Gavick.com. All Rights Reserved.
+# License: Copyrighted Commercial Software
+# Website: http://www.gavick.com
+# Support: support@gavick.com 
+*/
+
+/* Basic elements */
+/* Basic elements */
+html { height: 100%; }
+body,
+html {
+	margin: 0;
+	min-height: 100%;
+	padding: 0;
+}
+body {
+	background: #fff;
+	color: #888;
+	font-family: Raleway, Arial, sans-serif;
+	font-size: 16px;
+	font-weight: 300;
+	line-height: 2;
+	min-height: 100%;
+	padding: 0;
+	text-transform: uppercase;
+	word-wrap: break-word;
+}
+a {
+	-webkit-transition: background .3s cubic-bezier(.17, .67, .88, 1.25), color .2s linear;
+	-moz-transition: background .3s cubic-bezier(.17, .67, .88, 1.25), color .2s linear;
+	-o-transition: background .3s cubic-bezier(.17, .67, .88, 1.25), color .2s linear;
+	transition: background .3s cubic-bezier(.17, .67, .88, 1.25), color .2s linear;
+	color: #7090c8;
+	text-decoration: none;
+}
+a:hover,
+a:active,
+a:focus { color: #272727; }
+/* Sections  */
+
+body > header,
+body > footer {
+	background: #272727;
+	margin: 0 auto;
+	padding: 0 50px;
+}
+article header {
+	background: #7090c8;
+	color: #fff;
+	padding: 0 50px 100px;
+}
+article > div {
+	padding: 20px 50px;
+}
+article form {
+	float: left;
+}
+
+/* Logo  */
+
+.gkLogo {
+	float: none;
+	margin: 0 auto;
+}
+#gkLogo {
+	margin: 0;
+	padding: 0;
+	text-indent: -999em;
+	text-shadow: none;
+	width: 157px;
+	display: block;
+	float: none;
+	margin: 50px auto;
+	-webkit-transition: background-color .3s linear;
+	-moz-transition: background-color .3s linear;
+	-ms-transition: background-color .3s linear;
+	-o-transition: background-color .3s linear;
+	transition: background-color .3s linear;
+}
+#gkLogo img {
+	display: block;
+	margin: 0;
+}
+#gkLogo.cssLogo {
+	background: transparent url('../../images/logo.png') no-repeat 0 0;
+	/* You can specify there logo size and background */
+	height: 62px;
+	width: 157px;
+}
+#gkLogo.text {
+	color: #fff;
+	display: block;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+	padding: 20px 5px;
+	text-indent: 0;
+	width: auto;
+}
+#gkLogo.text > span {
+	display: block;
+	font-size: 18px;
+	font-weight: 500;
+	letter-spacing: 2px;
+	line-height: 24px;
+	padding: 0;
+	
+}
+#gkLogo.text > span > span { color: #7090c8; }
+#gkLogo.text .gkLogoSlogan {
+	color: #eee;
+	display: block;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 20px;
+}
+/* Other elements */
+h1 {
+	font-size: 52px;
+	font-weight: 300;
+	line-height: 1;
+	margin: 0;
+	padding: 72px 0 0;
+	
+}
+h1:after {
+	border-bottom: 1px solid #FFB1AE;
+	content: "";
+	display: block;
+	padding: 15px 0 0;
+	width: 100px;
+}
+h2 {
+	font-size: 18px;
+	font-weight: 500;
+	line-height: 2;
+	margin: 12px 0 0;
+}
+p {
+	font-size: 24px;
+	font-weight: 300;
+	line-height: 1.4;
+	margin: 0;
+	padding: 100px 0;
+	
+}
+p + p {
+	font-size: 13px;
+	font-weight: 500;
+	padding: 0 0 50px;
+}
+
+
+
+
+
+
+fieldset {
+	border: none;
+	margin: 0 auto;
+	overflow: hidden;
+	padding: 0 0 50px 0;
+	width: 250px;
+}
+input[type="text"], 
+input[type="password"], 
+input[type="url"], 
+input[type="email"] {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	box-sizing: border-box;
+	border: 1px solid #ddd;
+	-webkit-border-radius: 2px;
+	-moz-border-radius: 2px;
+	border-radius: 2px;
+	display: block;
+	font-size: 14px;
+	font-weight: 300;
+	color: #888;
+	height: 40px;
+	margin: 0 0 10px 0;
+	max-width: 100%!important;
+	padding: 0 10px;
+}
+legend {
+	color: #333;
+	font-size: 22px
+}
+html.-moz-select {
+	padding: 3px 5px
+}
+input[type="text"]:focus, 
+input[type="password"]:focus, 
+input[type="url"]:focus, 
+input[type="email"]:focus, 
+textarea:focus {
+	background: #fffef4;
+}
+input[type="submit"], 
+input[type="button"] {
+	background: transparent;
+	border: 1px solid #7090c8;
+	color: #7090c8!important;
+	cursor: pointer;
+	display: block;
+	float: left;
+	font-size: 12px;
+	font-weight: 500!important;
+	height: 39px;
+	line-height: 39px;
+	margin: 10px 5px 2px 2px;
+	padding: 0 25px;
+	text-align: center;
+	text-transform: uppercase!important;
+	-webkit-transition: all .3s ease-out;
+	-moz-transition: all .3s ease-out;
+	-o-transition: all .3s ease-out;
+	transition: all .3s ease-out
+}
+input[type="submit"]:hover, 
+input[type="button"]:hover {
+	border-color: #272727;
+	color: #272727!important;
+}
+label {
+	color: #272727;
+	display: block;
+	font-size: 13px;
+	font-weight: 300;
+	padding: 0;
+	
+	text-align: left;
+}
+/* messages */
+#system-message {
+	margin: 0;
+}
+#system-message dd ul {
+	list-style: none!important;
+	padding: 0;
+}
+#system-message dt {
+	display: none;
+}
+#system-message dd {
+	-moz-box-sizing: border-box;
+	-ms-box-sizing: border-box;
+	-o-box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	background-color: #f8f8f8;
+	box-sizing: border-box;
+	color: #333;
+	font-size: 16px;
+	font-weight: 500;
+	margin: 0;
+	min-height: 30px;
+	padding: 1px 50px;
+	text-align: left;
+}
+#system-message dd.error {
+	background-color: #333;
+	color: #fff;
+}
+#system-message dd.notice {
+	background-color: #FFFEF4;
+}
+#system-message-container {
+	margin: 0;
+	padding: 0;
+}
+
+
+
+
+@media (max-width: 920px) {
+	h1 { font-size: 44px; }
+	
+	p { font-size: 18px; }
+}
+
+@media (max-width: 600px) {
+	h1 { font-size: 36px; }
+	h2 { font-size: 16px; }
+	p { font-size: 15px; }
+	article header { padding: 20px; }
+	article > div { padding: 10px 20px; }
+	body > header, 
+	body > footer { padding: 0 20px; }
+}

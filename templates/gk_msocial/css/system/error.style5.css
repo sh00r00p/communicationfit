@@ -1,0 +1,168 @@
+/*
+#------------------------------------------------------------------------
+# (M)Social - August Joomla! template (for Joomla 2.5)
+#
+# Copyright (C) 2007-2013 Gavick.com. All Rights Reserved.
+# License: Copyrighted Commercial Software
+# Website: http://www.gavick.com
+# Support: support@gavick.com 
+*/
+
+/* Basic elements */
+html { height: 100%; }
+body,
+html {
+	margin: 0;
+	min-height: 100%;
+	padding: 0;
+}
+body {
+	background: #fff;
+	color: #888;
+	font-family: Raleway, Arial, sans-serif;
+	font-size: 16px;
+	font-weight: 300;
+	line-height: 2;
+	min-height: 100%;
+	padding: 0;
+	word-wrap: break-word;
+}
+a {
+	-webkit-transition: background .3s cubic-bezier(.17, .67, .88, 1.25), color .2s linear;
+	-moz-transition: background .3s cubic-bezier(.17, .67, .88, 1.25), color .2s linear;
+	-o-transition: background .3s cubic-bezier(.17, .67, .88, 1.25), color .2s linear;
+	transition: background .3s cubic-bezier(.17, .67, .88, 1.25), color .2s linear;
+	color: #bb6883;
+	text-decoration: none;
+}
+a:hover,
+a:active,
+a:focus { color: #272727; }
+/* Sections  */
+
+body > header,
+body > footer,
+section {
+	background: #272727;
+	margin: 0 auto;
+	padding: 0 50px;
+}
+section {
+	background: #bb6883;
+	color: #fff;
+	padding-bottom: 100px;
+}
+body > footer { background: #fff; }
+/* Logo  */
+
+.gkLogo {
+	float: none;
+	margin: 0 auto;
+}
+#gkLogo {
+	margin: 0;
+	padding: 0;
+	text-indent: -999em;
+	text-shadow: none;
+	width: 157px;
+	display: block;
+	float: none;
+	margin: 50px auto;
+	-webkit-transition: background-color .3s linear;
+	-moz-transition: background-color .3s linear;
+	-ms-transition: background-color .3s linear;
+	-o-transition: background-color .3s linear;
+	transition: background-color .3s linear;
+}
+#gkLogo img {
+	display: block;
+	margin: 0;
+}
+#gkLogo.cssLogo {
+	background: transparent url('../../images/logo.png') no-repeat 0 0;
+	/* You can specify there logo size and background */
+	height: 62px;
+	width: 157px;
+}
+#gkLogo.text {
+	color: #fff;
+	display: block;
+	height: auto;
+	margin: 0 auto;
+	overflow: hidden;
+	padding: 20px 5px;
+	text-indent: 0;
+	width: auto;
+}
+#gkLogo.text > span {
+	display: block;
+	font-size: 18px;
+	font-weight: 500;
+	letter-spacing: 2px;
+	line-height: 24px;
+	padding: 0;
+	text-transform: uppercase;
+}
+#gkLogo.text > span > span { color: #bb6883; }
+#gkLogo.text .gkLogoSlogan {
+	color: #eee;
+	display: block;
+	font-size: 14px;
+	font-weight: 500;
+	line-height: 20px;
+}
+/* Other elements */
+h1 {
+	font-size: 52px;
+	font-weight: 300;
+	line-height: 1;
+	margin: 0;
+	padding: 72px 0 0;
+	text-transform: uppercase;
+}
+h1:after {
+	border-bottom: 1px solid #FFB1AE;
+	content: "";
+	display: block;
+	padding: 15px 0 0;
+	width: 100px;
+}
+h2 {
+	font-size: 60px;
+	font-weight: 500;
+	line-height: 1;
+	margin: 12px 0 0;
+}
+p {
+	font-size: 24px;
+	font-weight: 300;
+	line-height: 1.4;
+	margin: 0;
+	padding: 100px 0;
+	text-transform: uppercase;
+}
+p + p {
+	font-size: 13px;
+	font-weight: 500;
+	padding: 0 0 50px;
+}
+
+@media (max-width: 920px) {
+	h1 { font-size: 44px; }
+	h2 { font-size: 40px; }
+	p { font-size: 18px; }
+}
+
+@media (max-width: 600px) {
+	h1 { font-size: 24px; }
+	h2 { font-size: 32px; }
+	p { font-size: 15px; }
+	article header { padding: 20px 0; }
+	article > div { padding: 10px 20px; }
+	body > header, 
+	body > footer { padding: 0 20px; }
+	body > header, 
+	body > footer, 
+	section { padding: 0 20px; }
+	section { padding-bottom: 50px; }
+}

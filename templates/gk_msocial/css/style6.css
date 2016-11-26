@@ -1,0 +1,301 @@
+/*
+#------------------------------------------------------------------------
+# (M)Social - August Joomla! template (for Joomla 2.5)
+#
+# Copyright (C) 2007-2013 Gavick.com. All Rights Reserved.
+# License: Copyrighted Commercial Software
+# Website: http://www.gavick.com
+# Support: support@gavick.com 
+*/
+ 
+/* Style 6 */
+
+/* template.css */
+
+a,
+#gkMainMenu div.childcontent a:active,
+#gkMainMenu div.childcontent a:focus,
+#gkMainMenu div.childcontent a:hover,
+article header h1 a:hover,
+article header h2 a:hover {
+	color: #5e6281;
+}
+#gkHeaderBottom {
+	background: #5e6281;
+}
+#gkLogo.cssLogo {
+	background: transparent url('../images/style1/logo.png') no-repeat 0 0;
+}
+#gkLogo.text > span > span { color: #5e6281; }
+.breadcrumbs > ul > li a:hover { color: #5e6281; }
+#gkFooter li:hover,
+#gkFooter a:hover { color: #5e6281; }
+.box.dark a:active,
+.box.dark a:focus,
+.box.dark a:hover { color: #5e6281!important; }
+.box.color,
+#gkHeaderBottom .box {
+	background: #5e6281!important;
+	color: #b5b9da;
+}
+.box.color a:active,
+.box.color a:focus,
+.box.color a:hover,
+#gkHeaderBottom .box a:active,
+#gkHeaderBottom .box a:focus,
+#gkHeaderBottom .box a:hover { color: #b5b9da!important; }
+.box.colortitle .header { color: #5e6281; }
+.gkPopupWrap h3 a { color: #5e6281; }
+
+/* joomla.css */
+
+button,
+.button,
+.readon,
+.button.inverse:active,
+.button.inverse:focus,
+.button.inverse:hover,
+input.button,
+span.button,
+button.button,
+div.button,
+.readmore a,
+input[type="submit"],
+input[type="button"] {
+	border: 1px solid #5e6281;
+	color: #5e6281!important;
+}
+.border:hover,
+.gkPriceTable dd a:hover,
+.gkPremium dd a {
+	background: #5e6281!important;
+	border-color: #5e6281!important;
+}
+#gkBottom2 .box .border:hover {
+	color: #5e6281!important;
+}
+th a:active,
+th a:focus,
+th a:hover { color: #5e6281!important; }
+article header > time {
+	background: #5e6281;
+}
+article header.itemHasImage h1 a:active,
+article header.itemHasImage h1 a:focus,
+article header.itemHasImage h1 a:hover { color: #5e6281!important; }
+.tooltip-inner strong {
+	background: #5e6281;
+}
+div.bannerfooter {
+	color: #5e6281;
+}
+.autocompleter-queried { color: #5e6281!important }
+
+/* gk_stuff.css */
+
+.nspPagination li:hover,
+.nspPagination li.active { 
+	background-color: #5e6281;
+}
+.nspNext:hover:after,
+.nspPrev:hover:after { 
+	color: #5e6281;
+}
+.box.dark a.readon:active,
+.box.dark a.readon:focus,
+.box.dark a.readon:hover {
+	border-color: #5e6281;
+	color: #5e6281;
+}
+.box.color a.readon {
+	border-color: #b5b9da!important;
+}
+.box.color .nspPagination li:hover,
+.box.color .nspPagination li.active { 
+	background-color: #b5b9da;
+}
+.box.color .nspNext:after,
+.box.color .nspPrev:after { 
+	color: #b5b9da;
+}
+.gkTabsWrap ol li.active,
+.gkTabsWrap ol li.active:hover {
+	 border-bottom: 1px solid #5e6281;
+	 color: #5e6281;
+}
+.gkTabsWrap ol li:hover { 
+	color: #5e6281; 
+}
+.gkJSFeed .gkReadon {
+	color: #5e6281;
+}
+.gkJSFeedType-photo > h3 a:active,
+.gkJSFeedType-photo > h3 a:focus,
+.gkJSFeedType-photo > h3 a:hover {
+	color: #5e6281;
+}
+.js-mod-photos .app-box-footer a {
+	color: #b5b9da!important;
+}
+.big-btn {
+	border: 1px solid #5e6281;
+	color: #5e6281;
+}
+.color .big-btn:active,
+.color .big-btn:focus,
+.color .big-btn:hover {
+	border-color: #b5b9da;
+	color: #b5b9da;
+} 
+.gkAuthor > span > a:active,
+.gkAuthor > span > a:focus,
+.gkAuthor > span > a:hover {
+	color: #5e6281;
+}
+.gkIcon.gkColor1 { background: #5e6281; }
+.gkPhoto > h3 > a:active,
+.gkPhoto > h3 > a:focus,
+.gkPhoto > h3 > a:hover,
+.gkPhoto > h4 > a:active,
+.gkPhoto > h4 > a:focus,
+.gkPhoto > h4 > a:hover,
+.gkPhoto > .gkTextBlack > a:active,
+.gkPhoto > .gkTextBlack > a:focus,
+.gkPhoto > .gkTextBlack > a:hover {
+	color: #5e6281;
+}
+.gkText {
+	background: #5e6281;
+}
+.gkText.gkColor1 { background: #5e6281; }
+.gkText.gkColor4 h1 a:hover,
+.gkText.gkColor4 h2 a:hover,
+.gkText.gkColor4 h3 a:hover {
+	color: #5e6281;
+}
+.gkNspPM-GridTitleOverlay > figcaption a:active,
+.gkNspPM-GridTitleOverlay > figcaption a:focus,
+.gkNspPM-GridTitleOverlay > figcaption a:hover {
+  color: #5E6281!important;  
+}
+/* menu.css */
+
+#gkMenuOverlayClose {
+	color: #5e6281;
+}
+#gkMenuOverlayContent .gkcol li a:active,
+#gkMenuOverlayContent .gkcol li a:focus,
+#gkMenuOverlayContent .gkcol li a:hover {
+	color: #5e6281;
+}
+
+/* k2.css */
+
+.k2FeedIcon a:before,
+a.k2FeedIcon:before {
+	color: #5e6281;
+}
+.activeCategory a { color: #5e6281 }
+.itemComments {
+	min-height: 54px;
+}
+.itemComments .icon-comments {
+	background: #5e6281;
+}
+h1 > sup,
+h2 > sup {
+	background: #5e6281;
+}
+.itemBody > div > ul li:before {
+	color: #5e6281;
+}
+span#formLog {
+	background: #5e6281;
+}
+.k2CalendarBlock table.calendar tr td.calendarDateLinked a:hover {
+	background: #5e6281;
+}
+.k2CalendarBlock table.calendar tr td.calendarToday {
+	background: #5e6281;
+}
+table.calendar tr td.calendarTodayLinked a {
+	color: #5e6281;
+}
+.k2CalendarBlock table.calendar tr td.calendarTodayLinked a:hover {
+	background: #5e6281;
+}
+.calendarNavLink { color: #5e6281; }
+.k2TagCloudBlock a:hover { color: #5e6281; }
+
+/* jomsocial.css */
+
+body #cWindow a { color: #5e6281; }
+#community-wrap .btn:hover,
+#community-wrap .cPageBookmark:hover,
+#community-wrap .cPageBookmark a:hover,
+#community-wrap .cPageReport:hover,
+#community-wrap .cPageReport a:hover,
+body #cWindow .btn:hover,
+body #cWindow button.btn:hover,
+body #cWindow input[type="submit"].btn:hover,
+body #cWindow .cWindowNotification-Jumper > a:hover { background: #5e6281!important; }
+#community-wrap .btn-primary,
+body #cWindow .btn-primary { background: #5e6281!important; }
+#community-wrap .navbar .nav li.dropdown.open > .dropdown-toggle,
+#community-wrap .navbar .nav li.dropdown.active > .dropdown-toggle,
+#community-wrap .navbar .nav li.dropdown.open.active > .dropdown-toggle,
+#community-wrap .navbar .nav > .active > a,
+#community-wrap .navbar .nav > .active > a:hover,
+#community-wrap .navbar .nav > .active > a:focus {
+	background-color: #5e6281;
+}
+#community-wrap .navbar .nav > li > a.js-navbar-options:focus,
+#community-wrap .navbar .nav > li > a.js-navbar-options:hover { color: #5e6281; }
+#community-wrap .dropdown-menu > li > a:hover,
+#community-wrap .dropdown-menu > li > a:focus,
+#community-wrap .dropdown-submenu:hover > a,
+#community-wrap .dropdown-submenu:focus > a {
+	background-color: #5e6281;
+}
+#community-wrap .cSubmenu li a {
+	color: #5e6281;
+}
+#community-wrap .cGuest > a:hover {
+	border: 1px solid #5e6281;
+	color: #5e6281;
+}
+#community-wrap .login-area div a:hover { color: #5e6281; }
+#community-wrap .invalid { border: 1px solid #5e6281 !important }
+span[id^="errjs"] { color: #5e6281!important; }
+#community-wrap .js-focus-menu a {
+	color: #5e6281;
+}
+#community-wrap .js-toolbar .js-counter {
+	background: #5e6281;
+}
+#community-wrap .innerpgbar {
+	background: #5e6281;
+}
+#community-wrap .cTabsMenu li a:focus,
+#community-wrap .cTabsMenu li a.selected,
+#community-wrap .cPageTabs li a:focus,
+#community-wrap .cPageTabs li.cTabCurrent a {
+	background: #5e6281;
+}
+#community-wrap .cTabsMenu li a:hover,
+#community-wrap .cPageTabs li a:hover {
+	background: #5e6281;
+}
+#community-wrap .cToolBox-Options li a:hover span { background: #5e6281; }
+#community-wrap .cThumb-Calendar b {
+	background: #5e6281;
+}
+#community-wrap .cThumb-Calendar b+b {
+	background: #5e6281;
+}
+@media (max-width: 980px) {
+	#community-wrap .nav-collapse .nav>li>a:hover,
+	#community-wrap .nav-collapse .nav>li>a:focus,
+	#community-wrap .nav-collapse .dropdown-menu a:hover,
+	#community-wrap .nav-collapse .dropdown-menu a:focus { background: #5e6281!important; }
+}

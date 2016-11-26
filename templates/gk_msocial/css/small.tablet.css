@@ -1,0 +1,168 @@
+/*
+#------------------------------------------------------------------------
+# (M)Social - August Joomla! template (for Joomla 2.5)
+#
+# Copyright (C) 2007-2013 Gavick.com. All Rights Reserved.
+# License: Copyrighted Commercial Software
+# Website: http://www.gavick.com
+# Support: support@gavick.com 
+*/
+ 
+.itemContainer .itemsContainerWrap,
+.itemsContainer .itemsContainerWrap {
+	margin: 0!important;	
+}
+
+.itemContainer,
+.itemsContainer {
+	clear: both;
+	width: 100%!important;
+}
+
+#gkContentWrap {
+	width: 100%!important;
+}
+
+#k2Container article header h2 {
+	font-size: 32px;
+	line-height: 32px;
+}
+.demo-typo-col2,
+.demo-typo-col3,
+.demo-typo-col4 {
+	clear: both;
+	float: none;
+	width: 100%;
+}
+
+article header h1, 
+article header h2 {
+	font-size: 32px;
+}
+
+article header li:before {
+	content: " -";
+	padding: 0 3px;
+}
+
+#gkFooterNav {
+	padding: 10px 0;
+}
+
+#gkCopyrights {
+	line-height: 2.0;
+	padding: 20px 0;	
+}
+
+/* menu */
+#gkMainMenu.gkMenuOverlay {
+	clear: both;
+	float: left;
+}
+
+#gkMainMenu .gkMenu > ul > li,
+#gkMainMenu .gkMenu > ul > li > a {
+	height: 40px;
+	line-height: 41px;
+}
+
+#gkMainMenu .gkMenu > ul > li {
+	margin: 0 10px 0 0!important;
+}
+
+#gkMainMenu .gkMenu > ul > li {
+	font-size: 12px;
+}
+
+#gkMenuOverlayWrap {
+	margin:  -20px 0 0 -260px!important;
+	max-width: 520px!important;
+}
+
+#gkMenuOverlayWrap.open {
+	margin-top: 0;
+}
+
+#gkMenuOverlayContent .gkcol li {
+	font-size: 20px;
+}
+
+#gkMenuOverlayContent .gkcol li li {
+	font-size: 15px;
+}
+
+#gkMenuOverlayContent .gkcol li,
+#gkMenuOverlayContent .gkcol li a {
+	line-height: 58px;
+}
+
+/* Other elements */
+.box.headlines .nspArt {
+	padding-left: 10px!important;
+	padding-right: 10px!important;
+}
+.box.headlines .nspArtPage {
+	margin: 0 -10px;
+	width: auto;
+}
+.box.bigtitle .header,
+#gkBottom4 .box.bigtitle .header {
+	font-size: 40px;
+	margin: 0 0 40px 0;
+}
+.box.bigtitle .header small {
+	font-size: 40px;
+}
+#gkHeaderBottom {
+	padding: 20px 30px 0 30px;
+}
+.box.headlines, 
+#gkHeaderBottom .box.headlines {
+	padding-bottom: 30px!important;
+}
+.box.headlines .nspHeader {
+	font-size: 14px;
+	margin-bottom: 12px;
+}
+.box.headlines .nspArt p.nspText {
+	font-size: 13px;
+}
+.big-btn {
+	font-size: 16px;
+	line-height: 45px;
+	margin: 10px auto 16px auto;
+	padding: 0 30px;
+}
+.items-row > div {
+	border: none!important;
+	padding: 0!important;
+}
+.gkQuote p {
+	font-size: 14px;
+}
+.js-mod-photos .thumbnail > img {
+	max-height: 48px!important;
+	max-width: 48px!important;
+}
+.gkCols > div {
+	padding: 0 8px;
+}
+.gkPriceTable dl {
+	padding: 10px;
+}
+
+/* JomSocial fixes */
+#community-wrap .cGuest {
+	min-height: 320px;
+}
+#community-wrap .cGuest h1 {
+	font-size: 36px;
+	margin: 0;
+}
+#community-wrap .cGuest > a {
+	margin: 10px auto;
+	padding: 0 20px;
+}
+#community-wrap .cStream-Headline {
+	line-height: 34px;
+}
