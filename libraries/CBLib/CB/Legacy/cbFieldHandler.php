@@ -894,15 +894,15 @@ class cbFieldHandler extends cbPluginHandler
 			$layout			=	trim( preg_replace( '/\[cb:(userdata +field|userfield +field)="' . preg_quote( $field->get( 'name' ) ) . '"[^]]+\]/i', '', $layout ) );
 
 			if ( $layout ) {
-				$value		=	str_replace( '[value]', $value, $layout );
-
 				if ( $field->params->get( 'fieldLayoutContentPlugins', 0 ) ) {
-					$value	=	Application::Cms()->prepareHtmlContentPlugins( $value );
+					$layout	=	Application::Cms()->prepareHtmlContentPlugins( $layout, 'field.layout', ( $user !== null ? $user->id : 0 ) );
 				}
 
 				if ( $user !== null ) {
-					$value	=	cbReplaceVars( $value, $user, $htmlspecialchars, true, $extra );
+					$layout	=	cbReplaceVars( $layout, $user, $htmlspecialchars, true, $extra );
 				}
+
+				$value		=	str_replace( '[value]', $value, $layout );
 			}
 		}
 

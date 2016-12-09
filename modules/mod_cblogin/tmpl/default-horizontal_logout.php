@@ -30,7 +30,7 @@ JHtml::_( 'behavior.keepalive' );
 	<?php } ?>
 	<?php echo modCBLoginHelper::getPlugins( $params, $type, 'beforeButton', 'span', 1, null, '&nbsp;' ); ?>
 	<span class="logout-button">
-		<button type="submit" name="Submit" class="button"<?php echo $buttonStyle; ?>>
+		<button type="submit" name="Submit" class="<?php echo ( $styleLogout ? htmlspecialchars( $styleLogout ) : 'button' ); ?>"<?php echo $buttonStyle; ?>>
 			<?php if ( in_array( $showButton, array( 1, 2, 3 ) ) ) { ?>
 				<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 					<span class="cbModuleLogoutIcon fa fa-sign-out" title="<?php echo htmlspecialchars( CBTxt::T( 'Log out' ) ); ?>"></span>
@@ -47,7 +47,7 @@ JHtml::_( 'behavior.keepalive' );
 		<span class="logout-links">
 			<?php if ( $showPrivateMessages ) { ?>
 				<span class="logout-private-messages">
-					<a href="<?php echo $privateMessageURL; ?>">
+					<a href="<?php echo $privateMessageURL; ?>"<?php echo ( $stylePrivateMsgs ? ' class="' . htmlspecialchars( $stylePrivateMsgs ) . '"' : null ); ?>>
 						<?php if ( $params->get( 'show_pms_icon', 0 ) ) { ?>
 							<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 								<span class="cbModulePMIcon fa fa-envelope" title="<?php echo htmlspecialchars( CBTxt::T( 'Private Messages' ) ); ?>"></span>
@@ -64,7 +64,7 @@ JHtml::_( 'behavior.keepalive' );
 			<?php } ?>
 			<?php if ( $showConnectionRequests ) { ?>
 				<span class="logout-connection-requests">
-					<a href="<?php echo $_CB_framework->viewUrl( 'manageconnections' ); ?>">
+					<a href="<?php echo $_CB_framework->viewUrl( 'manageconnections' ); ?>"<?php echo ( $styleConnRequests ? ' class="' . htmlspecialchars( $styleConnRequests ) . '"' : null ); ?>>
 						<?php if ( $params->get( 'show_connection_notifications_icon', 0 ) ) { ?>
 							<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 								<span class="cbModuleConnectionsIcon fa fa-users" title="<?php echo htmlspecialchars( CBTxt::T( 'Connections' ) ); ?>"></span>
@@ -81,7 +81,7 @@ JHtml::_( 'behavior.keepalive' );
 			<?php } ?>
 			<?php if ( $profileViewText ) { ?>
 				<span class="logout-profile">
-					<a href="<?php echo $_CB_framework->userProfileUrl(); ?>">
+					<a href="<?php echo $_CB_framework->userProfileUrl(); ?>"<?php echo ( $styleProfile ? ' class="' . htmlspecialchars( $styleProfile ) . '"' : null ); ?>>
 						<?php if ( $params->get( 'icon_show_profile', 0 ) ) { ?>
 							<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 								<span class="cbModuleProfileViewIcon fa fa-user" title="<?php echo htmlspecialchars( $profileViewText ); ?>"></span>
@@ -94,7 +94,7 @@ JHtml::_( 'behavior.keepalive' );
 			<?php } ?>
 			<?php if ( $profileEditText ) { ?>
 				<span class="logout-profile-edit">
-					<a href="<?php echo $_CB_framework->userProfileEditUrl(); ?>">
+					<a href="<?php echo $_CB_framework->userProfileEditUrl(); ?>"<?php echo ( $styleProfileEdit ? ' class="' . htmlspecialchars( $styleProfileEdit ) . '"' : null ); ?>>
 						<?php if ( $params->get( 'icon_edit_profile', 0 ) ) { ?>
 							<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 								<span class="cbModuleProfileEditIcon fa fa-pencil" title="<?php echo htmlspecialchars( $profileEditText ); ?>"></span>

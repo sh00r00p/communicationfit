@@ -106,7 +106,8 @@
 						<param name="html_filter_allowed_tags" type="text" size="50" default="" label="Exclude Tags from Filtering" description="Input the tags separated by a space to exclude from filtering (e.g. applet body bgsound embed). The defaults can be reversed by supplying: applet body bgsound base basefont embed frame frameset head html id iframe ilayer layer link meta name object script style title xml. Note some tags could allow for malware or abusive behavior." />
 					</tabpanetab>
 					<tabpanetab name="images" label="Images" description="">
-						<param name="conversiontype" type="list" default="4" label="Image Software" description="Choose the software to use for processing images.">
+						<param name="conversiontype" type="list" default="0" label="Image Software" description="Choose the software to use for processing images.">
+							<option value="0">Auto</option>
 							<if name="" nametype="data:bool" operator="=" value="true" valuetype="const:bool" type="condition">
 								<left>
 									<param name="" type="custom" class="CBLib\Image\Test" method="Gd" />
@@ -164,6 +165,7 @@
 						<param name="translations_debug" type="xml:cfg_translations_debug" default="0" label="Translations Highlighting" description="Choose how to display translations highlighting. This can best be used to debug missing translations." />
 						<param name="enableSpoofCheck" type="yesno" default="1" label="Spoof Checking" description="Choose if anti-spoof session checking should be used. Highly recommended this be left on, but it sometimes can conflict with caching usages." />
 						<param name="noVersionCheck" type="xml:cfg_noVersionCheck" default="0" label="Version Checking" description="Choose if Community Builder version checking should be automated or manually triggered in Configuration. Only Community Builder version and standard HTTP information is disclosed during version checking." />
+						<param name="pluginVersionCheck" type="yesno" default="1" label="Plugin Version Checking" description="Choose if Plugin version checking should be automated in Plugin Management." />
 						<param name="sendemails" type="yesno" default="1" label="Send Emails" description="Choose if Community Builder should send emails or not. Note this only affects Community Builder emails through Community Builder API." />
 						<param name="templateBootstrap" type="yesno" default="1" label="Twitter Bootstrap" description="Choose if Twitter Bootstrap CSS should be loaded from the Community Builder template automatically. Recommended to always leave this on unless another compatible means of Twitter Bootstrap CSS is loaded. Note this will affect frontend only." />
 						<if name="templateBootstrap" nametype="data:int" operator="=" value="0" valuetype="const:int" type="showhide">

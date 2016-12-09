@@ -160,6 +160,7 @@
 								<ordering name="position" type="string" />
 							</orderinggroups>
 						</field>
+						<field name="ordering_edit" type="ordering" value="title" width="5%" align="center" label="Edit Order" onclick="number" responsivehiddenon="xsmall" permission="core.edit" allowordering="ascending,descending" />
 						<field name="ordering_register" type="ordering" value="title" width="5%" align="center" label="Register Order" onclick="number" responsivehiddenon="xsmall" permission="core.edit" allowordering="ascending,descending" />
 						<field name="tabid" type="int" width="5%" align="center" label="ID" allowordering="ascending,descending" />
 					</rows>

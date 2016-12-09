@@ -114,7 +114,7 @@ class GKTemplateLayout {
        if($this->globalMenuActive == null) {
             // get all known languages
             $languages     = JLanguage::getKnownLanguages();
-            $menu = JSite::getMenu();
+            $menu = JFactory::getApplication()->getMenu();
            
             foreach($languages as $lang){
                $menuActive = $menu->getActive();

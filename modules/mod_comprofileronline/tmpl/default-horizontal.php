@@ -14,6 +14,7 @@ if ( ! ( defined( '_VALID_CB' ) || defined( '_JEXEC' ) || defined( '_VALID_MOS' 
 	<div class="pretext"><?php echo $preText; ?></div>
 <?php } ?>
 <?php echo modCBOnlineHelper::getPlugins( $params, 'almostStart', 'span', 1 ); ?>
+<?php if ( modCBOnlineHelper::getPlugins( $params, 'beforeUsers', 'span', 1, null, '&nbsp;' ) || $cbUsers || modCBOnlineHelper::getPlugins( $params, 'almostEnd', 'span', 1 ) ) { ?>
 <span class="cbOnlineUsers">
 	<?php echo modCBOnlineHelper::getPlugins( $params, 'beforeUsers', 'span', 1, null, '&nbsp;' ); ?>
 	<?php if ( $cbUsers ) foreach ( $cbUsers as $cbUser ) { ?>
@@ -24,6 +25,7 @@ if ( ! ( defined( '_VALID_CB' ) || defined( '_JEXEC' ) || defined( '_VALID_MOS' 
 	<?php } ?>
 	<?php echo modCBOnlineHelper::getPlugins( $params, 'afterUsers', 'span', 1, null, '&nbsp;' ); ?>
 </span>
+<?php } ?>
 <?php echo modCBOnlineHelper::getPlugins( $params, 'almostEnd', 'span', 1 ); ?>
 <?php if ( $postText ) { ?>
 	<div class="posttext"><?php echo $postText; ?></div>

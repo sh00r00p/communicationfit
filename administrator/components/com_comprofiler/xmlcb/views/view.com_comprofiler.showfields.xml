@@ -64,7 +64,6 @@
 							</data>
 						</field>
 						<field name="ordering" ordering="ASC" />
-						<field name="name" ordering="ASC" />
 					</ordergroup>
 					<ordergroup name="ordering_desc" label="Order descending">
 						<field name="tabposition_comment" type="sql:string" ordering="ASC">
@@ -84,7 +83,50 @@
 							</data>
 						</field>
 						<field name="ordering" ordering="DESC" />
-						<field name="name" ordering="ASC" />
+					</ordergroup>
+					<ordergroup name="ordering_edit_asc" label="Edit Order ascending">
+						<field name="tabordering_comment" type="sql:int" ordering="ASC">
+							<data name="ordering_edit" type="sql:field" table="#__comprofiler_tabs" class="\CB\Database\Table\TabTable">
+								<joinkeys type="inner" dogroupby="false">
+									<column name="fields" operator="=" value="1" type="sql:field" valuetype="const:int" />
+									<column name="tabid" operator="=" value="tabid" type="sql:field" valuetype="sql:field" />
+								</joinkeys>
+							</data>
+						</field>
+						<field name="ordering" ordering="ASC" />
+					</ordergroup>
+					<ordergroup name="ordering_edit_desc" label="Edit Order descending">
+						<field name="tabordering_comment" type="sql:int" ordering="ASC">
+							<data name="ordering_edit" type="sql:field" table="#__comprofiler_tabs" class="\CB\Database\Table\TabTable">
+								<joinkeys type="inner" dogroupby="false">
+									<column name="fields" operator="=" value="1" type="sql:field" valuetype="const:int" />
+									<column name="tabid" operator="=" value="tabid" type="sql:field" valuetype="sql:field" />
+								</joinkeys>
+							</data>
+						</field>
+						<field name="ordering" ordering="DESC" />
+					</ordergroup>
+					<ordergroup name="ordering_register_asc" label="Register Order ascending">
+						<field name="tabordering_comment" type="sql:int" ordering="ASC">
+							<data name="ordering_register" type="sql:field" table="#__comprofiler_tabs" class="\CB\Database\Table\TabTable">
+								<joinkeys type="inner" dogroupby="false">
+									<column name="fields" operator="=" value="1" type="sql:field" valuetype="const:int" />
+									<column name="tabid" operator="=" value="tabid" type="sql:field" valuetype="sql:field" />
+								</joinkeys>
+							</data>
+						</field>
+						<field name="ordering" ordering="ASC" />
+					</ordergroup>
+					<ordergroup name="ordering_register_desc" label="Register Order descending">
+						<field name="tabordering_comment" type="sql:int" ordering="ASC">
+							<data name="ordering_register" type="sql:field" table="#__comprofiler_tabs" class="\CB\Database\Table\TabTable">
+								<joinkeys type="inner" dogroupby="false">
+									<column name="fields" operator="=" value="1" type="sql:field" valuetype="const:int" />
+									<column name="tabid" operator="=" value="tabid" type="sql:field" valuetype="sql:field" />
+								</joinkeys>
+							</data>
+						</field>
+						<field name="ordering" ordering="DESC" />
 					</ordergroup>
 					<ordergroup name="tabname_asc" label="Tab ascending">
 						<field name="tabname_comment" type="sql:string" ordering="ASC">

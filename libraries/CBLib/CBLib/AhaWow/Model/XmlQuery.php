@@ -133,7 +133,7 @@ class XmlQuery {
 					$this->process_field( $field );
 				} elseif ( $field->getName() == 'data' ) {
 					$this->process_data( $field );
-				} else {
+				} elseif ( ! in_array( $field->getName(), array( 'attributes' ) ) ) {
 					trigger_error( 'SQLXML::process_field: child type ' . $field->getName() . ' of fields is not implemented !', E_USER_NOTICE );
 				}
 			}

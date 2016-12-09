@@ -299,7 +299,8 @@ class CmsUser implements CmsUserInterface
 		if ( $asset == 'root' ) {
 			$asset	=	null;
 		}
-		return $this->cmsOwnUser->authorise( $action, $asset );
+		// For no existing action, asset, or guest check it returns null so lets force it to bool true/false:
+		return (bool) $this->cmsOwnUser->authorise( $action, $asset );
 	}
 
 	/**

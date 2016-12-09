@@ -252,8 +252,7 @@ class NSP_GK5_com_virtuemart_Model {
                 ON 
                 sgroup.virtuemart_shoppergroup_id = psgroup.virtuemart_shoppergroup_id
 		WHERE
-            contentR.product_parent_id = 0
-            AND contentR.published = 1  
+            contentR.published = 1
 			AND '.$sql_where.'
 			'.$frontpage_con.' 
 			'.$since_con.'
@@ -265,14 +264,22 @@ class NSP_GK5_com_virtuemart_Model {
 			'.($config['offset']).','.$amount.';
 		';
 		// run SQL query
-		$db->setQuery($query_news);		
+		$db->setQuery($query_news);	
+		// create the id array
+		$content_id = array();	
 		// when exist some results
 		if($news = $db->loadAssocList()) {			
 			// generating tables of news data
 			foreach($news as $item) {	
 				$content[] = $item; // store item in array
+				array_push($content_id, $item['id']);
 				$news_amount++;	// news amount
 			}
+		}
+		
+		// create the content IDs array
+		foreach($news as $item) {
+			array_push($content_id, $item['id']);
 		}
 		// second query start
 		$sql_where2 = '';
@@ -313,8 +320,7 @@ class NSP_GK5_com_virtuemart_Model {
 		';
 		// run second SQL query
 		$db->setQuery($query_news2);
-		// create the id array
-		$content_id = array();
+
 		// when exist some results
 		if($news2 = $db->loadAssocList()) {
 			// load URL overrides
@@ -329,10 +335,6 @@ class NSP_GK5_com_virtuemart_Model {
 						$url_overrides = json_decode($override_content, true);
 					}
 				}
-			}
-			// create the content IDs array
-			foreach($content as $item) {
-				array_push($content_id, $item['id']);
 			}
 			// generating tables of news data
 			foreach($news2 as $item) {						
@@ -369,6 +371,10 @@ class NSP_GK5_com_virtuemart_Model {
 	    // get the first products images
 	    if ($pimages) {
 	       foreach($pimages as $item) {
+	           if(isset($item[0])) {
+	           		$item = $item[0];
+	           }
+
 	           $pos = array_search($item['id'], $content_id);
 	           // merge the new data to the array of items data
 	           $temp_array = array('image' => $item['image']);

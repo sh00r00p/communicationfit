@@ -47,7 +47,7 @@ class Image {
 	 * @param bool    $alwaysResample       If images should always resize even if their size is within the maximum limits
 	 * @param bool    $maintainAspectRatio  If images should always maintain their aspect ratios when resizing
 	 */
-	public function __construct( $software = 'gd', $alwaysResample = true, $maintainAspectRatio = true ) {
+	public function __construct( $software = 'auto', $alwaysResample = true, $maintainAspectRatio = true ) {
 		switch ( strtolower( $software ) ) {
 			case 'gmagick':
 				$this->imagine		=	new Imagine\Gmagick\Imagine();
@@ -56,7 +56,22 @@ class Image {
 				$this->imagine		=	new Imagine\Imagick\Imagine();
 				break;
 			case 'gd':
+				$this->imagine		=	new Imagine\Gd\Imagine();
+				break;
+			case 'auto':
 			default:
+				$softwareTest		=	new Test();
+
+				if ( $softwareTest->Gmagick() ) {
+					$this->imagine	=	new Imagine\Gmagick\Imagine();
+					break;
+				}
+
+				if ( $softwareTest->Imagick() ) {
+					$this->imagine	=	new Imagine\Imagick\Imagine();
+					break;
+				}
+
 				$this->imagine		=	new Imagine\Gd\Imagine();
 				break;
 		}

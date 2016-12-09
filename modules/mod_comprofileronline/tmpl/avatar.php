@@ -16,6 +16,7 @@ if ( ! ( defined( '_VALID_CB' ) || defined( '_JEXEC' ) || defined( '_VALID_MOS' 
 	</div>
 <?php } ?>
 <?php echo modCBOnlineHelper::getPlugins( $params, 'beforeUsers' ); ?>
+<?php if ( modCBOnlineHelper::getPlugins( $params, 'beforeLinks' ) || $cbUsers || modCBOnlineHelper::getPlugins( $params, 'almostEnd' ) ) { ?>
 <ul class="unstyled cbOnlineUsers">
 	<?php echo modCBOnlineHelper::getPlugins( $params, 'beforeLinks' ); ?>
 	<?php if ( $cbUsers ) foreach ( $cbUsers as $cbUser ) { ?>
@@ -25,6 +26,7 @@ if ( ! ( defined( '_VALID_CB' ) || defined( '_JEXEC' ) || defined( '_VALID_MOS' 
 	<?php } ?>
 	<?php echo modCBOnlineHelper::getPlugins( $params, 'afterUsers' ); ?>
 </ul>
+<?php } ?>
 <?php echo modCBOnlineHelper::getPlugins( $params, 'almostEnd' ); ?>
 <?php if ( $postText ) { ?>
 	<div class="posttext">

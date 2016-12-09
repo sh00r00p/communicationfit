@@ -42,7 +42,7 @@ JHtml::_( 'behavior.keepalive' );
 										<span class="cbModuleUsernameIcon fa fa-user" title="<?php echo htmlspecialchars( $userNameText ); ?>"></span>
 									</span>
 								</span>
-								<input id="modlgn-username" type="text" name="username" class="input-small"  size="<?php echo $usernameInputLength; ?>"<?php echo ( in_array( $showUsernameLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( $userNameText ) . '"' : null ); ?> />
+								<input id="modlgn-username" type="text" name="username" class="<?php echo ( $styleUsername ? htmlspecialchars( $styleUsername ) : 'input-small' ); ?>" size="<?php echo $usernameInputLength; ?>"<?php echo ( in_array( $showUsernameLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( $userNameText ) . '"' : null ); ?> />
 							</div>
 						<?php } else { ?>
 							<label for="modlgn-username" class="control-label">
@@ -50,10 +50,10 @@ JHtml::_( 'behavior.keepalive' );
 									<?php echo htmlspecialchars( $userNameText ); ?>
 								<?php } ?>
 							</label>
-							<input id="modlgn-username" type="text" name="username" class="input-medium"  size="<?php echo $usernameInputLength; ?>"<?php echo ( in_array( $showUsernameLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( $userNameText ) . '"' : null ); ?> />
+							<input id="modlgn-username" type="text" name="username" class="<?php echo ( $styleUsername ? htmlspecialchars( $styleUsername ) : 'input-medium' ); ?>" size="<?php echo $usernameInputLength; ?>"<?php echo ( in_array( $showUsernameLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( $userNameText ) . '"' : null ); ?> />
 						<?php } ?>
 					<?php } else { ?>
-						<input id="modlgn-username" type="text" name="username" class="input-medium"  size="<?php echo $usernameInputLength; ?>"<?php echo ( in_array( $showUsernameLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( $userNameText ) . '"' : null ); ?> />
+						<input id="modlgn-username" type="text" name="username" class="<?php echo ( $styleUsername ? htmlspecialchars( $styleUsername ) : 'input-medium' ); ?>" size="<?php echo $usernameInputLength; ?>"<?php echo ( in_array( $showUsernameLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( $userNameText ) . '"' : null ); ?> />
 					<?php } ?>
 				</div>
 			</div>
@@ -70,7 +70,7 @@ JHtml::_( 'behavior.keepalive' );
 										<span class="cbModulePasswordIcon fa fa-lock" title="<?php echo htmlspecialchars( CBTxt::T( 'Password' ) ); ?>"></span>
 									</span>
 								</span>
-								<input id="modlgn-passwd" type="password" name="passwd" class="input-small" size="<?php echo $passwordInputLength; ?>"<?php echo ( in_array( $showPasswordLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Password' ) ) . '"' : null ); ?>  />
+								<input id="modlgn-passwd" type="password" name="passwd" class="<?php echo ( $stylePassword ? htmlspecialchars( $stylePassword ) : 'input-small' ); ?>" size="<?php echo $passwordInputLength; ?>"<?php echo ( in_array( $showPasswordLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Password' ) ) . '"' : null ); ?>  />
 							</div>
 						<?php } else { ?>
 							<label for="modlgn-passwd" class="control-label">
@@ -78,10 +78,10 @@ JHtml::_( 'behavior.keepalive' );
 									<?php echo htmlspecialchars( CBTxt::T( 'Password' ) ); ?>
 								<?php } ?>
 							</label>
-							<input id="modlgn-passwd" type="password" name="passwd" class="input-medium" size="<?php echo $passwordInputLength; ?>"<?php echo ( in_array( $showPasswordLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Password' ) ) . '"' : null ); ?>  />
+							<input id="modlgn-passwd" type="password" name="passwd" class="<?php echo ( $stylePassword ? htmlspecialchars( $stylePassword ) : 'input-medium' ); ?>" size="<?php echo $passwordInputLength; ?>"<?php echo ( in_array( $showPasswordLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Password' ) ) . '"' : null ); ?>  />
 						<?php } ?>
 					<?php } else { ?>
-						<input id="modlgn-passwd" type="password" name="passwd" class="input-medium" size="<?php echo $passwordInputLength; ?>"<?php echo ( in_array( $showPasswordLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Password' ) ) . '"' : null ); ?>  />
+						<input id="modlgn-passwd" type="password" name="passwd" class="<?php echo ( $stylePassword ? htmlspecialchars( $stylePassword ) : 'input-medium' ); ?>" size="<?php echo $passwordInputLength; ?>"<?php echo ( in_array( $showPasswordLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Password' ) ) . '"' : null ); ?>  />
 					<?php } ?>
 				</div>
 			</div>
@@ -99,7 +99,7 @@ JHtml::_( 'behavior.keepalive' );
 											<span class="cbModuleSecretKeyIcon fa fa-star" title="<?php echo htmlspecialchars( CBTxt::T( 'Secret Key' ) ); ?>"></span>
 										</span>
 									</span>
-									<input id="modlgn-secretkey" type="text" name="secretkey" class="input-small"  size="<?php echo $secretKeyInputLength; ?>"<?php echo ( in_array( $showSecretKeyLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Secret Key' ) ) . '"' : null ); ?> />
+									<input id="modlgn-secretkey" type="text" name="secretkey" class="<?php echo ( $styleSecretKey ? htmlspecialchars( $styleSecretKey ) : 'input-small' ); ?>" size="<?php echo $secretKeyInputLength; ?>"<?php echo ( in_array( $showSecretKeyLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Secret Key' ) ) . '"' : null ); ?> />
 								</div>
 							<?php } else { ?>
 								<label for="modlgn-secretkey" class="control-label">
@@ -107,10 +107,10 @@ JHtml::_( 'behavior.keepalive' );
 										<?php echo htmlspecialchars( CBTxt::T( 'Secret Key' ) ); ?>
 									<?php } ?>
 								</label>
-								<input id="modlgn-secretkey" type="text" name="secretkey" class="input-medium"  size="<?php echo $secretKeyInputLength; ?>"<?php echo ( in_array( $showSecretKeyLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Secret Key' ) ) . '"' : null ); ?> />
+								<input id="modlgn-secretkey" type="text" name="secretkey" class="<?php echo ( $styleSecretKey ? htmlspecialchars( $styleSecretKey ) : 'input-medium' ); ?>" size="<?php echo $secretKeyInputLength; ?>"<?php echo ( in_array( $showSecretKeyLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Secret Key' ) ) . '"' : null ); ?> />
 							<?php } ?>
 						<?php } else { ?>
-							<input id="modlgn-secretkey" type="text" name="secretkey" class="input-medium"  size="<?php echo $secretKeyInputLength; ?>"<?php echo ( in_array( $showSecretKeyLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Secret Key' ) ) . '"' : null ); ?> />
+							<input id="modlgn-secretkey" type="text" name="secretkey" class="<?php echo ( $styleSecretKey ? htmlspecialchars( $styleSecretKey ) : 'input-medium' ); ?>" size="<?php echo $secretKeyInputLength; ?>"<?php echo ( in_array( $showSecretKeyLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Secret Key' ) ) . '"' : null ); ?> />
 						<?php } ?>
 					</div>
 				</div>
@@ -126,7 +126,7 @@ JHtml::_( 'behavior.keepalive' );
 			<?php echo modCBLoginHelper::getPlugins( $params, $type, 'beforeButton', 'p' ); ?>
 			<div id="form-login-submit" class="control-group">
 				<div class="controls">
-					<button type="submit" name="Submit" class="btn btn-primary"<?php echo $buttonStyle; ?>>
+					<button type="submit" name="Submit" class="<?php echo ( $styleLogin ? htmlspecialchars( $styleLogin ) : 'btn btn-primary' ); ?>"<?php echo $buttonStyle; ?>>
 						<?php if ( in_array( $showButton, array( 1, 2, 3 ) ) ) { ?>
 							<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 								<span class="cbModuleLoginIcon fa fa-sign-in" title="<?php echo htmlspecialchars( CBTxt::T( 'Log in' ) ); ?>"></span>
@@ -148,7 +148,7 @@ JHtml::_( 'behavior.keepalive' );
 		<ul id="form-login-links" class="unstyled">
 			<?php if ( $showForgotLogin ) { ?>
 				<li id="form-login-forgot">
-					<a href="<?php echo $_CB_framework->viewUrl( 'lostpassword', true, null, 'html', $secureForm ); ?>">
+					<a href="<?php echo $_CB_framework->viewUrl( 'lostpassword', true, null, 'html', $secureForm ); ?>"<?php echo ( $styleForgotLogin ? ' class="' . htmlspecialchars( $styleForgotLogin ) . '"' : null ); ?>>
 						<?php if ( in_array( $showForgotLogin, array( 2, 3 ) ) ) { ?>
 							<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 								<span class="cbModuleForgotLoginIcon fa fa-unlock-alt" title="<?php echo htmlspecialchars( CBTxt::T( 'Forgot Login?' ) ); ?>"></span>
@@ -162,7 +162,7 @@ JHtml::_( 'behavior.keepalive' );
 			<?php } ?>
 			<?php if ( $showRegister ) { ?>
 				<li id="form-login-register">
-					<a href="<?php echo $_CB_framework->viewUrl( 'registers', true, null, 'html', $secureForm ); ?>">
+					<a href="<?php echo $_CB_framework->viewUrl( 'registers', true, null, 'html', $secureForm ); ?>"<?php echo ( $styleRegister ? ' class="' . htmlspecialchars( $styleRegister ) . '"' : null ); ?>>
 						<?php if ( in_array( $params->get( 'show_newaccount', 1 ), array( 2, 3 ) ) ) { ?>
 							<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 								<span class="cbModuleRegisterIcon fa fa-edit" title="<?php echo htmlspecialchars( CBTxt::T( 'UE_REGISTER', 'Sign up' ) ); ?>"></span>

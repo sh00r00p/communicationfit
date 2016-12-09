@@ -82,7 +82,7 @@ class CBplug_cbblogs extends cbPluginHandler
 						if ( $model->type != 2 ) {
 							cbRedirect( cbblogsModel::getUrl( (int) $id, false ) );
 						} else {
-							$this->showBlog( $id, $user, $model, $plugin );
+							$this->showBlog( $id, $user, $model, $tab, $plugin );
 						}
 						break;
 				}
@@ -109,9 +109,10 @@ class CBplug_cbblogs extends cbPluginHandler
 	 * @param  int          $id
 	 * @param  UserTable    $user
 	 * @param  stdClass     $model
+	 * @param  TabTable     $tab
 	 * @param  PluginTable  $plugin
 	 */
-	public function showBlog( $id, $user, $model, $plugin )
+	public function showBlog( $id, $user, $model, $tab, $plugin )
 	{
 		global $_CB_framework;
 
@@ -125,10 +126,13 @@ class CBplug_cbblogs extends cbPluginHandler
 			cbRedirect( $profileUrl, CBTxt::T( 'Not authorized.' ), 'error' );
 		}
 
-		if ( ! ( ( $row->get( 'user' ) == $user->get( 'id' ) )
+		$profileUser			=	CBuser::getInstance( $row->get( 'user', $user->get( 'id' ) ), false );
+
+		if ( ( ! ( ( $row->get( 'user' ) == $user->get( 'id' ) )
 				|| ( Application::MyUser()->canViewAccessLevel( $row->get( 'access' ) ) && $row->get( 'published' ) )
 			    || Application::User( (int) $user->get( 'id' ) )->isGlobalModerator()
-			   )
+			   ))
+			|| ( ! in_array( $tab->tabid, array_keys( $profileUser->_getCbTabs( false )->_getTabsDb( $profileUser->getUserData(), 'profile' ) ) ) )
 		)
 		{
 			cbRedirect( $profileUrl, CBTxt::T( 'Not authorized.' ), 'error' );

@@ -20,27 +20,31 @@ class pkg_communitybuilderInstallerScript {
 	 */
 	private $versions = array(
 		'php' => array (
+			'7.1' => '7.1.0',
+			'7.0' => '7.0.0',
 			'5.6' => '5.6.0',
 			'5.5' => '5.5.0',
 			'5.4' => '5.4.0',
 			'5.3' => '5.3.3',
-			'0' => '5.6.8' // Preferred version
+			'0' => '5.6.22' // Preferred version
 		),
 		'mysql' => array (
 			'5.7' => '5.7',
 			'5.6' => '5.6',
 			'5.5' => '5.5',
 			'5.1' => '5.1',
-			'0' => '5.6.24' // Preferred version
+			'0' => '5.6.31' // Preferred version
 		),
 		'joomla' => array (
+			'3.6' => '3.6.0',
+			'3.5' => '3.5.0',
 			'3.4' => '3.4.0',
 			'3.3' => '3.3.0',
 			'3.2' => '3.2.0',
 			'3.1' => '3.1.0',
 			'3.0' => '3.0.0',
 			'2.5' => '2.5.0',
-			'0' => '3.4.1' // Preferred version
+			'0' => '3.5.1' // Preferred version
 		)
 	);
 
@@ -141,7 +145,7 @@ class pkg_communitybuilderInstallerScript {
 		$pass	=	$this->checkVersion('php', phpversion())
 				&&	$this->checkVersion('joomla', JVERSION)
 				&&	$this->checkVersion('mysql', $db->getVersion ())
-				&&	$this->checkDbo($db->name, array('mysql', 'mysqli'))
+				&&	$this->checkDbo($db->name, array('mysql', 'mysqli', 'pdomysql'))
 				&&	$this->checkPHPExtensions($this->phpExtensions)
 				&&	$this->checkGit();
 //				&&	$this->checkCBVersion( $version );
@@ -186,7 +190,7 @@ class pkg_communitybuilderInstallerScript {
 		if (in_array($name, $types)) {
 			return true;
 		}
-		$app->enqueueMessage(sprintf("Database driver '%s' is not supported. Please use MySQL instead.", $name), 'notice');
+		$app->enqueueMessage(sprintf("Database driver '%s' is not supported. Please use MySQLi instead.", $name), 'notice');
 		return false;
 	}
 

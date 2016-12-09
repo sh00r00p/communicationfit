@@ -15,12 +15,7 @@
   font-weight: normal;
   font-style: normal;
 }
-.cb_template .fa,
-.cb_template .fa:before,
-.cb_template .fa-before:before,
-.cb_template .fa-raw,
-.cb_template .fa-raw:before,
-.cb_template .fa-raw-before:before {
+.cb_template .fa {
   display: inline-block;
   font: normal normal normal 14px/1 FontAwesome;
   font-size: inherit;
@@ -28,26 +23,21 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.cb_template .fa-lg,
-.cb_template .fa-before-lg:before {
+.cb_template .fa-lg {
   font-size: 1.33333333em;
   line-height: 0.75em;
   vertical-align: -15%;
 }
-.cb_template .fa-2x,
-.cb_template .fa-before-2x:before {
+.cb_template .fa-2x {
   font-size: 2em;
 }
-.cb_template .fa-3x,
-.cb_template .fa-before-3x:before {
+.cb_template .fa-3x {
   font-size: 3em;
 }
-.cb_template .fa-4x,
-.cb_template .fa-before-4x:before {
+.cb_template .fa-4x {
   font-size: 4em;
 }
-.cb_template .fa-5x,
-.cb_template .fa-before-5x:before {
+.cb_template .fa-5x {
   font-size: 5em;
 }
 .cb_template .fa-fw {
@@ -2082,128 +2072,4 @@
 }
 .cb_template .fa-percent:before {
   content: "\f295";
-}
-.cb_template .fa-sm,
-.cb_template .fa-before-sm:before {
-  font-size: 0.67em;
-  line-height: 1.25em;
-  vertical-align: 15%;
-}
-.cb_template .fa,
-.cb_template .fa:before,
-.cb_template .fa-before:before,
-.cb_template .fa-raw,
-.cb_template .fa-raw:before,
-.cb_template .fa-raw-before:before {
-  font-family: FontAwesome !important
-  /* MARKED IMPORTANT TO AVOID BEING OVERRIDDEN */
-}
-.cb_template .fa-raw,
-.cb_template .fa-raw:before,
-.cb_template .fa-raw-before:before {
-  font-style: inherit;
-  font-weight: inherit;
-  line-height: inherit;
-}
-.cb_template .fa-block,
-.cb_template .fa-block:before {
-  display: block;
-}
-.cb_template .fa-prefix:before {
-  margin-right: 10px;
-}
-.cb_template .fa-suffix:before {
-  margin-left: 10px;
-}
-.cb_template .fa-infix:before {
-  margin-left: 10px;
-  margin-right: 10px;
-}
-.cb_template .fa-spin-fast {
-  -webkit-animation: fa-spin 1s infinite linear;
-  animation: fa-spin 1s infinite linear;
-}
-.cb_template .fa-spin-faster {
-  -webkit-animation: fa-spin 0.5s infinite linear;
-  animation: fa-spin 0.5s infinite linear;
-}
-.cb_template .fa-spin-slow {
-  -webkit-animation: fa-spin 2s infinite linear;
-  animation: fa-spin 2s infinite linear;
-}
-.cb_template .fa-spin-slower {
-  -webkit-animation: fa-spin 2.5s infinite linear;
-  animation: fa-spin 2.5s infinite linear;
-}
-.cb_template .nav-tabs > li.has-error > a:before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: FontAwesome !important;
-  /* MARKED IMPORTANT TO AVOID BEING OVERRIDDEN */
-  content: "\f00d";
-  margin-right: 5px;
-}
-.cb_template .nav-tabs > li.has-warning > a:before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: FontAwesome !important;
-  /* MARKED IMPORTANT TO AVOID BEING OVERRIDDEN */
-  content: "\f071";
-  margin-right: 5px;
-}
-.cb_template .nav-tabs > li.has-success > a:before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: FontAwesome !important;
-  /* MARKED IMPORTANT TO AVOID BEING OVERRIDDEN */
-  content: "\f00c";
-  margin-right: 5px;
-}
-.cb_template .nav-pills > li.has-error > a:before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: FontAwesome !important;
-  /* MARKED IMPORTANT TO AVOID BEING OVERRIDDEN */
-  content: "\f00d";
-  margin-right: 5px;
-}
-.cb_template .nav-pills > li.has-warning > a:before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: FontAwesome !important;
-  /* MARKED IMPORTANT TO AVOID BEING OVERRIDDEN */
-  content: "\f071";
-  margin-right: 5px;
-}
-.cb_template .nav-pills > li.has-success > a:before {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-family: FontAwesome !important;
-  /* MARKED IMPORTANT TO AVOID BEING OVERRIDDEN */
-  content: "\f00c";
-  margin-right: 5px;
 }

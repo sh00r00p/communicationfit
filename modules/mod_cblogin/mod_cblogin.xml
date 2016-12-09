@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="module" version="1.6" client="site" method="upgrade">
 	<name>Community Builder Login module</name>
-	<creationDate>2016-03-22</creationDate>
+	<creationDate>2016-08-24</creationDate>
 	<author>CB Team</author>
 	<copyright>(C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved2 License</copyright>
 	<license>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2. All copyright statements must be kept and derivative work must prominently duly acknowledge original work on web interface and on website where downloaded.</license>
 	<authorEmail>cbteam@joomlapolis.com</authorEmail>
 	<authorUrl>http://www.joomlapolis.com/</authorUrl>
-	<version>2.0.14</version>
+	<version>2.0.15</version>
 	<description>Login module to be used with Community Builder instead of the Login module.</description>
 	<scriptfile>script.mod_cblogin.php</scriptfile>
 	<files>
@@ -133,6 +133,19 @@
 					<option value="0">Hide</option>
 					<option value="1">Show</option>
 				</field>
+			</fieldset>
+			<fieldset name="style" label="Style Options">
+				<field name="style_username_cssclass" type="text" default="" size="30" label="Username Input CSS Class" description="Optionally replace the username input css class." />
+				<field name="style_password_cssclass" type="text" default="" size="30" label="Password Input CSS Class" description="Optionally replace the password input css class." />
+				<field name="style_secretkey_cssclass" type="text" default="" size="30" label="Secret Key Input CSS Class" description="Optionally replace the secret key input css class." />
+				<field name="style_login_cssclass" type="text" default="" size="30" label="Login Button CSS Class" description="Optionally replace the login button css class." />
+				<field name="style_logout_cssclass" type="text" default="" size="30" label="Logout Button CSS Class" description="Optionally replace the logout button css class." />
+				<field name="style_forgotlogin_cssclass" type="text" default="" size="30" label="Forgot Login Link CSS Class" description="Optionally replace the forgot login link css class." />
+				<field name="style_register_cssclass" type="text" default="" size="30" label="Register Link CSS Class" description="Optionally replace the register link css class." />
+				<field name="style_profile_cssclass" type="text" default="" size="30" label="Profile Link CSS Class" description="Optionally replace the profile link css class." />
+				<field name="style_profileedit_cssclass" type="text" default="" size="30" label="Profile Edit Link CSS Class" description="Optionally replace the profile edit link css class." />
+				<field name="style_connrequests_cssclass" type="text" default="" size="30" label="Connection Requests Link CSS Class" description="Optionally replace the connection requests link css class." />
+				<field name="style_privatemsgs_cssclass" type="text" default="" size="30" label="Private Messages Link CSS Class" description="Optionally replace the private messages link css class." />
 			</fieldset>
 			<fieldset name="advanced" label="Advanced Options">
 				<field name="layout" type="modulelayout" default="_:bootstrap" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />

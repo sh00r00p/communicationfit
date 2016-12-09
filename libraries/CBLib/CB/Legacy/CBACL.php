@@ -639,11 +639,11 @@ class CBACL
 
 
 		if ( is_array( $user_ids ) && count( $user_ids ) ) {
-			$obj						=	new UserTable( $this->_db );
+			CBuser::advanceNoticeOfUsersNeeded( $user_ids );
 
 			foreach ( $user_ids as $user_id ) {
 				if ( $user_id != 0 ) {
-					if ( $obj->load( (int) $user_id ) ) {
+					if ( CBuser::getUserDataInstance( $user_id )->id ) {
 						/** @noinspection PhpDeprecationInspection */
 						$groups			=	$this->get_object_groups( $user_id );
 

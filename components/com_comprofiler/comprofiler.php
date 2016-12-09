@@ -294,7 +294,7 @@ $_CB_framework->getAllJsPageCodes();
 $html		=	ob_get_contents();
 ob_end_clean();
 
-if ( ( cbGetParam( $_GET, 'no_html', 0 ) != 1 ) && ( cbGetParam( $_GET, 'format' ) != 'raw' ) ) {
+if ( ( cbGetParam( $_GET, 'no_html', 0 ) != 1 ) && ( ! in_array( cbGetParam( $_GET, 'format' ), array( 'raw', 'json' ) ) ) ) {
 	echo $_CB_framework->document->outputToHead();
 }
 echo $html;
@@ -2265,7 +2265,7 @@ function checkCBPostIsHTTPS( $return = false ) {
 
 	$isHttps			=	( isset( $_SERVER['HTTPS'] ) && ( ! empty( $_SERVER['HTTPS'] ) ) && ( $_SERVER['HTTPS'] != 'off' ) );
 
-	if ( ( ! $isHttps ) && file_exists( $_CB_framework->getCfg( 'absolute_path' ) . '/modules/' . ( checkJversion() > 0 ? 'mod_cblogin/' : null ) . 'mod_cblogin.php' ) ) {
+	if ( ( ! $isHttps ) && file_exists( $_CB_framework->getCfg( 'absolute_path' ) . '/modules/mod_cblogin/mod_cblogin.php' ) ) {
 		$language		=	CBuser::getMyUserDataInstance()->getUserLanguage();
 
 		if ( ! $language ) {

@@ -72,7 +72,7 @@ JHTML::_('behavior.modal');
 	        
 	        <div id="gkHeader">
 	            <div id="gkTop">
-				<?php if(($this->API->get('reg_link') == '1' && $userID == 0) || $this->API->modules('login')) : ?>
+				<?php if(($this->API->get('reg_link', '') == '1' && $userID == 0) || $this->API->modules('login')) : ?>
 	                <div id="gkUserArea">
 	                 	<?php if($this->API->modules('login')) : ?>
 							<a href="<?php echo $this->API->get('login_url', 'index.php?option=com_users&view=login'); ?>" id="gkLogin"><?php if($userID == 0) echo JText::_('TPL_GK_LANG_LOGIN'); ?></a>

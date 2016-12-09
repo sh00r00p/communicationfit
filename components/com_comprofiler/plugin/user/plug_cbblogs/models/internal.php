@@ -49,7 +49,7 @@ class cbblogsBlogTable extends OrderedTable
 	public function bind( $array, $ignore = '', $prefix = null )
 	{
 		global $_CB_framework;
- 
+
 		$bind				=	parent::bind( $array, $ignore, $prefix );
 
 		if ( $bind ) {
@@ -108,8 +108,8 @@ class cbblogsBlogTable extends OrderedTable
 			$this->setError( CBTxt::T( 'Category not specified!' ) );
 
 			return false;
-		} elseif ( ! in_array( $this->get( 'category' ), cbblogsModel::getCategoriesList( true ) ) ) {	
-                    $this->setError( CBTxt::T( 'Category not allowed!' ) );
+		} elseif ( ! in_array( $this->get( 'category' ), cbblogsModel::getCategoriesList( true ) ) ) {
+			$this->setError( CBTxt::T( 'Category not allowed!' ) );
 
 			return false;
 		}

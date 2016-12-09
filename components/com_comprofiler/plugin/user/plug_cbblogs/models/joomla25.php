@@ -129,11 +129,8 @@ class cbblogsBlogTable extends OrderedTable
 			$this->setError( CBTxt::T( 'Category not specified!' ) );
 
 			return false;
-		} 
- 
-                elseif ( ! in_array( $this->get( 'catid' ), cbblogsModel::getCategoriesList( true ) ) ) {
-		//$a = cbblogsModel::getCategoriesList( true ); var_dump($a); exit();	
-                    $this->setError( CBTxt::T( 'Category not allowed!' ) );
+		} elseif ( ! in_array( $this->get( 'catid' ), cbblogsModel::getCategoriesList( true ) ) ) {
+			$this->setError( CBTxt::T( 'Category not allowed!' ) );
 
 			return false;
 		}

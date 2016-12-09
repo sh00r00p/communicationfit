@@ -54,4 +54,34 @@ class Joomla2 extends Joomla3
 
 		return $this;
 	}
+
+	/**
+	 * Prepares the HTML $htmlText with triggering CMS Content Plugins
+	 *
+	 * @param  string $htmlText
+	 * @param  string $context
+	 * @param  int    $userId
+	 * @return string
+	 */
+	public function prepareHtmlContentPlugins( $htmlText, $context = 'text', $userId = 0 ) {
+		$previousDocType		=	\JFactory::getDocument()->getType();
+
+		\JFactory::getDocument()->setType( 'html' );
+
+		$content				=	new \stdClass();
+		$content->text			=	$htmlText;
+		$content->created_by	=	(int) $userId;
+
+		$params					=	new \JRegistry();
+
+		try {
+			\JPluginHelper::importPlugin( 'content' );
+
+			\JDispatcher::getInstance()->trigger( 'onContentPrepare', array( 'com_comprofiler' . ( $context ? '.' . $context : null ), &$content, &$params, 0 ) );
+		} catch ( \Exception $e ) {}
+
+		\JFactory::getDocument()->setType( $previousDocType );
+
+		return $content->text;
+	}
 }

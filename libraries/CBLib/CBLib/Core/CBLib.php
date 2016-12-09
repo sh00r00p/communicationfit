@@ -19,7 +19,7 @@ use CBLib\Language\TranslationsLogger;
 use CBLib\Output\Output;
 use CBLib\Date\Date;
 
-define( 'CBLIB', '2.0.14' );	// IMPORTANT: when changing version here also change in the 8 XML installation files and in libraries/CBLib/CB/Legacy/cbInstallerPlugin.php and build.xml
+define( 'CBLIB', '2.0.15' );	// IMPORTANT: when changing version here also change in cbInstallerPlugin.php, the 8 XML installation files and build.xml and just below
 
 include_once __DIR__ . '/AutoLoader.php';
 
@@ -31,6 +31,7 @@ include_once __DIR__ . '/AutoLoader.php';
  */
 class CBLib
 {
+	protected static $THISCBVERSION		=	'2.0.15';	 	// IMPORTANT: DO NOT CHANGE MANUALLY, but when changing version automatically here also change in cbInstallerPlugin.php, the 8 XML installation files and build.xml and just above
 	/**
 	 * @var Application
 	 */
@@ -176,5 +177,25 @@ class CBLib
 	{
 		static::$application->dispatch();
 		return static::$application->getOutput();
+	}
+
+	/**
+	 * Returns base semver version of CB (2.0.0 without build)
+	 *
+	 * @return string
+	 */
+	public static function version( )
+	{
+		return CBLIB;
+	}
+
+	/**
+	 * Returns full version of CB (2.0.0+build with build if available)
+	 *
+	 * @return string
+	 */
+	public static function versionWithBuild( )
+	{
+		return static::$THISCBVERSION;
 	}
 }

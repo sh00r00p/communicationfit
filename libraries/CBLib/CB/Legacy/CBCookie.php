@@ -18,16 +18,16 @@ class CBCookie
 	 * PHP setcookie but smarter and more secure:
 	 * //TBD: add domain info in cookie-name
 	 *
-	 * @param  string  $name
-	 * @param  string  $value
-	 * @param  int     $expire
-	 * @param  string  $path
-	 * @param  string  $domain
-	 * @param  boolean $secure
-	 * @param  boolean $httpOnly
+	 * @param  string       $name
+	 * @param  string       $value
+	 * @param  int          $expire
+	 * @param  string       $path
+	 * @param  string       $domain
+	 * @param  boolean|null $secure    Default: Null: same as session cookie
+	 * @param  boolean      $httpOnly  Default: true
 	 * @return boolean
 	 */
-	public static function setcookie( $name, $value = '', $expire = 0, $path = null, $domain = null, $secure = false,  $httpOnly = false )
+	public static function setcookie( $name, $value = '', $expire = 0, $path = null, $domain = null, $secure = null,  $httpOnly = true )
 	{
 		global $_CB_framework, $_SERVER;
 

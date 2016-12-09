@@ -29,7 +29,8 @@
 										<ordering name="position" type="string" />
 									</orderinggroups>
 								</param>
-								<param name="ordering_register" type="ordering" value="title" label="Registration Ordering" display="2lines" description="Select the profile edit and registration ordering of this tab. This ordering is not specific to the tabs position." />
+								<param name="ordering_edit" type="ordering" value="title" label="Edit Ordering" display="2lines" description="Select the profile edit ordering of this tab. This ordering is not specific to the tabs position." />
+								<param name="ordering_register" type="ordering" value="title" label="Registration Ordering" display="2lines" description="Select the registration ordering of this tab. This ordering is not specific to the tabs position." />
 								<param name="position" type="xml:tab_position" default="cb_tabmain" translate-default="no" label="Position" display="2lines" description="Select the profile view position for this tab." />
 								<param name="displaytype" type="xml:tab_displaytype" default="tab" translate-default="no" label="Display Type" display="2lines" description="Select how to display this tab on profile view." />
 								<param name="viewaccesslevel" type="viewaccesslevel" default="1" blanktext="" label="Access Level" managelevels="false" display="2lines" description="Select the view access level for this tab. Only users with this view access level will be able to access the tab on profile view and profile edit. Tab will still show on registration regardless of access if it has fields displayed on registration." />

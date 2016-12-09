@@ -2706,8 +2706,8 @@ class CBfield_image extends cbFieldHandler {
 					$oReturn		=	'<span>'
 									.		$oReturn . ' ' . $this->_avatarHtml( $field, $user, $reason, false, 10 )
 									.		'<div class="cbImagePendingApproval">'
-									.			'<input type="button" class="btn btn-success cbImagePendingApprovalAccept" value="' . htmlspecialchars( CBTxt::Th( 'UE_APPROVE', 'Approve' ) ) . '" onclick="location.href=\'' . $_CB_framework->viewUrl( 'approveimage', true, array( 'flag' => 1, 'images[' . (int) $user->id . '][]' => $name ) ) . '\';" />'
-									.			' <input type="button" class="btn btn-danger cbImagePendingApprovalReject" value="' . htmlspecialchars( CBTxt::Th( 'UE_REJECT', 'Reject' ) ) . '" onclick="location.href=\'' . $_CB_framework->viewUrl( 'approveimage', true, array( 'flag' => 0, 'images[' . (int) $user->id . '][]' => $name ) ) . '\';" />'
+									.			'<input type="button" class="btn btn-xs btn-success cbImagePendingApprovalAccept" value="' . htmlspecialchars( CBTxt::Th( 'UE_APPROVE', 'Approve' ) ) . '" onclick="location.href=\'' . $_CB_framework->viewUrl( 'approveimage', true, array( 'flag' => 1, 'images[' . (int) $user->id . '][]' => $name ) ) . '\';" />'
+									.			' <input type="button" class="btn btn-xs btn-danger cbImagePendingApprovalReject" value="' . htmlspecialchars( CBTxt::Th( 'UE_REJECT', 'Reject' ) ) . '" onclick="location.href=\'' . $_CB_framework->viewUrl( 'approveimage', true, array( 'flag' => 0, 'images[' . (int) $user->id . '][]' => $name ) ) . '\';" />'
 									.		'</div>'
 									.	'</span>';
 				}
@@ -2780,9 +2780,9 @@ class CBfield_image extends cbFieldHandler {
 
 					if ( isset( $user->$col ) ) {
 						$this->_logFieldUpdate( $field, $user, $reason, $user->$col, $value );
-					}
 
-					deleteAvatar( $user->$col ); // delete old avatar
+						deleteAvatar( $user->$col ); // delete old avatar
+					}
 
 					$user->$col							=	$value;
 					$user->$colapproved					=	1;
@@ -2794,9 +2794,9 @@ class CBfield_image extends cbFieldHandler {
 
 					if ( isset( $user->$col ) ) {
 						$this->_logFieldUpdate( $field, $user, $reason, $user->$col, '' );
-					}
 
-					deleteAvatar( $user->$col ); // delete old avatar
+						deleteAvatar( $user->$col ); // delete old avatar
+					}
 
 					$user->$col						=	null; // this will not update, so we do query below:
 					$user->$colapproved				=	1;
@@ -2863,7 +2863,7 @@ class CBfield_image extends cbFieldHandler {
 					}
 
 					$conversionType					=	(int) ( isset( $ueConfig['conversiontype'] ) ? $ueConfig['conversiontype'] : 0 );
-					$imageSoftware					=	( $conversionType == 5 ? 'gmagick' : ( $conversionType == 1 ? 'imagick' : 'gd' ) );
+					$imageSoftware					=	( $conversionType == 5 ? 'gmagick' : ( $conversionType == 1 ? 'imagick' : ( $conversionType == 4 ? 'gd' : 'auto' ) ) );
 					$imagePath						=	$_CB_framework->getCfg( 'absolute_path' ) . '/images/comprofiler/';
 					$fileName						=	( $col == 'avatar' ? '' : $col . '_' ) . uniqid( $user->id . '_' );
 
@@ -4251,13 +4251,13 @@ class CBfield_delimiter extends cbFieldHandler {
 	 * @return mixed
 	 */
 	public function getField( &$field, &$user, $output, $reason, $list_compare_types ) {
-		$value			=	cbReplaceVars( cbUnHtmlspecialchars( $field->description ), $user ); //TBD: unhtml is kept for backwards database compatibility until CB 2.0
+		$value			=	cbUnHtmlspecialchars( $field->description ); //TBD: unhtml is kept for backwards database compatibility until CB 2.0
 
 		if ( $field->params->get( 'field_content_plugins', 0 ) ) {
-			$value		=	Application::Cms()->prepareHtmlContentPlugins( $value );
+			$value		=	Application::Cms()->prepareHtmlContentPlugins( $value, 'field.custom', $user->id );
 		}
 
-		$return			=	$this->_formatFieldOutput( $field->name, $value, $output, false );
+		$return			=	$this->_formatFieldOutput( $field->name, cbReplaceVars( $value, $user ), $output, false );
 
 		if ( $output == 'htmledit' ) {
 			$return		.=	$this->_fieldIconsHtml( $field, $user, $output, $reason, null, null, $value, null, null, false, false );

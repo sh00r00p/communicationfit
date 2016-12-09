@@ -807,7 +807,9 @@ class cbTabs extends cbTabHandler
 				}
 			}
 			$sql			.=	"\n ORDER BY ";
-			if ( $reason == 'register' ) {
+			if ( $reason == 'edit' ) {
+				$sql		.=	't.ordering_edit, ';
+			} elseif ( $reason == 'register' ) {
 				$sql		.=	't.ordering_register, ';
 			}
 			$sql			.=	't.position, t.ordering';
@@ -897,7 +899,9 @@ class cbTabs extends cbTabHandler
 				}
 			}
 			if ( ( ! $tabId ) || $prefetchFields ) {
-				if ( $reason == 'register' ) {
+				if ( $reason == 'edit' ) {
+					$ordering[]	=	't.ordering_edit';
+				} elseif ( $reason == 'register' ) {
 					$ordering[]	=	't.ordering_register';
 				}
 				$ordering[]		=	't.position';
@@ -905,11 +909,8 @@ class cbTabs extends cbTabHandler
 			}
 			$ordering[]			=	'f.ordering';
 
-			$sql				=	'SELECT f.*';
-			if ( $reason == 'register' ) {
-				$sql			.=	', t.ordering_register AS tab_ordering_register, t.position AS tab_position, t.ordering AS tab_ordering';
-			}
-			$sql				.=	' FROM #__comprofiler_fields f';
+			$sql				=	'SELECT f.*'
+								.	' FROM #__comprofiler_fields f';
 			if ( ( ! $tabId ) || $prefetchFields ) {
 				// don't get fields which are not assigned to tabs:
 				$sql			.=	"\n INNER JOIN #__comprofiler_tabs AS t ON (f.tabid = t.tabid)";

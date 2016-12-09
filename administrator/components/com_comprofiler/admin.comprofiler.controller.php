@@ -8,6 +8,7 @@
 */
 
 use CBLib\Application\Application;
+use CBLib\Core\CBLib;
 use CBLib\Language\CBTxt;
 
 // ensure this file is being included by a parent file
@@ -195,7 +196,7 @@ if ( $pluginId ) {
 
 // Then try to automagically use CBLib:
 try {
-	echo CBLib\Core\CBLib::execute();
+	echo CBLib::execute();
 } catch ( \Exception $e ) {
 	echo $e->getMessage();
 	if ( $_CB_framework->getCfg( 'debug' ) ) {
@@ -318,7 +319,7 @@ $_CB_framework->getAllJsPageCodes();
 $html		=	ob_get_contents();
 ob_end_clean();
 
-if ( in_array( $taskPart1, array( 'fieldclass', 'tabclass', 'pluginclass' ) ) || ( cbGetParam( $_GET, 'no_html', 0 ) == 1 ) || ( cbGetParam( $_GET, 'format' ) == 'raw' ) ) {
+if ( in_array( $taskPart1, array( 'fieldclass', 'tabclass', 'pluginclass' ) ) || ( cbGetParam( $_GET, 'no_html', 0 ) == 1 ) || ( in_array( cbGetParam( $_GET, 'format' ), array( 'raw', 'json' ) ) ) ) {
 	echo $html;
 } else {
 	echo $_CB_framework->document->outputToHead();
@@ -473,7 +474,7 @@ function cbUpdateChecker() {
 					.		'<tbody>'
 					.			'<tr>'
 					.				'<td class="titleCell" style="width: 25%;">' . CBTxt::Th( 'Your version is' ) . '</td>'
-					.				'<td class="fieldCell" style="width: 75%;">' . $ueConfig['version'] . '</td>'
+					.				'<td class="fieldCell" style="width: 75%;">' . CBLib::versionWithBuild() . '</td>'
 					.			'</tr>'
 					.			'<tr>'
 					.				'<td class="titleCell" style="width: 25%;">' . CBTxt::Th( 'Latest version' ) . '</td>'

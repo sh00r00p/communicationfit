@@ -558,9 +558,6 @@ function cbInitFields()
 		return;
 	}
 
-	if (typeof(overlib_pagedefaults)!='undefined') {
-		overlib_pagedefaults(WIDTH,250,VAUTO,RIGHT,AUTOSTATUSCAP, CSSCLASS,TEXTFONTCLASS,'cb-tips-font',FGCLASS,'cb-tips-fg',BGCLASS,'cb-tips-bg',CAPTIONFONTCLASS,'cb-tips-capfont', CLOSEFONTCLASS, 'cb-tips-closefont');
-	}
 	if (typeof(cbHideFields)=='undefined') {
 		return;
 	}
