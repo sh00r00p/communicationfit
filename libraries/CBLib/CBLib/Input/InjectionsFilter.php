@@ -10,7 +10,6 @@
 namespace CBLib\Input;
 
 use CBLib\Application\Application;
-use CBLib\DependencyInjection\Container;
 
 defined('CBLIB') or die();
 

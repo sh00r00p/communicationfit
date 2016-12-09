@@ -54,46 +54,166 @@ namespace CB\Legacy
 
 			self::$loaded		=	true;
 
+			/**
+			 * @deprecated 2.0 (kept for B/C only)
+			 */
 			define( "_UE_PREGMATCH_VALID_EMAIL", "/[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\\/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/i" );
 
 			// START Legacy Defines
 			if ( ! defined( '_UE_BLANK' ) ) {
-				define( '_CMN_NO', CBTxt::T( 'UE_NO', 'No' ) );
-				define( '_CMN_YES', CBTxt::T( 'UE_YES', 'Yes' ) );
+				if ( ! defined( '_CMN_NO' ) ) {
+					/**
+					 * Fixes Bug #6086:
+					 *
+					 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+					 */
+					define( '_CMN_NO', CBTxt::T( 'UE_NO', 'No' ) );
+					/**
+					 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+					 */
+					define( '_CMN_YES', CBTxt::T( 'UE_YES', 'Yes' ) );
+				}
+				if ( ! defined( '_LOGOUT_SUCCESS' ) ) {
+					/**
+					 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+					 */
+					define( '_LOGOUT_SUCCESS', CBTxt::T( 'LOGOUT_SUCCESS', 'You have successfully logged out' ) );
+				}
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_NO', CBTxt::T( 'UE_NO', 'No' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_YES', CBTxt::T( 'UE_YES', 'Yes' ) );
-				define( '_LOGOUT_SUCCESS', CBTxt::T( 'LOGOUT_SUCCESS', 'You have successfully logged out' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_ALREADY_LOGGED_IN', CBTxt::T( 'UE_ALREADY_LOGGED_IN', 'You are already logged in' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_BANUSER_MSG', CBTxt::T( 'UE_BANUSER_MSG', 'Your user profile was banned by an administrator. Please log in and review why it was banned.' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_BANUSER_SUB', CBTxt::T( 'UE_BANUSER_SUB', 'User Profile Banned.' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_ALT_IMAGE', CBTxt::T( 'Image with security code embedded in it' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_AUDIO', CBTxt::T( 'click here to hear the letters' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_AUDIO_CLICK2DOWNLOAD', CBTxt::T( '(right-click or control-click)' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_AUDIO_DOWNLOAD', CBTxt::T( 'Click to externally play or download audio file' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_AUDIO_POPUP_CLOSEWINDOW', CBTxt::T( 'Click to close window' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_AUDIO_POPUP_DESCRIPTION', CBTxt::T( 'Listen to audio playback of captcha image' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_AUDIO_POPUP_TITLE', CBTxt::T( 'CB Captcha Audio Playback' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_Desc', CBTxt::T( 'Enter Security Code from image. If no image is present then try disabling your advertisement blocker and then refresh this page. Otherwise please contact the website administrator for assistance.' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_Enter_Label', CBTxt::T( 'Enter Security Code' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_Label', CBTxt::T( 'Security Code' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CAPTCHA_NOT_VALID', CBTxt::T( 'Invalid Security Code' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CHARACTERS', CBTxt::T( 'characters' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_CLOSE_OVERLIB', CBTxt::T( 'CLOSE', 'Close' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_DELETE_AVATAR', CBTxt::T( 'Remove Image' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_DO_LOGIN', CBTxt::T( 'UE_DO_LOGIN', 'You need to log in.' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead, but still used in comprofiler_fields database!)
+				 */
 				define( '_UE_EMAIL', CBTxt::T( 'UE_EMAIL', 'Email' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_FIELDREQUIRED', CBTxt::T( 'UE_REQUIRED_ERROR', 'This Field is required' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_HAS_NO_PROFILE_IMAGE', CBTxt::T( 'UE_HAS_NO_PROFILE_IMAGE', 'Has no profile image' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_HAS_PROFILE_IMAGE', CBTxt::T( 'UE_HAS_PROFILE_IMAGE', 'Has a profile image' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_MENU_SENDUSEREMAIL_DESC', CBTxt::T( 'UE_MENU_SENDUSEREMAIL_DESC', 'Send an Email to this user' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_NEVER', CBTxt::T( 'Never' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_NOSUCHPROFILE', CBTxt::T( 'UE_NOSUCHPROFILE', 'This profile does not exist or is no longer available' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_NOT_AUTHORIZED', CBTxt::T( 'UE_NOT_AUTHORIZED', 'You are not authorized to view this page!' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_NO_PREFERENCE', CBTxt::T( 'UE_NO_PREFERENCE', 'No preference' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead, but still used in comprofiler_fields database!)
+				 */
 				define( '_UE_PASS', CBTxt::T( 'UE_PASS', 'Password' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_REQUIRED_ERROR', CBTxt::T( 'UE_REQUIRED_ERROR', 'This field is required!' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_SENDEMAIL', CBTxt::T( 'UE_SENDEMAIL', 'Send Email' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_USERNAME', CBTxt::T( 'Username' ) );
+				/**
+				 * @deprecated 2.0 (kept for B/C only, use CBTxt::T instead)
+				 */
 				define( '_UE_BLANK', '' );
 			}
 			// END Legacy Defines
@@ -1382,13 +1502,6 @@ namespace
 							.	"});";
 
 			$_CB_framework->outputCbJQuery( $js, 'cbtooltip' );
-
-			// TODO: Remove the below when overlib usages are completely gone
-			$postScript		=	'overlib_pagedefaults(WIDTH,'.(int) $width.',VAUTO,RIGHT,AUTOSTATUSCAP, CSSCLASS,'
-				.	'TEXTFONTCLASS,\'cb-tips-font\',FGCLASS,\'cb-tips-fg\',BGCLASS,\'cb-tips-bg\''
-				.	',CAPTIONFONTCLASS,\'cb-tips-capfont\', CLOSEFONTCLASS, \'cb-tips-closefont\', CONTAINERCLASS, \'cb_template cb_template_' . selectTemplate( 'dir' ) . '\');'
-			;
-			$_CB_framework->document->addHeadScriptUrl( '/components/com_comprofiler/js/overlib_all_mini.js', false, null, $postScript );
 
 			$cache			=	true;
 		}

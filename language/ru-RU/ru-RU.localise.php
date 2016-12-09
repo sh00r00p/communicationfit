@@ -1,25 +1,29 @@
 <?php
 /**
- * @package    Joomla.Language
+ * @package Joomla.Language
  *
- * @copyright  Copyright (C) 2005 - 2013 Open Source Matters, Inc. All rights reserved.
- * @license    GNU General Public License version 2 or later; see LICENSE.txt
+ * @copyright Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
+ * @license GNU General Public License version 2 or later; see LICENSE.txt
  */
 
+defined('_JEXEC') or die;
+use \Joomla\String\StringHelper;
+
 /**
- * ru-RU localise class
+ * ru-RU localise class.
  *
- * @package  Joomla.Language
- * @since    1.6
+ * @since 1.6
  */
 abstract class Ru_RULocalise
 {
 	/**
 	 * Returns the potential suffixes for a specific number of items
 	 *
-	 * @param	int $count  The number of items.
-	 * @return	array  An array of potential suffixes.
-	 * @since	1.6
+	 * @param integer $count The number of items.
+	 *
+	 * @return  array  An array of potential suffixes.
+	 *
+	 * @since 1.6
 	 */
 	public static function getPluralSuffixes($count)
 	{
@@ -31,61 +35,12 @@ abstract class Ru_RULocalise
 		return $return;
 	}
 
-	public static function transliterate($string)
-	{
-		$str = JString::strtolower($string);
-
-		$glyph_array = array(
-			'a' => 'а',
-			'b' => 'б',
-			'v' => 'в',
-			'g' => 'г,ґ',
-			'd' => 'д',
-			'e' => 'е,є,э',
-			'jo' => 'ё',
-			'zh' => 'ж',
-			'z' => 'з',
-			'i' => 'и,і',
-			'ji' => 'ї',
-			'j' => 'й',
-			'k' => 'к',
-			'l' => 'л',
-			'm' => 'м',
-			'n' => 'н',
-			'o' => 'о',
-			'p' => 'п',
-			'r' => 'р',
-			's' => 'с',
-			't' => 'т',
-			'u' => 'у',
-			'f' => 'ф',
-			'kh' => 'х',
-			'ts' => 'ц',
-			'ch' => 'ч',
-			'sh' => 'ш',
-			'shch' => 'щ',
-			'' => 'ъ',
-			'y' => 'ы',
-			'' => 'ь',
-			'yu' => 'ю',
-			'ya' => 'я',
-		);
-
-		foreach ($glyph_array as $letter => $glyphs) {
-			$glyphs = explode(',', $glyphs);
-			$str = str_replace($glyphs, $letter, $str);
-		}
-
-		$str = preg_replace('#\&\#?[a-z0-9]+\;#ismu', '', $str);
-
-		return $str;
-	}
-
 	/**
 	 * Returns the ignored search words
 	 *
-	 * @return	array  An array of ignored search words.
-	 * @since	1.6
+	 * @return array An array of ignored search words.
+	 *
+	 * @since 1.6
 	 */
 	public static function getIgnoredSearchWords()
 	{
@@ -572,8 +527,9 @@ abstract class Ru_RULocalise
 	/**
 	 * Returns the lower length limit of search words
 	 *
-	 * @return	integer  The lower length limit of search words.
-	 * @since	1.6
+	 * @return integer The lower length limit of search words.
+	 *
+	 * @since 1.6
 	 */
 	public static function getLowerLimitSearchWord()
 	{
@@ -583,8 +539,9 @@ abstract class Ru_RULocalise
 	/**
 	 * Returns the upper length limit of search words
 	 *
-	 * @return	integer  The upper length limit of search words.
-	 * @since	1.6
+	 * @return integer The upper length limit of search words.
+	 *
+	 * @since 1.6
 	 */
 	public static function getUpperLimitSearchWord()
 	{
@@ -594,12 +551,62 @@ abstract class Ru_RULocalise
 	/**
 	 * Returns the number of chars to display when searching
 	 *
-	 * @return	integer  The number of chars to display when searching.
-	 * @since	1.6
+	 * @return integer The number of chars to display when searching.
+	 *
+	 * @since 1.6
 	 */
 	public static function getSearchDisplayedCharactersNumber()
 	{
 		return 200;
 	}
-}
 
+	public static function transliterate($string)
+	{
+		$str = StringHelper::strtolower($string);
+
+		$glyph_array = array(
+			'a' => 'а',
+			'b' => 'б',
+			'v' => 'в',
+			'g' => 'г,ґ',
+			'd' => 'д',
+			'e' => 'е,є,э',
+			'jo' => 'ё',
+			'zh' => 'ж',
+			'z' => 'з',
+			'i' => 'и,і',
+			'ji' => 'ї',
+			'j' => 'й',
+			'k' => 'к',
+			'l' => 'л',
+			'm' => 'м',
+			'n' => 'н',
+			'o' => 'о',
+			'p' => 'п',
+			'r' => 'р',
+			's' => 'с',
+			't' => 'т',
+			'u' => 'у',
+			'f' => 'ф',
+			'kh' => 'х',
+			'ts' => 'ц',
+			'ch' => 'ч',
+			'sh' => 'ш',
+			'shch' => 'щ',
+			'' => 'ъ',
+			'y' => 'ы',
+			'' => 'ь',
+			'yu' => 'ю',
+			'ya' => 'я',
+		);
+
+		foreach ($glyph_array as $letter => $glyphs) {
+			$glyphs = explode(',', $glyphs);
+			$str = StringHelper::str_ireplace($glyphs, $letter, $str);
+		}
+
+		$str = preg_replace('#\&\#?[a-z0-9]+\;#ismu', '', $str);
+
+		return $str;
+	}
+}

@@ -7,6 +7,7 @@
 */
 
 use CBLib\Application\Application;
+use CBLib\Core\CBLib;
 use CBLib\Input\InputInterface;
 use CBLib\Language\CBTxt;
 use CBLib\Registry\GetterInterface;
@@ -1404,46 +1405,47 @@ class cbPluginHandler
 	 */
 	public function getPluginVersion( $plugin, $raw = false, $duration = 24, $length = 0 )
 	{
-		global $_CB_framework, $ueConfig;
+		global $_CB_framework;
 
 		cbimport( 'cb.snoopy' );
 
 		static $plgVersions							=	null;
 
 		if ( $plgVersions === null ) {
-			$cacheFile								=	$_CB_framework->getCfg( 'absolute_path' ) . '/cache/cbpluginsversions.xml';
-			$plgVersionsXML							=	null;
+			if ( Application::Config()->get( 'pluginVersionCheck', true, GetterInterface::BOOLEAN ) ) {
+				$cacheFile							=	$_CB_framework->getCfg( 'absolute_path' ) . '/cache/cbpluginsversions.xml';
+				$plgVersionsXML						=	null;
 
-			if ( file_exists( $cacheFile ) ) {
-				if ( ( ! $duration ) || ( intval( ( $_CB_framework->now() - filemtime( $cacheFile ) ) / 3600 ) > $duration ) ) {
-					$request						=	true;
+				if ( file_exists( $cacheFile ) ) {
+					if ( ( ! $duration ) || ( intval( ( $_CB_framework->now() - filemtime( $cacheFile ) ) / 3600 ) > $duration ) ) {
+						$request					=	true;
+					} else {
+						$plgVersionsXML				=	new SimpleXMLElement( trim( file_get_contents( $cacheFile ) ) );
+
+						$request					=	false;
+					}
 				} else {
-					$plgVersionsXML					=	new SimpleXMLElement( trim( file_get_contents( $cacheFile ) ) );
-
-					$request						=	false;
+					$request						=	true;
 				}
-			} else {
-				$request							=	true;
-			}
 
-			if ( $request ) {
-				$s									=	new CBSnoopy();
-				$s->read_timeout					=	30;
-				$s->referer							=	$_CB_framework->getCfg( 'live_site' );
-
-				@$s->fetch( 'http://update.joomlapolis.net/cbpluginsversions20.xml' );
-
-				if ( (int) $s->status == 200 ) {
+				if ( $request ) {
 					try {
-						$plgVersionsXML				=	new SimpleXMLElement( $s->results );
+						$guzzleHttpClient			=	new GuzzleHttp\Client();
+						$results					=	$guzzleHttpClient->get( 'http://update.joomlapolis.net/cbpluginsversions20.xml', array( 'timeout' => 30 ) );
 
-						$plgVersionsXML->saveXML( $cacheFile );
-					} catch ( Exception $e ) {}
+						if ( ( $results !== false ) && ( $results->getStatusCode() == 200 ) ) {
+							$plgVersionsXML			=	new SimpleXMLElement( $results->getBody() );
+
+							$plgVersionsXML->saveXML( $cacheFile );
+						}
+					} catch( Exception $e ) {}
 				}
-			}
 
-			if ( $plgVersionsXML ) {
-				$plgVersions						=	$plgVersionsXML->getElementByPath( 'cb_plugins/' . ( checkJversion() >= 2 ? 'j30' : 'j15' ) );
+				if ( $plgVersionsXML ) {
+					$plgVersions					=	$plgVersionsXML->getElementByPath( 'cb_plugins/' . ( checkJversion() >= 2 ? 'j30' : 'j15' ) );
+				} else {
+					$plgVersions					=	false;
+				}
 			} else {
 				$plgVersions						=	false;
 			}
@@ -1475,41 +1477,27 @@ class cbPluginHandler
 				}
 
 				if ( $xml !== null ) {
-					$ver							=	null;
+					$version						=	null;
 
 					if ( isset( $xml->release ) ) {
 						// New release XML variable used by incubator projects:
-						$ver						=	$xml->release;
+						$version					=	$xml->release;
 					} elseif ( isset( $xml->cbsubsversion ) ) {
 						// CBSubs plugin versions are same as the CBSubs version; lets grab them:
 						$cbsubsVer					=	$xml->cbsubsversion->attributes();
 
 						if ( isset( $cbsubsVer['version'] ) ) {
-							$ver					=	$cbsubsVer['version'];
+							$version				=	$cbsubsVer['version'];
 						}
 					} elseif ( isset( $xml->description ) ) {
 						// Attempt to parse plugin description for a version using logical naming:
 						if ( preg_match( '/(?:plugin|field|fieldtype|ver|version|' . preg_quote( $plugin->name ) . ') ((?:[0-9]+(?:\.)?(?:(?: )?RC)?(?:(?: )?B)?(?:(?: )?BETA)?)+)/i', $xml->description, $matches ) ) {
-							$ver					=	$matches[1];
+							$version				=	$matches[1];
 						}
 					}
 
-					// Check if version was found; if it was lets clean it up:
-					if ( $ver ) {
-						if ( preg_match( '/^\d+(\.\d+)+(-[a-z]+\.\d+)?(\+\w)?$/', $ver ) ) {
-							$version				=	$ver;
-						} else {
-							$version					=	preg_replace( '/\.*([a-zA-Z]+)\.*/i', '.$1.', preg_replace( '/^[a-zA-Z]+/i', '', str_replace( array( '-', '_', '+' ), '.', str_replace( ' ', '', strtoupper( $ver ) ) ) ) );
-						}
-
-						if ( is_integer( $version ) ) {
-							$version				=	implode( '.', str_split( $version ) );
-						} elseif ( preg_match( '/^(\d{2,})(\.[a-zA-Z].+)/i', $version, $matches ) ) {
-							$version				=	implode( '.', str_split( $matches[1] ) ) . $matches[2];
-						}
-
-						$version					=	trim( str_replace( '..', '.', $version ), '.' );
-
+					// Check if version was found; if it was lets see if it's latest:
+					if ( $version ) {
 						// Encase the version is too long lets cut it short for readability and display full version as mouseover title:
 						if ( $version && $length && ( cbIsoUtf_strlen( $version ) > $length ) ) {
 							$versionName			=	rtrim( trim( cbIsoUtf_substr( $version, 0, $length ) ), '.' ) . '&hellip;';
@@ -1531,10 +1519,21 @@ class cbPluginHandler
 						}
 
 						if ( $latestVersion ) {
-							if ( version_compare( $version, $latestVersion ) >= 0 ) {
-								$isLatest			=	true;
+							$versionCompare			=	str_replace( '+build.', '+', $version );
+
+							if ( strpos( $latestVersion, '+build' ) === false ) {
+								// Stable doesn't store metadata in XML so we need to remove it before comparing:
+								$latestVersionCompare	=	preg_replace( '/\+.*/', '', $latestVersion );
 							} else {
+								$latestVersionCompare	=	str_replace( '+build.', '+', $latestVersion );
+							}
+
+							if ( $versionCompare == $latestVersionCompare ) {
+								$isLatest			=	true;
+							} elseif ( version_compare( $latestVersionCompare, $versionCompare, '>' ) ) {
 								$isLatest			=	false;
+							} else {
+								$isLatest			=	true;
 							}
 						}
 
@@ -1565,10 +1564,11 @@ class cbPluginHandler
 			if ( ( ! $version ) && ( ! $raw ) ) {
 				if ( $plugin->iscore ) {
 					// core plugins are same version as CB it self:
-					if ( $length && ( cbIsoUtf_strlen( $ueConfig['version'] ) > $length ) ) {
-						$version					=	'<span title="' . htmlspecialchars( $ueConfig['version'] ) . '">' . rtrim( trim( cbIsoUtf_substr( $ueConfig['version'], 0, $length ) ), '.' ) . '&hellip;</span>';
+					$cbVersionWithBuild				=	CBLib::versionWithBuild();
+					if ( $length && ( cbIsoUtf_strlen( $cbVersionWithBuild ) > $length ) ) {
+						$version					=	'<span title="' . htmlspecialchars( $cbVersionWithBuild ) . '">' . rtrim( trim( cbIsoUtf_substr( $cbVersionWithBuild, 0, $length ) ), '.' ) . '&hellip;</span>';
 					} else {
-						$version					=	$ueConfig['version'];
+						$version					=	$cbVersionWithBuild;
 					}
 				} else {
 					$version						=	'-';

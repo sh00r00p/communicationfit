@@ -110,7 +110,7 @@ abstract class ParametersStore implements ParamsInterface
 	/**
 	 * Sets $this Parameters to reflect $array Read+Write
 	 *
-	 * @param  $array  Array by reference
+	 * @param  array  $array  Array by reference
 	 */
 	protected function setAsReferenceToArray( &$array )
 	{

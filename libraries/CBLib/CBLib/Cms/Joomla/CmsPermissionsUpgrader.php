@@ -76,7 +76,7 @@ abstract class CmsPermissionsUpgrader extends CmsPermissions
 			$maxOrdering		=	$cmsPermissions->_db->setQuery( $query )->loadResult();
 
 			// Insert the element:
-			$object				=	new \StdClass;
+			$object				=	new \stdClass;
 			$object->id			=	null;;
 			$object->title		=	$titleIfCreate;
 			$object->ordering	=	$maxOrdering + 1;

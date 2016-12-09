@@ -729,7 +729,11 @@ Registration Functions
 								.			'</div>';
 
 		if ( $usernameExists ) {
-			$usernameValidation	=	cbValidator::getRuleHtmlAttributes( 'cbfield', array( 'user' => 0, 'field' => 'username', 'reason' => 'register', 'function' => 'testexists' ) );
+			if ( Application::Config()->get( 'reg_username_checker', 0 ) ) {
+				$usernameValidation		=	cbValidator::getRuleHtmlAttributes( 'cbfield', array( 'user' => 0, 'field' => 'username', 'reason' => 'register', 'function' => 'testexists' ) );
+			} else {
+				$usernameValidation		=	null;
+			}
 
 			$return				.=			'<div class="cb_forgot_line form-group cb_form_line clearfix" id="lostpassusername">'
 								.				'<label for="checkusername" class="col-sm-3 control-label">' . CBTxt::Th( 'PROMPT_UNAME', 'Username:' ) . '</label>'
@@ -739,7 +743,18 @@ Registration Functions
 								.			'</div>';
 		}
 
-		$emailValidation		=	cbValidator::getRuleHtmlAttributes( 'cbfield', array( 'user' => 0, 'field' => 'email', 'reason' => 'register', 'function' => 'testexists' ) );
+		$emailField				=	new FieldTable();
+
+		$emailField->load( array( 'name' => 'email' ) );
+
+		$emailParams			=	new Registry( $emailField->get( 'params' ) );
+
+		if ( $emailParams->get( 'field_check_email', 0 ) ) {
+			$emailValidation	=	cbValidator::getRuleHtmlAttributes( 'cbfield', array( 'user' => 0, 'field' => 'email', 'reason' => 'register', 'function' => 'testexists' ) );
+		} else {
+			$emailValidation	=	null;
+		}
+
 
 		$return					.=			'<div class="cb_forgot_line form-group cb_form_line clearfix" id="lostpassemail">'
 								.				'<label for="checkemail" class="col-sm-3 control-label">' . CBTxt::Th( 'PROMPT_EMAIL', 'E-mail Address:' ) . '</label>'
@@ -854,7 +869,7 @@ Registration Functions
 		$_CB_framework->setMenuMeta();
 	}
 
-	static function registerForm( /** @noinspection PhpUnusedParameterInspection */ $option, $emailpass, $user, $postvars, $regErrorMSG = null, $stillDisplayLoginModule = false ) {
+	static function registerForm( /** @noinspection PhpUnusedParameterInspection */ $option, $emailpass, $user, $postvars, $regErrorMSG = null, $stillDisplayLoginModule = false, $regErrorLevel = 'error' ) {
 		global $_CB_framework, $_CB_database, $ueConfig, $_PLUGINS;
 
 		$results						=	$_PLUGINS->trigger( 'onBeforeRegisterFormDisplay', array( &$user, $regErrorMSG ) );
@@ -865,7 +880,7 @@ Registration Functions
 		}
 
 		if ( $regErrorMSG ) {
-			$_CB_framework->enqueueMessage( $regErrorMSG, 'error' );
+			$_CB_framework->enqueueMessage( $regErrorMSG, $regErrorLevel );
 		}
 
 		$cbTemplate						=	HTML_comprofiler::_cbTemplateLoad();

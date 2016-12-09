@@ -8,6 +8,7 @@
 */
 
 use CBLib\Application\Application;
+use CBLib\Core\CBLib;
 use CBLib\Xml\SimpleXMLElement;
 
 if ( ! ( defined( '_VALID_CB' ) || defined( '_JEXEC' ) || defined( '_VALID_MOS' ) ) ) { die( 'Direct Access to this location is not allowed.' ); }
@@ -175,7 +176,7 @@ class modCBAdminHelper {
 							$subMenu	=	( $subMenu ? modCBAdminHelper::getMenuItems( $item, $subMenu, false, ( $depth + 1 ) ) : null );
 
 							$menu		.=			'<li' . ( $subMenu ? ' class="' . ( checkJversion( '3.0+' ) ? 'dropdown-submenu' : 'node' ) . '"' : null ) . '>'
-										.				'<a' . ( $icon ? ' class="' . ( checkJversion( '3.0+' ) ? 'menu-' : 'icon-16-' ) . htmlspecialchars( $icon ) . '"' : null ) . ' href="' . htmlspecialchars( $link ) . '"' . ( $target ? ' target="' . htmlspecialchars( $target ) . '"' : null ) . '>'
+										.				'<a class="' . ( $subMenu ? 'dropdown-toggle' : 'no-dropdown' ) . ( $icon ? ( checkJversion( '3.0+' ) ? ' menu-' : ' icon-16-' ) . htmlspecialchars( $icon ) : null ) . '"' . ( $subMenu ? ' data-toggle="dropdown"' : null ) . ' href="' . htmlspecialchars( $link ) . '"' . ( $target ? ' target="' . htmlspecialchars( $target ) . '"' : null ) . '>'
 										.					'<span>' . $title . '</span>'
 										.				'</a>'
 										.				$subMenu
@@ -186,7 +187,7 @@ class modCBAdminHelper {
 					}
 
 					if ( $menu ) {
-						$return			.=		'<ul' . ( checkJversion( '3.0+' ) ? ' class="dropdown-menu"' : null ) . '>'
+						$return			.=		'<ul' . ( checkJversion( '3.0+' ) ? ' class="dropdown-menu ' . ( ! $depth ? 'scroll-menu' : 'menu-scrollable' ) . '"' : null ) . ' style="z-index: 999;">'
 										.			$menu
 										.		'</ul>';
 					}
@@ -214,7 +215,7 @@ class modCBAdminHelper {
 
 		$query			=	'SELECT ' . $_CB_database->NameQuote( 'extension_id' )
 						.	"\n FROM " . $_CB_database->NameQuote( '#__extensions' )
-						.	"\n WHERE " . $_CB_database->NameQuote( 'element' ) . ' = ' . $_CB_database->Quote( 'comprofiler' );
+						.	"\n WHERE " . $_CB_database->NameQuote( 'element' ) . ' = ' . $_CB_database->Quote( 'pkg_communitybuilder' );
 		$_CB_database->setQuery( $query );
 		$extensionId	=	$_CB_database->loadResult();
 
@@ -302,7 +303,7 @@ class modCBAdminHelper {
 	 * @return string
 	 */
 	public static function getLatestCBVersion( $duration = 12 ) {
-		global $_CB_framework, $ueConfig;
+		global $_CB_framework;
 
 		cbimport( 'cb.snoopy' );
 
@@ -326,7 +327,7 @@ class modCBAdminHelper {
 			$s->read_timeout			=	30;
 			$s->referer					=	$_CB_framework->getCfg( 'live_site' );
 
-			@$s->fetch( 'http://www.joomlapolis.com/versions/comprofilerversion.php?currentversion=' . urlencode( $ueConfig['version'] ) );
+			@$s->fetch( 'http://www.joomlapolis.com/versions/comprofilerversion.php?currentversion=' . urlencode( CBLib::versionWithBuild() ) );
 
 			if ( (int) $s->status == 200 ) {
 				try {

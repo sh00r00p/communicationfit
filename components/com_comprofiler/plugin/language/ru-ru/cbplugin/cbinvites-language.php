@@ -2,7 +2,7 @@
 /**
 * Community Builder (TM) cbinvites Russian (Russia) language file Frontend
 * @version $Id:$
-* @copyright (C) 2004-2014 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -15,9 +15,19 @@
 defined('CBLIB') or die();
 
 return	array(
-// 43 language strings from file plug_cbinvites/cbinvites.xml
-'INVITE_CODE_0a2eb0'	=>	'Код приглашения',
+// 9 language strings from file plug_cbinvites/cbinvites.php
+'JOIN_ME_de0c95'	=>	'Присоединяйтесь ко мне!',
+'MAILER_FAILED_TO_SEND_46f543'	=>	'Отправить почту не удалось!',
+'TO_ADDRESS_MISSING_225871'	=>	'Отсутствует адрес получателя!',
+'SUBJECT_MISSING_8e0db8'	=>	'Отсутствует тема!',
+'BODY_MISSING_b6f835'	=>	'Отсутствует текст письма!',
+'SEARCH_INVITES_9e5f33'	=>	'Поиск приглашений...',
+'INVITE_CODE_NOT_VALID_7cd6f7'	=>	'Код приглашения недействителен!',
+'INVITE_CODE_ALREADY_USED_cd715c'	=>	'Данный код приглашения уже используется в этой системе!',
+'INVITE_CODE_IS_VALID_96aad3'	=>	'Код приглашения действителен!',
+// 44 language strings from file plug_cbinvites/cbinvites.xml
 'YOUR_REGISTRATION_INVITE_CODE_324b31'	=>	'Ваш код пригласительной регистрации',
+'INVITE_CODE_0a2eb0'	=>	'Код приглашения',
 'INVITES_213b86'	=>	'Приглашения',
 'ENABLE_OR_DISABLE_USAGE_OF_PAGING_ON_TAB_INVITES_b76bc2'	=>	'Включить или выключить использование постраничной разбивки на вкладке приглашений.',
 'INPUT_PAGE_LIMIT_ON_TAB_INVITES_PAGE_LIMIT_DETERMI_b17959'	=>	'Ограничение приглашений на странице. Он определяет сколько приглашений будет показано на одной веб-странице.',
@@ -39,7 +49,8 @@ return	array(
 'SELECT_INVITE_EMAIL_BODY_EDITOR_d8f5e1'	=>	'Выберите редактор текста электронного письма приглашения',
 'PLAIN_TEXT_e44b14'	=>	'Обычный текст',
 'HTML_TEXT_503c11'	=>	'Текст с кодом HTML',
-'ENABLE_OR_DISABLE_USAGE_OF_CAPTCHA_ON_INVITES_REQU_79c862'	=>	'Включить или выключить в приглашениях использование Captcha. Для работы этого параметра необходимо установить и опубликовать наипоследнюю версию расширения \'CB Captcha\'. Модераторы во включении для них этой настройки не нуждаются.',
+'WYSIWYG_fcf0d4'	=>	'WYSIWYG',
+'ENABLE_OR_DISABLE_USAGE_OF_CAPTCHA_ON_INVITES_REQU_65e72e'	=>	'Enable or disable usage of captcha on invites. Requires latest CB AntiSpam to be installed and published. Moderators are exempt from this configuration.',
 'INPUT_A_SUBSTITUTION_SUPPORTED_FROM_NAME_TO_BE_SEN_f0ef2c'	=>	'Введите текст-замену названия отправителя, которое будет добавлено во всех приглашениях (например, \'Мой потрясающий СВ веб-сайт!\'). Если это поле оставить незаполненным, то по умолчанию для названия отправителя будет использовано имя отправляющего приглашение пользователя. Если указано, то название \'Кому ответить\' будет добавлено как имя пользователя.???',
 'FROM_NAME_4a4a8f'	=>	'От кого',
 'INPUT_A_SUBSTITUTION_SUPPORTED_FROM_ADDRESS_TO_SEN_ef3c3b'	=>	'Введите текст-замену адреса электронной почты отправителя, который будет добавлен во всех приглашениях (например, general@domain.com). Если это поле оставить незаполненным, то по умолчанию для адреса электронной почты отправителя будет использован адрес электронной почты пользователя. Если указано, то адрес электронной почты \'Кому ответить\' будет добавлено как адрес электронной почты пользователя.???',
@@ -53,22 +64,12 @@ return	array(
 'SITENAME_6b68ee'	=>	'[sitename] - ',
 'INPUT_SUBSTITUTION_SUPPORTED_HEADER_OF_INVITE_EMAI_058012'	=>	'Введите замену для верхнего колонтитула текста электронного письма приглашения. Поддерживаются дополнительные заменители: [site], [sitename], [path], [itemid], [register], [profile], [code] и [to].',
 'BODY_HEADER_67622c'	=>	'Верхний колонтитул текста',
-'YOU_HAVE_BEEN_INVITED_BY_USERNAME_TO_JOIN_SITENAME_685ef4'	=>	'<p>Вы были приглашены пользователем [username] присоединиться к сообществу на веб-сайте [sitename]!</p><br />',
+'YOU_HAVE_BEEN_INVITED_BY_USERNAME_TO_JOIN_SITENAME_e90186'	=>	'<p>You have been invited by [username] to join [sitename]!</p><br>',
 'INPUT_SUBSTITUTION_SUPPORTED_FOOTER_OF_INVITE_EMAI_f5fa57'	=>	'Введите замену для нижнего колонтитула текста электронного письма приглашения. Поддерживаются дополнительные заменители: [site], [sitename], [path], [itemid], [register], [profile], [code] и [to].',
 'BODY_FOOTER_6046e1'	=>	'Нижний колонтитул текста',
-'INVITE_CODE_CODESITENAME_SITEREGISTRATION_REGISTER_cab6dd'	=>	'<br /><p>Код приглашения - [code]<br />[sitename] - [site]<br />Регистрация - [register]<br />[username] - [profile]</p>',
+'INVITE_CODE_CODESITENAME_SITEREGISTRATION_REGISTER_eec8c6'	=>	'<br><p>Invite Code - [code]<br>[sitename] - [site]<br>Registration - [register]<br>[username] - [profile]</p>',
 'INPUT_A_SUBSTITUTION_SUPPORTED_ATTACHMENT_ADDRESS__523216'	=>	'Введите замену для адреса файла приложения (например, [cb_myfile]); поддерживается введение через запятую нескольких адресов (например, /home/username/public_html/images/file1.zip,[path]/file2.zip, http://www.domain.com/file3.zip). Поддерживаются дополнительные заменители: [site], [sitename], [path], [itemid], [register], [profile], [code], and [to].',
 'ATTACHMENT_e9cb21'	=>	'Приложение',
-// 9 language strings from file plug_cbinvites/cbinvites.php
-'JOIN_ME_de0c95'	=>	'Присоединяйтесь ко мне!',
-'MAILER_FAILED_TO_SEND_46f543'	=>	'Отправить почту не удалось!',
-'TO_ADDRESS_MISSING_225871'	=>	'Отсутствует адрес получателя!',
-'SUBJECT_MISSING_8e0db8'	=>	'Отсутствует тема!',
-'BODY_MISSING_b6f835'	=>	'Отсутствует текст письма!',
-'SEARCH_INVITES_9e5f33'	=>	'Поиск приглашений...',
-'INVITE_CODE_NOT_VALID_7cd6f7'	=>	'Код приглашения недействителен!',
-'INVITE_CODE_ALREADY_USED_cd715c'	=>	'Данный код приглашения уже используется в этой системе!',
-'INVITE_CODE_IS_VALID_96aad3'	=>	'Код приглашения действителен!',
 // 22 language strings from file plug_cbinvites/component.cbinvites.php
 'INPUT_INVITE_EMAIL_TO_ADDRESS_SEPARATE_MULTIPLE_EM_2028c1'	=>	'Введите адрес электронной почты получателя приглашения. При введении более одного адреса электронной почты отделяйте их друг от друга знаком запятой.',
 'INPUT_INVITE_EMAIL_TO_ADDRESS_54551f'	=>	'Введите адрес электронной почты получателя приглашения',

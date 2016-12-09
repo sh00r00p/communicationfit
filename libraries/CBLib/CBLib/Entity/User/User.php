@@ -31,6 +31,30 @@ class User implements EntityInterface, AuthoriseInterface, GetterInterface
 	protected static $usersCache;
 
 	/**
+	 * Cached users authorization of action and asset
+	 * @var array
+	 */
+	private static $authorizedCache;
+
+	/**
+	 * Cached users access
+	 * @var array
+	 */
+	private static $accessCache;
+
+	/**
+	 * Cached users groupss
+	 * @var array
+	 */
+	private static $groupsCache;
+
+	/**
+	 * Cached users view access levels
+	 * @var array
+	 */
+	private static $viewAccessLevelsCache;
+
+	/**
 	 * User id of logged-in user
 	 * @var int|boolean
 	 */
@@ -202,7 +226,12 @@ class User implements EntityInterface, AuthoriseInterface, GetterInterface
 	 */
 	public function isAuthorizedToPerformActionOnAsset( $action, $asset )
 	{
-		return $this->cmsUser->isAuthorizedToPerformActionOnAsset( $action, $asset );
+		// TODO CBLIB-CACHE to rework when CBLib Cache class is implemented.
+		if ( ! isset( self::$authorizedCache[$action][$asset][$this->id] ) ) {
+			self::$authorizedCache[$action][$asset][$this->id]	=	$this->cmsUser->isAuthorizedToPerformActionOnAsset( $action, $asset );
+		}
+
+		return self::$authorizedCache[$action][$asset][$this->id];
 	}
 
 	/**
@@ -214,8 +243,12 @@ class User implements EntityInterface, AuthoriseInterface, GetterInterface
 	 */
 	public function canViewAccessLevel( $accessLevel, $authoriseAlsoIfSuperUser = true )
 	{
-		return $this->cmsUser->canViewAccessLevel( $accessLevel )
-			   || ( $authoriseAlsoIfSuperUser && $this->isSuperAdmin() );
+		// TODO CBLIB-CACHE to rework when CBLib Cache class is implemented.
+		if ( ! isset( self::$accessCache[$accessLevel][$this->id][$authoriseAlsoIfSuperUser] ) ) {
+			self::$accessCache[$accessLevel][$this->id][$authoriseAlsoIfSuperUser]	=	( $this->cmsUser->canViewAccessLevel( $accessLevel ) || ( $authoriseAlsoIfSuperUser && $this->isSuperAdmin() ) );
+		}
+
+		return self::$accessCache[$accessLevel][$this->id][$authoriseAlsoIfSuperUser];
 	}
 
 	/**
@@ -226,7 +259,12 @@ class User implements EntityInterface, AuthoriseInterface, GetterInterface
 	 */
 	public function getAuthorisedGroups( $inheritedOnesToo = true )
 	{
-		return $this->cmsUser->getAuthorisedGroups( $inheritedOnesToo );
+		// TODO CBLIB-CACHE to rework when CBLib Cache class is implemented.
+		if ( ! isset( self::$groupsCache[$this->id][$inheritedOnesToo] ) ) {
+			self::$groupsCache[$this->id][$inheritedOnesToo]	=	$this->cmsUser->getAuthorisedGroups( $inheritedOnesToo );
+		}
+
+		return self::$groupsCache[$this->id][$inheritedOnesToo];
 	}
 
 	/**
@@ -236,7 +274,12 @@ class User implements EntityInterface, AuthoriseInterface, GetterInterface
 	 */
 	public function getAuthorisedViewLevels( )
 	{
-		return $this->cmsUser->getAuthorisedViewLevels();
+		// TODO CBLIB-CACHE to rework when CBLib Cache class is implemented.
+		if ( ! isset( self::$viewAccessLevelsCache[$this->id] ) ) {
+			self::$viewAccessLevelsCache[$this->id]		=	$this->cmsUser->getAuthorisedViewLevels();
+		}
+
+		return self::$viewAccessLevelsCache[$this->id];
 	}
 
 	/**
@@ -277,6 +320,6 @@ class User implements EntityInterface, AuthoriseInterface, GetterInterface
 	 */
 	public function isGlobalModerator( )
 	{
-		return ( $this->canViewAccessLevel( $this->moderatorViewAccessLevel ) );
+		return $this->canViewAccessLevel( $this->moderatorViewAccessLevel );
 	}
 }

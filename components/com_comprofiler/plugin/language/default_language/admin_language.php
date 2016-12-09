@@ -595,7 +595,7 @@ return	array(
 'DOES_NOT_CONTAIN_3bf90e'	=>	'Does not contain',
 'IS_ONE_OF_SEPARATED_VALUES_9f7ce4'	=>	'Is one of (,-separated values)',
 'IS_NOT_ONE_OF_SEPARATED_VALUES_1b23dd'	=>	'Is not one of (,-separated values)',
-// 191 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.editconfig.xml
+// 194 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.editconfig.xml
 'PERMISSIONS_d08ccf'	=>	'Permissions',
 'HELP_6a26f5'	=>	'Help',
 'THE_NAME_STYLE_DETAILS_HOW_YOU_WANT_TO_CAPTURE_THE_bb575d'	=>	'The name style details how you want to capture the name field in Joomla.',
@@ -714,6 +714,7 @@ return	array(
 'IMAGES_fff0d6'	=>	'Images',
 'CHOOSE_THE_SOFTWARE_TO_USE_FOR_PROCESSING_IMAGES_2aefdb'	=>	'Choose the software to use for processing images.',
 'IMAGE_SOFTWARE_487ca0'	=>	'Image Software',
+'AUTO_06b928'	=>	'Auto',
 'GD2_5b48fc'	=>	'GD2',
 'IMAGE_LIBRARY_GD2'	=>	'GD2',
 'IMAGEMAGICK_3c56f0'	=>	'ImageMagick',
@@ -767,6 +768,8 @@ return	array(
 'SPOOF_CHECKING_cd5b00'	=>	'Spoof Checking',
 'CHOOSE_IF_COMMUNITY_BUILDER_VERSION_CHECKING_SHOUL_6a2c93'	=>	'Choose if Community Builder version checking should be automated or manually triggered in Configuration. Only Community Builder version and standard HTTP information is disclosed during version checking.',
 'VERSION_CHECKING_50889c'	=>	'Version Checking',
+'CHOOSE_IF_PLUGIN_VERSION_CHECKING_SHOULD_BE_AUTOMA_4248d6'	=>	'Choose if Plugin version checking should be automated in Plugin Management.',
+'PLUGIN_VERSION_CHECKING_3e07be'	=>	'Plugin Version Checking',
 'CHOOSE_IF_COMMUNITY_BUILDER_SHOULD_SEND_EMAILS_OR__a8c599'	=>	'Choose if Community Builder should send emails or not. Note this only affects Community Builder emails through Community Builder API.',
 'SEND_EMAILS_5cacf8'	=>	'Send Emails',
 'CHOOSE_IF_TWITTER_BOOTSTRAP_CSS_SHOULD_BE_LOADED_F_57f4de'	=>	'Choose if Twitter Bootstrap CSS should be loaded from the Community Builder template automatically. Recommended to always leave this on unless another compatible means of Twitter Bootstrap CSS is loaded. Note this will affect frontend only.',
@@ -932,13 +935,15 @@ return	array(
 'ALLOWS_DELETING_OF_PLUGINS_e4aac0'	=>	'Allows deleting of plugins.',
 'ALLOWS_EDITING_EXISTING_PLUGINS_AND_EDITING_THE_ST_65cd2f'	=>	'Allows editing existing plugins and editing the state of existing plugins.',
 'ALLOWS_EDITING_THE_STATE_OF_EXISTING_PLUGINS_9e3196'	=>	'Allows editing the state of existing plugins.',
-// 12 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.edittab.xml
+// 14 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.edittab.xml
 'INPUT_THE_TITLE_TO_DISPLAY_AS_THE_TABS_TITLE_18e6d8'	=>	'Input the title to display as the tabs title.',
 'OPTIONALLY_INPUT_THE_DESCRIPTION_TO_DESCRIBE_THIS__83d8a3'	=>	'Optionally input the description to describe this tabs purpose on profile edit. Note some plugin tabs may render this on profile view.',
 'SELECT_THE_PUBLISH_STATE_OF_THIS_TAB_f92251'	=>	'Select the publish state of this tab.',
 'SELECT_THE_PROFILE_VIEW_ORDERING_OF_THIS_TAB_THIS__f62e20'	=>	'Select the profile view ordering of this tab. This ordering is specific to the tabs position.',
 'PROFILE_ORDERING_2a0ec9'	=>	'Profile Ordering',
-'SELECT_THE_PROFILE_EDIT_AND_REGISTRATION_ORDERING__6f2c78'	=>	'Select the profile edit and registration ordering of this tab. This ordering is not specific to the tabs position.',
+'SELECT_THE_PROFILE_EDIT_ORDERING_OF_THIS_TAB_THIS__d6785d'	=>	'Select the profile edit ordering of this tab. This ordering is not specific to the tabs position.',
+'EDIT_ORDERING_f39a73'	=>	'Edit Ordering',
+'SELECT_THE_REGISTRATION_ORDERING_OF_THIS_TAB_THIS__facdf1'	=>	'Select the registration ordering of this tab. This ordering is not specific to the tabs position.',
 'REGISTRATION_ORDERING_edafc9'	=>	'Registration Ordering',
 'SELECT_THE_PROFILE_VIEW_POSITION_FOR_THIS_TAB_bbd961'	=>	'Select the profile view position for this tab.',
 'POSITION_52f5e0'	=>	'Position',
@@ -959,7 +964,7 @@ return	array(
 'USER_PERMISSIONS_795341'	=>	'User Permissions',
 // 1 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showcredits.xml
 'CREDITS_948a2e'	=>	'Credits',
-// 25 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showfields.xml
+// 29 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showfields.xml
 'SEARCH_FIELDS_139f39'	=>	'Search Fields...',
 'SELECT_TYPE_84cc9b'	=>	'- Select Type -',
 'SELECT_TAB_2e4178'	=>	'- Select Tab -',
@@ -972,6 +977,10 @@ return	array(
 'SELECT_ID_f4951d'	=>	'- Select ID -',
 'ORDER_ASCENDING_3bc8a1'	=>	'Order ascending',
 'ORDER_DESCENDING_e98fe4'	=>	'Order descending',
+'EDIT_ORDER_ASCENDING_ce1078'	=>	'Edit Order ascending',
+'EDIT_ORDER_DESCENDING_ad5ec5'	=>	'Edit Order descending',
+'REGISTER_ORDER_ASCENDING_fa154a'	=>	'Register Order ascending',
+'REGISTER_ORDER_DESCENDING_b40e1a'	=>	'Register Order descending',
 'TAB_ASCENDING_8b307b'	=>	'Tab ascending',
 'TAB_DESCENDING_1af28d'	=>	'Tab descending',
 'FIELD_WILL_NOT_BE_VISIBLE_AS_THIS_FIELDS_PLUGIN_IS_0d8d83'	=>	'Field will not be visible as this fields plugin is not installed.',
@@ -1002,7 +1011,7 @@ return	array(
 // 2 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showplugins.xml
 'SEARCH_PLUGINS_dbe343'	=>	'Search Plugins...',
 'PLUGIN_FILES_MISSING_0ebf23'	=>	'Plugin files missing.',
-// 13 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showtabs.xml
+// 14 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showtabs.xml
 'SEARCH_TABS_24999e'	=>	'Search Tabs...',
 'SELECT_POSITION_f20cd8'	=>	'- Select Position -',
 'SELECT_DISPLAY_TYPE_f764ac'	=>	'- Select Display Type -',
@@ -1015,6 +1024,7 @@ return	array(
 'TAB_WILL_NOT_BE_VISIBLE_AS_THIS_TABS_PLUGIN_IS_NOT_012e92'	=>	'Tab will not be visible as this tabs plugin is not published.',
 'THIS_TABS_PLUGIN_IS_NOT_COMPATIBLE_WITH_YOUR_CURRE_d12959'	=>	'This tabs plugin is not compatible with your current CB version. This tab may still be used, but it may not function properly.',
 'PROFILE_ORDER_a18e52'	=>	'Profile Order',
+'EDIT_ORDER_987fd9'	=>	'Edit Order',
 'REGISTER_ORDER_92a129'	=>	'Register Order',
 // 19 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showtools.xml
 'IN_ORDER_FOR_CB_TO_FUNCTION_PROPERLY_A_JOOMLA_MENU_e84d21'	=>	'In order for CB to function properly a Joomla menu item must be present. This menu item must also be published for PUBLIC access. It appears that this environment is missing this mandatory menu item. Please refer to the section titled "Adding the CB Profile" of the PDF installation guide included in your CB distribution package for additional information regarding this matter.',
@@ -1175,7 +1185,7 @@ return	array(
 'COMMUNITY_BUILDER_VERSION_VERSION_IS_AVAILABLE_BUTTON'	=>	'Community Builder version [version] is available: [learn_button] [update_button]',
 'PLEASE_CLICK_HERE_FOR_INSTRUCTIONS_6404ad'	=>	'Please click here for instructions.',
 'YOUR_HOST_DISABLE_FUNCTION_FOR_CB'	=>	'Your host needs to disable [function] to run this version of Community Builder! [button]',
-// 54 language strings from file modules/mod_cbadmin/tmpl/menu.php
+// 53 language strings from file modules/mod_cbadmin/tmpl/menu.php
 'ADD_NEW_USER_3015af'	=>	'Add New User',
 'ADD_NEW_TAB_686464'	=>	'Add New Tab',
 'ADD_NEW_FIELD_92cef2'	=>	'Add New Field',
@@ -1229,7 +1239,6 @@ return	array(
 'ADD_NEW_USER_TO_GROUP_6bfc15'	=>	'Add New User to Group',
 'INVITES_213b86'	=>	'Invites',
 'MENUS_06145a'	=>	'Menus',
-'AUTO_06b928'	=>	'Auto',
 // 2 language strings from file modules/mod_cbadmin/tmpl/news.php
 'MORE_d3da97'	=>	'More',
 'THERE_CURRENTLY_IS_NO_NEWS_8d89c6'	=>	'There currently is no news.',

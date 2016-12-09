@@ -44,7 +44,7 @@ JHtml::_( 'behavior.keepalive' );
 						<?php } ?>
 					<?php } ?>
 				<?php } ?>
-				<input id="modlgn-username" type="text" name="username" class="inputbox"  size="<?php echo $usernameInputLength; ?>"<?php echo ( in_array( $showUsernameLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( $userNameText ) . '"' : null ); ?> />
+				<input id="modlgn-username" type="text" name="username" class="<?php echo ( $styleUsername ? htmlspecialchars( $styleUsername ) : 'inputbox' ); ?>" size="<?php echo $usernameInputLength; ?>"<?php echo ( in_array( $showUsernameLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( $userNameText ) . '"' : null ); ?> />
 			</span>
 			&nbsp;
 			<span id="form-login-password">
@@ -64,7 +64,7 @@ JHtml::_( 'behavior.keepalive' );
 						<?php } ?>
 					<?php } ?>
 				<?php } ?>
-				<input id="modlgn-passwd" type="password" name="passwd" class="inputbox" size="<?php echo $passwordInputLength; ?>"<?php echo ( in_array( $showPasswordLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Password' ) ) . '"' : null ); ?>  />
+				<input id="modlgn-passwd" type="password" name="passwd" class="<?php echo ( $stylePassword ? htmlspecialchars( $stylePassword ) : 'inputbox' ); ?>" size="<?php echo $passwordInputLength; ?>"<?php echo ( in_array( $showPasswordLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Password' ) ) . '"' : null ); ?>  />
 			</span>
 			&nbsp;
 			<?php if ( count( $twoFactorMethods ) > 1 ) { ?>
@@ -85,7 +85,7 @@ JHtml::_( 'behavior.keepalive' );
 							<?php } ?>
 						<?php } ?>
 					<?php } ?>
-					<input id="modlgn-secretkey" type="text" name="secretkey" class="inputbox" size="<?php echo $secretKeyInputLength; ?>"<?php echo ( in_array( $showSecretKeyLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Secret Key' ) ) . '"' : null ); ?>  />
+					<input id="modlgn-secretkey" type="text" name="secretkey" class="<?php echo ( $styleSecretKey ? htmlspecialchars( $styleSecretKey ) : 'inputbox' ); ?>" size="<?php echo $secretKeyInputLength; ?>"<?php echo ( in_array( $showSecretKeyLabel, array( 4, 5 ) ) ? ' placeholder="' . htmlspecialchars( CBTxt::T( 'Secret Key' ) ) . '"' : null ); ?>  />
 				</span>
 				&nbsp;
 			<?php } ?>
@@ -99,7 +99,7 @@ JHtml::_( 'behavior.keepalive' );
 				<input id="modlgn-remember" type="hidden" name="remember" class="inputbox" value="yes" />
 			<?php } ?>
 			<?php echo modCBLoginHelper::getPlugins( $params, $type, 'beforeButton', 'span', 1, null, '&nbsp;' ); ?>
-			<button type="submit" name="Submit" class="button"<?php echo $buttonStyle; ?>>
+			<button type="submit" name="Submit" class="<?php echo ( $styleLogin ? htmlspecialchars( $styleLogin ) : 'button' ); ?>"<?php echo $buttonStyle; ?>>
 				<?php if ( in_array( $showButton, array( 1, 2, 3 ) ) ) { ?>
 					<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 						<span class="cbModuleLoginIcon fa fa-sign-in" title="<?php echo htmlspecialchars( CBTxt::T( 'Log in' ) ); ?>"></span>
@@ -120,7 +120,7 @@ JHtml::_( 'behavior.keepalive' );
 		<span id="form-login-links">
 			<?php if ( $showForgotLogin ) { ?>
 				<span id="form-login-forgot">
-					<a href="<?php echo $_CB_framework->viewUrl( 'lostpassword', true, null, 'html', $secureForm ); ?>">
+					<a href="<?php echo $_CB_framework->viewUrl( 'lostpassword', true, null, 'html', $secureForm ); ?>"<?php echo ( $styleForgotLogin ? ' class="' . htmlspecialchars( $styleForgotLogin ) . '"' : null ); ?>>
 						<?php if ( in_array( $showForgotLogin, array( 2, 3 ) ) ) { ?>
 							<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 								<span class="cbModuleForgotLoginIcon fa fa-unlock-alt" title="<?php echo htmlspecialchars( CBTxt::T( 'Forgot Login?' ) ); ?>"></span>
@@ -135,7 +135,7 @@ JHtml::_( 'behavior.keepalive' );
 			<?php } ?>
 			<?php if ( $showRegister ) { ?>
 				<span id="form-login-register">
-					<a href="<?php echo $_CB_framework->viewUrl( 'registers', true, null, 'html', $secureForm ); ?>">
+					<a href="<?php echo $_CB_framework->viewUrl( 'registers', true, null, 'html', $secureForm ); ?>"<?php echo ( $styleRegister ? ' class="' . htmlspecialchars( $styleRegister ) . '"' : null ); ?>>
 						<?php if ( in_array( $params->get( 'show_newaccount', 1 ), array( 2, 3 ) ) ) { ?>
 							<span class="<?php echo htmlspecialchars( $templateClass ); ?>">
 								<span class="cbModuleRegisterIcon fa fa-edit" title="<?php echo htmlspecialchars( CBTxt::T( 'UE_REGISTER', 'Sign up' ) ); ?>"></span>

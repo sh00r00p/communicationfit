@@ -6,12 +6,12 @@
 	<authorEmail>cbteam@joomlapolis.com</authorEmail>
 	<copyright>Copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved</copyright>
 	<license>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2. All copyright statements must be kept and derivative work must prominently duly acknowledge original work on web interface and on website where downloaded.</license>
-	<creationDate>2016-03-22</creationDate>
+	<creationDate>2016-08-24</creationDate>
 	<packagename>communitybuilder</packagename>
-	<version>2.0.14</version>
+	<version>2.0.15</version>
 	<packager>CB Team at Joomlapolis.com</packager>
 	<packagerurl>http://www.joomlapolis.com/</packagerurl>
-	<description>Community Builder 2.0.14</description>
+	<description>Community Builder 2.0.15</description>
 	<scriptfile>pkg_install.php</scriptfile>
 	<files folder="packages">
 		<file type="library" id="CBLib">lib_CBLib.zip</file>

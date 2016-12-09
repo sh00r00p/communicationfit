@@ -86,7 +86,8 @@ class cbInstallerPlugin extends cbInstaller
 		// check version
 		$v						=	$cbInstallXML->getElementByPath( 'version' );
 		$version				=	$v->data();
-		$THISCBVERSION			=	'2.0.14';
+		// We need to keep the use of a duplicate string here for upgrades from CB 2.0.13-. Can't use CBLib::version() as old CBLib may already be loaded. (fixes bug #5881)
+		$THISCBVERSION			=	'2.0.15';               // IMPORTANT: DO NOT CHANGE MANUALLY, but when changing version automatically here also change 2 times in CBLib.php, the 8 XML installation files and build.xml
 		if ( ( $version == $ueConfig['version'] ) || ( $version == $THISCBVERSION ) || ( version_compare( $version, $ueConfig['version'], '<=' ) && version_compare( $version, '1.0', '>=' ) ) ) {
 			;
 		} else {
@@ -517,6 +518,7 @@ class cbInstallerPlugin extends cbInstaller
 				$row->ordering							=	99;
 				$row->position							=	$tab->attributes('position');
 				$row->displaytype						=	$tab->attributes('displaytype');
+				$row->ordering_edit						=	$tab->attributes('ordering_edit');
 				$row->ordering_register					=	$tab->attributes('ordering_register');
 				$row->enabled							=	$tab->attributes('enabled');
 				$row->viewaccesslevel					=	1;

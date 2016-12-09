@@ -1,15 +1,15 @@
-<?xml version="1.0" encoding="utf-8" ?>
-<extension version="3.4" client="site" type="language" method="upgrade">
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.6" client="site" type="language" method="upgrade">
 	<name>Russian</name>
 	<tag>ru-RU</tag>
-	<version>3.4.1.3</version>
-	<creationDate>2015-05-29</creationDate>
+	<version>3.6.2.2</version>
+	<creationDate>2016-09-04</creationDate>
 	<author>Russian Translation Team</author>
 	<authorEmail>smart@joomlaportal.ru</authorEmail>
 	<authorUrl>www.joomlaportal.ru</authorUrl>
-	<copyright>Copyright (C) 2005 - 2015 Open Source Matters. All rights reserved</copyright>
+	<copyright>Copyright (C) 2005 - 2016 Open Source Matters. All rights reserved</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<description>Russian language pack (site) for Joomla! 3.4.1</description>
+	<description>Russian language pack (site) for Joomla! 3.6.2</description>
 	<files>
 		<filename>index.html</filename>
 		<filename>ru-RU.com_ajax.ini</filename>
@@ -29,6 +29,7 @@
 		<filename>ru-RU.files_joomla.sys.ini</filename>
 		<filename>ru-RU.finder_cli.ini</filename>
 		<filename>ru-RU.ini</filename>
+		<filename>ru-RU.lib_fof.ini</filename>
 		<filename>ru-RU.lib_fof.sys.ini</filename>
 		<filename>ru-RU.lib_idna_convert.sys.ini</filename>
 		<filename>ru-RU.lib_joomla.ini</filename>
@@ -89,7 +90,6 @@
 		<filename>ru-RU.mod_whosonline.sys.ini</filename>
 		<filename>ru-RU.mod_wrapper.ini</filename>
 		<filename>ru-RU.mod_wrapper.sys.ini</filename>
-		<filename>ru-RU.pkg_joomla.sys.ini</filename>
 		<filename>ru-RU.tpl_beez3.ini</filename>
 		<filename>ru-RU.tpl_beez3.sys.ini</filename>
 		<filename>ru-RU.tpl_protostar.ini</filename>
@@ -98,4 +98,7 @@
 		<filename file="meta">ru-RU.xml</filename>
 	</files>
 
+
+
+	<params />
 </extension>

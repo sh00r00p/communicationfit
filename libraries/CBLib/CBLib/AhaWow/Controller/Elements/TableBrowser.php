@@ -206,7 +206,15 @@ class TableBrowser {
 		$this->statistics			=	$this->_tableBrowserModel->getElementByPath( 'statistics' );
 		$this->toolbarmenu			=	$this->_tableBrowserModel->getElementByPath( 'toolbarmenu' );
 
+		$listFieldsPager			=	$this->_tableBrowserModel->getElementByPath( 'listfields/paging' );
+		if ( $listFieldsPager ) {
+			$this->registryEditVew->extendParamAttributes( $listFieldsPager );
+
+		}
+
 		if ( $this->listFieldsRows ) {
+			$this->registryEditVew->extendParamAttributes( $this->listFieldsRows );
+
 			$limit					=	$this->listFieldsRows->attributes( 'limit' );
 
 			if ( ! $limit ) {
@@ -222,6 +230,10 @@ class TableBrowser {
 
 			foreach ( $this->listFieldsRows as $field ) {
 				/** @var SimpleXMLElement $field */
+				if ( $field->getName() != 'field' ) {
+					continue;
+				}
+
 				$this->registryEditVew->resolveXmlParamType( $field );
 
 				$allowOrdering		=	$field->attributes( 'allowordering' );
@@ -289,6 +301,11 @@ class TableBrowser {
 			foreach ( $row->children() as $o ) {
 				/** @var $o SimpleXMLElement */
 				if ( $o->getName() == $type ) {
+
+					if ( ( ! Access::authorised( $o ) ) && ( ! ( ( $o->getName() == 'if' ) && ( $o->attributes( 'type' ) == 'permission' ) ) ) ) {
+						continue;
+					}
+
 					$basetype			=	null;
 					$valueType			=	null;
 					$fieldValuesInDb	=	$this->_getFieldValues( $o, $basetype, $valueType );
@@ -703,6 +720,10 @@ EOT
 			if ( $this->listFieldsRows ) {
 				foreach ( $this->listFieldsRows->children() as $field ) {
 					/** @var $field SimpleXMLElement */
+					if ( $field->getName() != 'field' ) {
+						continue;
+					}
+
 					$orderinggroups					=	$field->getElementByPath( 'orderinggroups');
 					/** @var $orderinggroups SimpleXMLElement|null */
 					if ( $orderinggroups ) {
@@ -1851,6 +1872,10 @@ EOT
 
 			foreach ( $listFieldsRows->children() as $field ) {
 				/** @var SimpleXMLElement $field */
+				if ( $field->getName() != 'field' ) {
+					continue;
+				}
+
 				if ( ( $field->attributes( 'type' ) != 'hidden' ) && Access::authorised( $field ) ) {
 					$classes				=	RegistryEditView::buildClasses( $field );
 					$attributes				=	( $classes ? ' class="' . htmlspecialchars( $classes ) . '"' : null )

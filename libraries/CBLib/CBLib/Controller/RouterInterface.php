@@ -9,7 +9,6 @@
 
 namespace CBLib\Controller;
 
-use CBLib\Application\Application;
 use CBLib\Input\InputInterface;
 
 defined('CBLIB') or die();

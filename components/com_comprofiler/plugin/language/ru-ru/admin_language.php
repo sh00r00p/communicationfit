@@ -2,7 +2,7 @@
 /**
 * Community Builder (TM) Russian (Russia) language file Administration
 * @version $Id:$
-* @copyright (C) 2004-2015 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -221,8 +221,7 @@ return	array(
 'ADMIN_HANDLER_CLASS_CLASS_DOES_NOT_EXIST'	=>	'Административный класс обработки [class] не существует!',
 'NO_PLUGIN_SELECTED_5f1375'	=>	'Не выбран плагин',
 'THE_PLUGIN_NAME_HAS_NO_ADMINISTRATOR_FILE_FILE'	=>	'В плагине [name] отсутствует административный файл [file]!',
-// 3 language strings from file administrator/components/com_comprofiler/controller/controller.user.php
-'NOT_AUTHORIZED_11a4ac'	=>	'Не разрешено',
+// 2 language strings from file administrator/components/com_comprofiler/controller/controller.user.php
 'YOUR_PROFILE_COULD_NOT_BE_UPDATED_fd93eb'	=>	'Ваш профиль не может быть обновлен.',
 'SUCCESSFULLY_SAVED_USER_USERNAME'	=>	'Успешно сохранен пользователь: [username]!',
 // 3 language strings from file administrator/components/com_comprofiler/controller/controller.users.php
@@ -578,13 +577,14 @@ return	array(
 'OVERLAY_MOVING_WITH_MOUSE_fba747'	=>	'Накладывание слоя указателем мышки',
 'FIXED_OVERLAY_CLOSING_WITH_MOUSEOUT_ff83fa'	=>	'Закрытие прикрепленного слоя при наведении указателя мышки',
 'BUTTON_WITH_FIXED_OVERLAY_07a4f8'	=>	'Кнопка с закрепленным наложенным слоем',
-// 16 language strings from file administrator/components/com_comprofiler/xmlcb/models/model.users.xml
+// 17 language strings from file administrator/components/com_comprofiler/xmlcb/models/model.users.xml
 'BAN_5c664f'	=>	'Блокировка',
 'MARK_PENDING_cfef06'	=>	'Отметить как находящееся в рассмотрении',
 'UNBAN_6d1fa5'	=>	'Разблокировать',
 'ENABLE_USER_93cb03'	=>	'Включить пользователя',
 'DISABLE_USER_36d524'	=>	'Выключить пользователя',
 'REJECT_USER_71be6c'	=>	'Отвергнуть пользователя',
+'APPROVE_IMAGE_d78511'	=>	'Одобрить изображение',
 'EQUAL_TO_495c04'	=>	'Равно ',
 'NOT_EQUAL_TO_9bc7de'	=>	'Не равно ',
 'LESS_THAN_ad647e'	=>	'Меньше чем',
@@ -595,7 +595,7 @@ return	array(
 'DOES_NOT_CONTAIN_3bf90e'	=>	'Не содержит',
 'IS_ONE_OF_SEPARATED_VALUES_9f7ce4'	=>	'один из (отделяйте значения запятой)',
 'IS_NOT_ONE_OF_SEPARATED_VALUES_1b23dd'	=>	'не принадлежит к (отделяйте значения запятой)',
-// 189 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.editconfig.xml
+// 196 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.editconfig.xml
 'PERMISSIONS_d08ccf'	=>	'Права',
 'HELP_6a26f5'	=>	'Помощь',
 'THE_NAME_STYLE_DETAILS_HOW_YOU_WANT_TO_CAPTURE_THE_bb575d'	=>	'Подробый стиль имени, определяющий как бы Вы желали показывать поле имени в Joomla',
@@ -635,6 +635,8 @@ return	array(
 'EMAIL_CONFIRMATION_26ef0a'	=>	'Электронное подтверждение',
 'CHOOSE_IF_USERNAME_AVAILABILITY_SHOULD_BE_CHECKED__aefc3d'	=>	'Выберите следует ли проверять наличие выбираемого во время регистрации имени пользователя. Хотя эта функция защищена, ее все же можно использовать для отгадывания уже зарегистрированных в Вашей системе имен пользователей, что оставляет для взлома аккаунта отгадывания только пароля.',
 'AJAX_USERNAME_CHECKER_f11401'	=>	'Проверка имени пользователя в AJAX',
+'CHOOSE_IF_IP_ADDRESS_SHOULD_BE_STORED_WITH_A_USERS_0b148e'	=>	'Choose if ip address should be stored with a users registration. Note this only applies to new registrations.',
+'LOG_REGISTRATION_IP_ADDRESS_5ad2f6'	=>	'Log Registration IP Address',
 'CHOOSE_IF_LOGIN_FORM_SHOULD_BE_AUTOMATICALLY_DISPL_567126'	=>	'Укажите, должна ли форма логина автоматически отображаться рядом с  формой регистрации. Обратите внимание, будут использованы параметры первого найденного модуля логина.',
 'SHOW_LOGIN_FORM_NEXT_TO_REGISTRATION_FORM_794b64'	=>	'Отображать форму логина рядом с формой регистрации',
 'INPUT_THE_NAME_TO_SEND_WITH_REGISTRATION_EMAILS_IF_cc7a63'	=>	'Введите название, которое будет отправляться со всеми электронными письмами о регистрации. Если этот параметр оставить пустым, то по умолчанию будет использован отправитель, назначенный в Вашей системе. Языковый ключ REGISTRATION_EMAIL_FROM_NAME будет переведен как \'[sitename] Регистрация\'',
@@ -647,7 +649,7 @@ return	array(
 'REGISTRATION_EMAIL_HTML_b8d6a3'	=>	'Код HTML в регистрационной электронной почте',
 'INPUT_THE_SUBJECT_TO_SEND_WITH_PENDING_EMAILS_LEAV_a942b6'	=>	'Введите тему которую будут содержать все электронные письма о принятии регистрации пользователей к рассмотрению администрацией Вашего веб-сайта. Для того, чтобы сдержать отправку таких писем, оставьте поля темы и текста писем пустыми.',
 'PENDING_EMAIL_SUBJECT_12943f'	=>	'Тема электронного письма о рассмотрении регистрации',
-'INPUT_THE_SUBSTITUTION_SUPPORTED_BODY_TO_SEND_WITH_e32116'	=>	'Введите поддерживающий заменители текст, который будет отправляться с электронными письмами пользователям о принятии их регистрации к рассмотрению администрацией Вашего веб-сайта. Для того, чтобы сдержать отправку таких писем, оставьте поля темы и текста писем пустыми. Поддерживаются следующие заменители: [NAME], [USERNAME], [DETAILS] (имя, имя пользователя, адрес электронной почты и пароль пользователя), [PASSWORD] - пароль и [CONFIRM] (веб-ссылка для подтверждения  пользователем своего адреса электронной почты, представленного при регистрации).',
+'INPUT_THE_SUBSTITUTION_SUPPORTED_BODY_TO_SEND_WITH_8a4917'	=>	'Введите поддерживающий заменители текст, который будет отправляться с электронными письмами пользователям о принятии их регистрации к рассмотрению администрацией Вашего веб-сайта. Для того, чтобы сдержать отправку таких писем, оставьте поля темы и текста таких писем пустыми. Поддерживаются следующие заменители: [NAME], [USERNAME], [DETAILS] (имя, имя пользователя, адрес электронной почты и пароль пользователя), [PASSWORD] - пароль и [CONFIRM] (веб-ссылка для подтверждения  пользователем своего адреса электронной почты, представленного при регистрации).',
 'PENDING_EMAIL_BODY_7b923a'	=>	'Текст электронного письма о рассмотрении регистрации',
 'INPUT_THE_SUBJECT_TO_SEND_WITH_WELCOME_EMAILS_LEAV_77502a'	=>	'Введите тему которую будут содержать все электронные письма, приветсвующие принятого в сообщество пользователя. Для того, чтобы сдержать отправку таких приветственных писем, оставьте поля темы и текста писем пустыми.',
 'WELCOME_EMAIL_SUBJECT_cf58b6'	=>	'Тема приветственного электронного письма',
@@ -714,6 +716,7 @@ return	array(
 'IMAGES_fff0d6'	=>	'Аватары',
 'CHOOSE_THE_SOFTWARE_TO_USE_FOR_PROCESSING_IMAGES_2aefdb'	=>	'Выберите что использовать для обработки изображений.',
 'IMAGE_SOFTWARE_487ca0'	=>	'Программное приложение аватаров',
+'AUTO_06b928'	=>	'Автоматически',
 'GD2_5b48fc'	=>	'GD2',
 'IMAGE_LIBRARY_GD2'	=>	'GD2',
 'IMAGEMAGICK_3c56f0'	=>	'ImageMagick',
@@ -767,6 +770,10 @@ return	array(
 'SPOOF_CHECKING_cd5b00'	=>	'Проверка спуфинга',
 'CHOOSE_IF_COMMUNITY_BUILDER_VERSION_CHECKING_SHOUL_6a2c93'	=>	'Выберите хотите ли Вы проверять версию компонента при каждом открытии общей конфигурации Community Builder автоматически. Ваш установленный компонент Community Builder не открывает никакую личную информацию во время этой проверки версии, за исключением нынешней установленной версии и стандартных параметров http.',
 'VERSION_CHECKING_50889c'	=>	'Проверка версии',
+'CHOOSE_IF_PLUGIN_VERSION_CHECKING_SHOULD_BE_AUTOMA_4248d6'	=>	'Choose if Plugin version checking should be automated in Plugin Management.',
+'PLUGIN_VERSION_CHECKING_3e07be'	=>	'Plugin Version Checking',
+'CHOOSE_IF_COMMUNITY_BUILDER_SHOULD_SEND_EMAILS_OR__a8c599'	=>	'Выберите, следует ли компоненту \'Community Builder\' отправлять электронную почту или нет. Учтите, что эта настройка действует только на электронную почту компонента \'Community Builder\'.',
+'SEND_EMAILS_5cacf8'	=>	'Отпрвлять эл.почту',
 'CHOOSE_IF_TWITTER_BOOTSTRAP_CSS_SHOULD_BE_LOADED_F_57f4de'	=>	'Выберите следует ли автоматически загружать находящуюся в распоряжении шаблона компонента \'Community Builder\' библиотеку \'Twitter Bootstrap CSS\'. Рекомендуется включить этот параметр, за исключением случаев когда данная библиотека уже загружена на Вашей системе откуда-либо еще. Имейте в виду, что этот параметр действует только на лицевые страницы.',
 'TWITTER_BOOTSTRAP_114fc0'	=>	'Библиотека \'Twitter Bootstrap\'',
 'NOTE_COMMUNITY_BUILDER_TWITTER_BOOTSTRAP_CSS_HAS_B_672475'	=>	'Примечание: библиотека \'Twitter Bootstrap CSS\' компонента \'Community Builder\' была выключена для лицевых веб-страниц. Удостоверьтесь в том, что она загружается откуда-либо еще, иначе Вы получите конфликты стилей или отсутствующие стили.',
@@ -785,7 +792,7 @@ return	array(
 'SHOW_FOOTER_SETTING_LABEL'	=>	'Показывать нижний колонтитул',
 'SETTING_LOCATED_IN_CB_CONFIG_INTEGRATION_TAB'	=>	'Эта настройка расположена в контрольной панели СВ -> \'Конфигурация\' -> вкладка \'Интеграции\'',
 'SETTINGS'	=>	'Настройки',
-// 53 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.editfield.xml
+// 57 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.editfield.xml
 'FIELD_6f16a5'	=>	'Поле',
 'SAVE_CLOSE_f17e5c'	=>	'Сохранить и закрыть',
 'SAVE_NEW_6f6530'	=>	'Сохранить и создать',
@@ -804,8 +811,10 @@ return	array(
 'VALUES_c82a61'	=>	'Значения',
 'INPUT_THE_VALUE_FOR_STORAGE_OF_THIS_OPTION_IF_NO_L_f40ff8'	=>	'Введите значения для сохранения этой опции. Если не представлен никакой ярлык, то тогда будет показано это значение.',
 'VALUE_689202'	=>	'Значение',
-'INPUT_THE_LABEL_FOR_DISPLAY_OF_THIS_OPTION_IF_NO_L_f42589'	=>	'Введите ярлык для показа с этой опцией. Если не представлен никакой ярлык, то тогда будет показано это значение.',
+'INPUT_THE_LABEL_FOR_DISPLAY_OF_THIS_OPTION_IF_NO_L_6454fa'	=>	'Input the label for display of this option. If no Label is supplied then Value will also be used for display. Optionally supply a label only for the first option to customize the blank option.',
 'LABEL_b021df'	=>	'Ярлык',
+'SELECT_IF_THIS_OPTION_IS_AN_OPTGROUP_VALUE_WILL_BE_2ac21a'	=>	'Select if this option is an optgroup. Value will be used as the optgroup label.',
+'INPUT_THE_LABEL_FOR_DISPLAY_OF_THIS_OPTION_IF_NO_L_f42589'	=>	'Введите ярлык для показа с этой опцией. Если не представлен никакой ярлык, то тогда будет показано это значение.',
 'SELECT_THE_PUBLISH_STATE_OF_THIS_FIELD_e5a938'	=>	'Выберите состояние публикации этого поля.',
 'SYSTEM_FIELDS_TYPE_CAN_NOT_BE_CHANGED_4e6953'	=>	'Тип системных полей изменить невозможно!',
 'TYPE_a1fa27'	=>	'Тип',
@@ -828,6 +837,8 @@ return	array(
 'SELECT_IF_THIS_FIELD_IS_SEARCHABLE_FROM_USERLISTS__50a0e2'	=>	'Выберите включать ли это поле в поиск в списках пользователей или нет.',
 'OPTIONALLY_INPUT_THE_MAXIMUM_NUMBER_OF_CHARACTERS__27379a'	=>	'На свой выбор, т.е. совсем не обязательно, введите максимально допустимое для ввода в это поле число знаков.',
 'MAXIMUM_LENGTH_3568bc'	=>	'Максимальная длина',
+'MAXIMUM_SELECT_4b8529'	=>	'Maximum Select',
+'OPTIONALLY_INPUT_THE_MAXIMUM_NUMBER_OF_OPTIONS_THA_560b0d'	=>	'Optionally input the maximum number of options that can be selected for this field.',
 'OPTIONALLY_INPUT_THE_SIZE_OF_THE_HTML_INPUT_FOR_TH_ab90e6'	=>	'На свой выбор, т.е. совсем не обязательно, введите размер данных, вводимых в это поле в коде HTML.',
 'SIZE_6f6cb7'	=>	'Размер',
 'OPTIONALLY_INPUT_THE_NUMBER_OF_COLUMNS_TO_USE_FOR__b0a0a5'	=>	'На свой выбор, т.е. совсем не обязательно, введите число колонок для показа в текстовом поле или при показа в виде списка для этого поля.',
@@ -909,7 +920,7 @@ return	array(
 'ALLOWS_EDITING_THE_STATE_OF_EXISTING_LISTS_bf5057'	=>	'Разрешает редактирование состояния публикации существующих списков пользователей.',
 // 1 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.editperms.xml
 'GLOBAL_PERMISSIONS_0095ce'	=>	'Общие права',
-// 14 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.editplugin.xml
+// 19 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.editplugin.xml
 'PLUGIN_409c18'	=>	'Плагин',
 'INPUT_THE_PLUGINS_NAME_1f3ba5'	=>	'Введите название плагина.',
 'SELECT_THE_PUBLISH_STATE_OF_THIS_PLUGIN_fcf23a'	=>	'Выберите состояние публикации этого плагина.',
@@ -924,19 +935,26 @@ return	array(
 'ELEMENT_231afe'	=>	'Элемент',
 'THE_CURRENT_VERSION_OF_THIS_PLUGIN_ed07ac'	=>	'Текущая версия данного плагина.',
 'VERSION_34b6cd'	=>	'Версия',
+'OVERRIDES_0ca08f'	=>	'Перезапись',
+'INPUT_THE_LANGUAGE_KEY_TO_CREATE_OR_OVERRIDE_15ea00'	=>	'Input the language key to create or override.',
+'KEY_897356'	=>	'Key',
+'INPUT_THE_TEXT_FOR_YOUR_NEW_LANGUAGE_STRING_OR_OVE_38b997'	=>	'Input the text for your new language string or override.',
+'TEXT_9dffbf'	=>	'Текст',
 // 5 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.editpluginperms.xml
 'PLUGIN_PERMISSIONS_780337'	=>	'Права на плагин',
 'ALLOWS_VIEWING_OF_PLUGIN_MANAGEMENT_8224bd'	=>	'Разрешает просмотр менеджера плагинов.',
 'ALLOWS_DELETING_OF_PLUGINS_e4aac0'	=>	'Разрешает удаление плагинов.',
 'ALLOWS_EDITING_EXISTING_PLUGINS_AND_EDITING_THE_ST_65cd2f'	=>	'Разрешает редактирование существующих плагинов и редактирование состояния публикации существующих плагинов.',
 'ALLOWS_EDITING_THE_STATE_OF_EXISTING_PLUGINS_9e3196'	=>	'Разрешает редактирование состояния публикации существующих плагинов. ',
-// 12 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.edittab.xml
+// 14 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.edittab.xml
 'INPUT_THE_TITLE_TO_DISPLAY_AS_THE_TABS_TITLE_18e6d8'	=>	'Введите заголовок для показа как заголовок этой вкладки.',
 'OPTIONALLY_INPUT_THE_DESCRIPTION_TO_DESCRIBE_THIS__83d8a3'	=>	'На свой выбор, т.е. совсем не обязательно введите описание назначения этой вкладки на веб-странице редактирования профиля пользователя. Имейте в виду, что некоторые плагины могут показать это описание на веб-странице профиля.',
 'SELECT_THE_PUBLISH_STATE_OF_THIS_TAB_f92251'	=>	'Выберите состояние публикации этой вкладки.',
 'SELECT_THE_PROFILE_VIEW_ORDERING_OF_THIS_TAB_THIS__f62e20'	=>	'Выберите очередность показа профиля на этой вкладке. Эта очередность специфична позиции вкладки. Эта очередность специфична позиции этой вкладки.',
 'PROFILE_ORDERING_2a0ec9'	=>	'Очередность профиля',
-'SELECT_THE_PROFILE_EDIT_AND_REGISTRATION_ORDERING__6f2c78'	=>	'Выберите очередность редактирования профиля и регистрации на этой вкладке. Эта очередность не специфична позиции этой вкладки.',
+'SELECT_THE_PROFILE_EDIT_ORDERING_OF_THIS_TAB_THIS__d6785d'	=>	'Select the profile edit ordering of this tab. This ordering is not specific to the tabs position.',
+'EDIT_ORDERING_f39a73'	=>	'Edit Ordering',
+'SELECT_THE_REGISTRATION_ORDERING_OF_THIS_TAB_THIS__facdf1'	=>	'Select the registration ordering of this tab. This ordering is not specific to the tabs position.',
 'REGISTRATION_ORDERING_edafc9'	=>	'Очередность регистрации',
 'SELECT_THE_PROFILE_VIEW_POSITION_FOR_THIS_TAB_bbd961'	=>	'Выберите позицию просмотра профиля в этой вкладке.',
 'POSITION_52f5e0'	=>	'Позиция',
@@ -957,7 +975,7 @@ return	array(
 'USER_PERMISSIONS_795341'	=>	'Права пользователя',
 // 1 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showcredits.xml
 'CREDITS_948a2e'	=>	'Благодарность',
-// 25 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showfields.xml
+// 29 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showfields.xml
 'SEARCH_FIELDS_139f39'	=>	'Искать поля...',
 'SELECT_TYPE_84cc9b'	=>	'- Выбрать тип -',
 'SELECT_TAB_2e4178'	=>	'- Выбрать вкладку -',
@@ -970,6 +988,10 @@ return	array(
 'SELECT_ID_f4951d'	=>	'- Выбрать номер ID -',
 'ORDER_ASCENDING_3bc8a1'	=>	'Очередность восходяще',
 'ORDER_DESCENDING_e98fe4'	=>	'Очередность нисходяще',
+'EDIT_ORDER_ASCENDING_ce1078'	=>	'Edit Order ascending',
+'EDIT_ORDER_DESCENDING_ad5ec5'	=>	'Edit Order descending',
+'REGISTER_ORDER_ASCENDING_fa154a'	=>	'Register Order ascending',
+'REGISTER_ORDER_DESCENDING_b40e1a'	=>	'Register Order descending',
 'TAB_ASCENDING_8b307b'	=>	'Вкладка восходяще',
 'TAB_DESCENDING_1af28d'	=>	'Вкладка нисходяще',
 'FIELD_WILL_NOT_BE_VISIBLE_AS_THIS_FIELDS_PLUGIN_IS_0d8d83'	=>	'Поле не будет видимо, поскольку не установлен плагин этого поля.',
@@ -1000,7 +1022,7 @@ return	array(
 // 2 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showplugins.xml
 'SEARCH_PLUGINS_dbe343'	=>	'Поиск плагинов...',
 'PLUGIN_FILES_MISSING_0ebf23'	=>	'Отсутстуют файлы плагина.',
-// 13 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showtabs.xml
+// 14 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showtabs.xml
 'SEARCH_TABS_24999e'	=>	'Поиск вкладкок...',
 'SELECT_POSITION_f20cd8'	=>	'- Выбрать позицию -',
 'SELECT_DISPLAY_TYPE_f764ac'	=>	'- Выбрать тип показа -',
@@ -1013,6 +1035,7 @@ return	array(
 'TAB_WILL_NOT_BE_VISIBLE_AS_THIS_TABS_PLUGIN_IS_NOT_012e92'	=>	'Эта вкладка не будет видима поскольку не опубликован ее плагин.',
 'THIS_TABS_PLUGIN_IS_NOT_COMPATIBLE_WITH_YOUR_CURRE_d12959'	=>	'Плагин этой вкладки несовместим с Вашей текущей версией СВ. Вы можете продолжать использовать эту вкладку, но существует вероятность того, что ее работа будет нарушена.',
 'PROFILE_ORDER_a18e52'	=>	'Очередность профиля',
+'EDIT_ORDER_987fd9'	=>	'Edit Order',
 'REGISTER_ORDER_92a129'	=>	'Очередность регистрации',
 // 19 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showtools.xml
 'IN_ORDER_FOR_CB_TO_FUNCTION_PROPERLY_A_JOOMLA_MENU_e84d21'	=>	'Для нормально работы компонента СВ необходимо создать его пункт меню с публичным доступом к нему. Похоже, что такой обязательный пункт меню отсутствует в Вашей системе. Для более подробных указаний по этому вопросу обратитесь, пожалуйста, к разделу \'Adding the CB Profile\', включенному в скачанную Вами в формате PDF с установочным пакетом СВ документацию компонента. ',
@@ -1034,7 +1057,7 @@ return	array(
 'THIS_WILL_CHECK_THE_DATABASE_OF_INSTALLED_CB_PLUGI_5b544e'	=>	'Щелчок по этой ссылке проверит в базе данных установленные плагины и вернет доклад с потенциальными нарушениями без изменений и исправлений базы данных.',
 'CHECK_USERS_DATABASE_3d5ac0'	=>	'Проверить базу данных пользователей',
 'THIS_WILL_PERFORM_A_SERIES_OF_TESTS_ON_THE_USERS_D_7a90a6'	=>	'Щелчок по этой ссылке проведет серию проверок базы данных пользователей CMS, базы данных пользователей компонента Community Builder и ACL, и вернет доклад с потенциальными нарушениями без изменений и исправлений базы данных.',
-// 15 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showusers.xml
+// 17 language strings from file administrator/components/com_comprofiler/xmlcb/views/view.com_comprofiler.showusers.xml
 'MASS_MAILER_ed6d30'	=>	'Массовая рассылка',
 'RESEND_CONFIRMATION_8af435'	=>	'Отправить подтверждение повторно',
 'SEARCH_USERS_cdd0de'	=>	'Поиск пользователей...',
@@ -1046,6 +1069,8 @@ return	array(
 'SELECT_ENABLED_beb4b8'	=>	'- Выбрать включенное -',
 'SELECT_CONFIRMED_286f4d'	=>	'- Выбрать подтвержденное -',
 'SELECT_APPROVED_2eb166'	=>	'- Выбрать одобренное -',
+'SELECT_AVATAR_APPROVED_550a41'	=>	'- Выбрать одобренный аватар -',
+'SELECT_CANVAS_APPROVED_17d317'	=>	'- Выбрать одобренный канвас -',
 'ID_ASCENDING_8420d8'	=>	'ID номер восходяще',
 'LAST_VISIT_123cdf'	=>	'Последний визит на сайт',
 'USER_ID'	=>	'ID',
@@ -1062,8 +1087,8 @@ return	array(
 'CHECK_BOX_SINGLE_ff5fee'	=>	'Чек бокс (одиночный)',
 'CHECK_BOX_MULTIPLE_25ff2a'	=>	'Чек бокс (многократный)',
 'LAYOUT_ebd9be'	=>	'Макет',
-'INTEGER_NUMBER_5166f4'	=>	'Число по типу данных "integer"',
 'VALIDATION_131487'	=>	'Проверка',
+'INTEGER_NUMBER_5166f4'	=>	'Число по типу данных "integer"',
 'DROP_DOWN_SINGLE_SELECT_b91677'	=>	'Выскакивающий (одиночный)',
 'DROP_DOWN_MULTISELECT_db5003'	=>	'Выскакивающий (многократный)',
 'EMAIL_ADDRESS_MAIN_b0afcc'	=>	'Адрес эл.почты (главный)',
@@ -1113,7 +1138,7 @@ return	array(
 'CATEGORY_DESCENDING_522160'	=>	'Категории нисходяще',
 // 1 language strings from file components/com_comprofiler/plugin/user/plug_cbblogs/xml/views/view.com_comprofiler.showblogs.k2.xml
 'SELECT_TRASHED_2e1768'	=>	'- Выбрать удалённые -',
-// 51 language strings from file components/com_comprofiler/plugin/user/plug_cbcore/xml/views/view.com_comprofiler.editfield.xml
+// 50 language strings from file components/com_comprofiler/plugin/user/plug_cbcore/xml/views/view.com_comprofiler.editfield.xml
 'OPTIONALLY_INPUT_SUBSTITUTION_SUPPORTED_VALUE_LAYO_0746c4'	=>	'На свое усмотрение, т.е. совсем не обязательно, введите поддерживающее заменители полей значение макета для показа профилей. Этот макет определяет как на странице представлено значение поля. Вводите заменитель значения поля как [value]. Если оставить это поле пустым. то по умолчанию будет использовано [value].',
 'PROFILE_VALUE_LAYOUT_70defb'	=>	'Шаблон значения профиля',
 'OPTIONALLY_INPUT_SUBSTITUTION_SUPPORTED_VALUE_LAYO_011dc3'	=>	'На свое усмотрение, т.е. совсем не обязательно введите поддерживающее заменители значение макета показа страницы редактирования профиля. Этот макет определяет как показывается значение поля. Вводите заменитель значения поля как [value]. Если оставить это поле пустым. то по умолчанию будет использовано [value].',
@@ -1130,7 +1155,6 @@ return	array(
 'SELECT_HOW_THE_TERMS_AND_CONDITIONS_IS_OUTPUT_14ec42'	=>	'Выберите как показывать термины и условия',
 'OUTPUT_29c2c0'	=>	'Вывод',
 'URL_e6b391'	=>	'URL',
-'TEXT_9dffbf'	=>	'Текст',
 'INPUT_THE_TYPE_OF_TERMS_AND_CONDITIONS_THIS_FIELD__f24c1b'	=>	'Введите тип документа, используемого с этим полем (например, \'Термины и условия обслуживания\', \'Политика возврата денег\', \'Политика приватности веб-сайта\' и т.д.). Если это поле оставить пустым, то по умолчанию будет использовано \'Термины и условия\'.',
 'INPUT_THE_URL_TO_THE_TERMS_AND_CONDITIONS_PAGE_804787'	=>	'Введите URL ссылку на веб-страницу с терминами и условиями.',
 'INPUT_THE_TERMS_AND_CONDITIONS_31760e'	=>	'Введите термины и условия.',
@@ -1171,7 +1195,7 @@ return	array(
 'COMMUNITY_BUILDER_VERSION_VERSION_IS_AVAILABLE_BUTTON'	=>	'Имеется версия [version] компонента \'Community Builder\': [learn_button] [update_button]',
 'PLEASE_CLICK_HERE_FOR_INSTRUCTIONS_6404ad'	=>	'Щелкните, пожалуйста, здесь для указаний.',
 'YOUR_HOST_DISABLE_FUNCTION_FOR_CB'	=>	'Для того, чтобы эта версия компонента \'Community Builder\' работала нормально, Вашему хостеру необходимо выключить функцию [function]! [button]',
-// 54 language strings from file modules/mod_cbadmin/tmpl/menu.php
+// 53 language strings from file modules/mod_cbadmin/tmpl/menu.php
 'ADD_NEW_USER_3015af'	=>	'Создать пользователя',
 'ADD_NEW_TAB_686464'	=>	'Создать вкладку',
 'ADD_NEW_FIELD_92cef2'	=>	'Создать поле',
@@ -1225,7 +1249,6 @@ return	array(
 'ADD_NEW_USER_TO_GROUP_6bfc15'	=>	'Добавить в группу нового пользователя',
 'INVITES_213b86'	=>	'Приглашения',
 'MENUS_06145a'	=>	'Меню',
-'AUTO_06b928'	=>	'Автоматически',
 // 2 language strings from file modules/mod_cbadmin/tmpl/news.php
 'MORE_d3da97'	=>	'Еще',
 'THERE_CURRENTLY_IS_NO_NEWS_8d89c6'	=>	'Никаких новостей пока нет.',

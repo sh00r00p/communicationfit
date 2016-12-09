@@ -16,6 +16,7 @@ if ( ! ( defined( '_VALID_CB' ) || defined( '_JEXEC' ) || defined( '_VALID_MOS' 
 	</div>
 <?php } ?>
 <?php echo modCBModeratorHelper::getPlugins( $params, 'almostStart' ); ?>
+<?php if ( modCBModeratorHelper::getPlugins( $params, 'beforeLinks' ) || $showBanned || $showImageApproval || $showUserReports || $showUnbanRequests || $showUserApproval || $showPrivateMessages || $showConnectionRequests || modCBModeratorHelper::getPlugins( $params, 'afterLinks' ) ) { ?>
 <ul class="unstyled cbModeratorLinks">
 	<?php echo modCBModeratorHelper::getPlugins( $params, 'beforeLinks' ); ?>
 	<?php if ( $showBanned ) { ?>
@@ -55,6 +56,7 @@ if ( ! ( defined( '_VALID_CB' ) || defined( '_JEXEC' ) || defined( '_VALID_MOS' 
 	<?php } ?>
 	<?php echo modCBModeratorHelper::getPlugins( $params, 'afterLinks' ); ?>
 </ul>
+<?php } ?>
 <?php echo modCBModeratorHelper::getPlugins( $params, 'almostEnd' ); ?>
 <?php if ( $postText ) { ?>
 	<div class="posttext">

@@ -2,23 +2,27 @@
 <extension type="module" version="3.0" client="site" method="upgrade">
 	<name>Tabs GK5</name>
 	<author>GavickPro</author>
-	<creationDate>13/08/2013</creationDate>
-	<copyright>Copyright (C) 2011-2013 GavickPro. All rights reserved.</copyright>
+	<creationDate>30/06/2015</creationDate>
+	<copyright>Copyright (C) 2011-2015 GavickPro. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
 	<authorEmail>info@gavick.com</authorEmail>
 	<authorUrl>www.gavickpro.com</authorUrl>
-	<version>1.5</version>
+	<version>1.7.4</version>
 	<description><![CDATA[
 		<style type="text/css">
 			span.readonly { padding: 10px; font-family: Arial; font-size:13px !important; font-weight: normal !important; text-align: justify; color: #4d4d4d; line-height: 24px; }
 			span.readonly h1 { clear:both; font-family: Georgia, sans-serif; font-size:38px; margin:30px 20px 23px; padding:0px 0px 24px 10px; color:#333; border-bottom: 1px solid #eee; font-weight: normal; }
+			span.tooltip-content { display: none; }
+			.tip-text span.readonly { display: none; }
+			.tip-text span.tooltip-content { display: block; }
 			span.readonly p { margin: 0 26px 10px }
 			span.readonly p a { color: #2F4C6D }
 			span.readonly p.homepage { margin-top: 30px }
 			span.readonly p.license { border-top: 1px solid #eee; font-size: 11px; margin: 30px 26px 0; padding: 6px 0; }
 		</style>
 		
-		<span class="readonly"><h1>Tabs GK5<small>ver. 1.5</small></h1><p>GK5 is one product of the next generation of GavickPro extensions designed exclusively for Joomla 2.5+.</p><p>With the Tabs GK5 module, you can implement space-saving tabs on websites and incorporate a variety of content types via modules or user-defined custom HTML code.  Thanks to the tab management system we've integrated into the module, Tabs GK5 remains easy, intuitive and quick to configure.  With built-in support for external data sources, the possibilities for implementing this new release are unlimited!</p> <p class='homepage'><a href='https://www.gavick.com/best-free-joomla-tab-module.html' target='_blank'>Learn more at the Tabs GK5 project website.</a></p><p class='license'>Tabs GK5 is released under the <a target="_blank" href="http://www.gnu.org/licenses/gpl-2.0.html">GNU/GPL v2 license.</a></p></span>
+		<span class="readonly"><h1>Tabs GK5<small>ver. 1.7.4</small></h1><p>GK5 is one product of the next generation of GavickPro extensions designed exclusively for Joomla 2.5+.</p><p>With the Tabs GK5 module, you can implement space-saving tabs on websites and incorporate a variety of content types via modules or user-defined custom HTML code.  Thanks to the tab management system we've integrated into the module, Tabs GK5 remains easy, intuitive and quick to configure.  With built-in support for external data sources, the possibilities for implementing this new release are unlimited!</p> <p class='homepage'><a href='https://www.gavick.com/best-free-joomla-tab-module.html' target='_blank'>Learn more at the Tabs GK5 project website.</a></p><p class='license'>Tabs GK5 is released under the <a target="_blank" href="http://www.gnu.org/licenses/gpl-2.0.html">GNU/GPL v2 license.</a></p></span>
+		<span class='tooltip-content'>Advanced tabs module for Joomla! 3.x</span>
 	]]></description>
 	<files>
 		<filename module="mod_tabs_gk5">mod_tabs_gk5.php</filename>
@@ -97,6 +101,8 @@
 				        <option value="disabled">MOD_TABS_DISABLED</option>
 				</field>
 				
+				<field name="tabs_pre_text" type="text" size="20" default="" label="MOD_TABS_PRE_TEXT" description="MOD_TABS_PRE_TEXT_DESC" />
+
 				<field name="tabs_width" type="text" size="1" class="input-pixels text_area input-medium" default="200" label="MOD_TABS_TABS_WIDTH" description="MOD_TABS_TABS_WIDTH_DESC" />
 				
 				<field name="tabs_spans" type="radio" class="btn-group" default="0" label="MOD_TABS_SPANS" description="MOD_TABS_SPANS_DESC">
@@ -126,52 +132,18 @@
 				        <option value="1">MOD_TABS_ENABLED</option>
 				</field>
 				
-				<field name="animation_speed" type="text" class="input-ms input-medium" default="250" label="MOD_TABS_ANIMATION_SPEED" description="MOD_TABS_ANIMATION_SPEED_DESC" />
-				
 				<field name="animation_interval" type="text" class="input-ms input-medium" default="5000" label="MOD_TABS_ANIMATION_INTERVAL" description="MOD_TABS_ANIMATION_INTERVAL_DESC" />
 				
 				<field name="animation_type" type="radio" class="btn-group" default="opacity" label="MOD_TABS_ANIMATION_TYPE" description="MOD_TABS_ANIMATION_TYPE_DESC">
 				        <option value="opacity">MOD_TABS_OPACITY</option>
 				        <option value="slide_vertical">MOD_TABS_SLIDE_VERTICAL</option>
 				        <option value="slide_horizontal">MOD_TABS_SLIDE_HORIZONTAL</option>
+				        <option value="scale">MOD_TABS_SLIDE_SCALE</option>
+				        <option value="rotate_x">MOD_TABS_SLIDE_ROTATE_X</option>
+				        <option value="rotate_y">MOD_TABS_SLIDE_ROTATE_Y</option>
+				        <option value="rotate_z">MOD_TABS_SLIDE_ROTATE_Z</option>
 				</field>
-				
-				<field name="animation_function" type="list" default="Fx.Transitions.linear" label="MOD_TABS_ANIMATION_FUNCTION" description="MOD_TABS_ANIMATION_FUNCTION_DESC">
-				        <option value="Fx.Transitions.linear">linear</option>
-				        <option value="Fx.Transitions.Quad.easeIn">Quad.easeIn</option>
-				        <option value="Fx.Transitions.Quad.easeOut">Quad.easeOut</option>
-				        <option value="Fx.Transitions.Quad.easeInOut">Quad.easeInOut</option>
-				        <option value="Fx.Transitions.Cubic.easeIn">Cubic.easeIn</option>
-				        <option value="Fx.Transitions.Cubic.easeOut">Cubic.easeOut</option>
-				        <option value="Fx.Transitions.Cubic.easeInOut">Cubic.easeInOut</option>
-				        <option value="Fx.Transitions.Quart.easeIn">Quart.easeIn</option>
-				        <option value="Fx.Transitions.Quart.easeOut">Quart.easeOut</option>
-				        <option value="Fx.Transitions.Quart.easeInOut">Quart.easeInOut</option>
-				        <option value="Fx.Transitions.Quint.easeIn">Quint.easeIn</option>
-				        <option value="Fx.Transitions.Quint.easeOut">Quint.easeOut</option>
-				        <option value="Fx.Transitions.Quint.easeInOut">Quint.easeInOut</option>
-				        <option value="Fx.Transitions.Pow.easeIn">Pow.easeIn</option>
-				        <option value="Fx.Transitions.Pow.easeOut">Pow.easeOut</option>
-				        <option value="Fx.Transitions.Pow.easeInOut">Pow.easeInOut</option>
-				        <option value="Fx.Transitions.Expo.easeIn">Expo.easeIn</option>
-				        <option value="Fx.Transitions.Expo.easeOut">Expo.easeOut</option>
-				        <option value="Fx.Transitions.Expo.easeInOut">Expo.easeInOut</option>
-				        <option value="Fx.Transitions.Circ.easeIn">Circ.easeIn</option>
-				        <option value="Fx.Transitions.Circ.easeOut">Circ.easeOut</option>
-				        <option value="Fx.Transitions.Circ.easeInOut">Circ.easeInOut</option>
-				        <option value="Fx.Transitions.Sine.easeIn">Sine.easeIn</option>
-				        <option value="Fx.Transitions.Sine.easeOut">Sine.easeOut</option>
-				        <option value="Fx.Transitions.Sine.easeInOut">Sine.easeInOut</option>
-				        <option value="Fx.Transitions.Back.easeIn">Back.easeIn</option>
-				        <option value="Fx.Transitions.Back.easeOut">Back.easeOut</option>
-				        <option value="Fx.Transitions.Back.easeInOut">Back.easeInOut</option>
-				        <option value="Fx.Transitions.Bounce.easeIn">Bounce.easeIn</option>
-				        <option value="Fx.Transitions.Bounce.easeOut">Bounce.easeOut</option>
-				        <option value="Fx.Transitions.Bounce.easeInOut">Bounce.easeInOut</option>
-				        <option value="Fx.Transitions.Elastic.easeIn">Elastic.easeIn</option>
-				        <option value="Fx.Transitions.Elastic.easeOut">Elastic.easeOut</option>
-				        <option value="Fx.Transitions.Elastic.easeInOut">Elastic.easeInOut</option>
-				</field>
+
 			</fieldset>
 			<!-- advanced -->
 			<fieldset name="TABS_ADVANCED">
@@ -189,6 +161,11 @@
 				</field>
 				
 				<field name="parse_plugins" type="radio" class="btn-group" default="1" label="MOD_TABS_PARSE_PLUGINS" description="MOD_TABS_PARSE_PLUGINS_DESC">
+				        <option value="0">MOD_TABS_DISABLED</option>
+				        <option value="1">MOD_TABS_ENABLED</option>
+				</field>
+				
+				<field name="module_wrap" type="radio" class="btn-group" default="0" label="MOD_TABS_MODULE_WRAP" description="MOD_TABS_MODULE_WRAP_DESC">
 				        <option value="0">MOD_TABS_DISABLED</option>
 				        <option value="1">MOD_TABS_ENABLED</option>
 				</field>
@@ -213,11 +190,19 @@
 				        <option value="0">MOD_TABS_DISABLED</option>
 				        <option value="1">MOD_TABS_ENABLED</option>
 				</field>
+				
+				<field name="rtl" type="radio" class="btn-group" default="0" label="MOD_TABS_RTL_SUPPORT" description="MOD_TABS_RTL_SUPPORT_DESC">
+				        <option value="0">MOD_TABS_DISABLED</option>
+				        <option value="1">MOD_TABS_ENABLED</option>
+				</field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="layout" type="modulelayout" label="JFIELD_ALT_LAYOUT_LABEL" description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
 			</fieldset>
 			<!-- about us -->
-			<!-- <fieldset name="TABS_ABOUT_US" addfieldpath="/modules/mod_tabs_gk5/admin/elements">
+			<fieldset name="TABS_ABOUT_US" addfieldpath="/modules/mod_tabs_gk5/admin/elements">
 			    <field type="about" name="about_us" /> 
-			</fieldset> -->
+			</fieldset>
 		</fields>
 	</config>
 </extension>

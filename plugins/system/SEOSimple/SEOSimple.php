@@ -21,8 +21,8 @@ class plgSystemSEOSimple extends JPlugin {
 
     function onAfterDispatch() {
 		//global $mainframe, $thebuffer;
-		$app = &JFactory::getApplication();
-		$document =& JFactory::getDocument();
+		$app = JFactory::getApplication();
+		$document = JFactory::getDocument();
 		$docType = $document->getType();
  
     	// only mod site pages that are html docs (no admin, install, etc.)
@@ -77,11 +77,11 @@ class plgSystemSEOSimple extends JPlugin {
 	}
 
 	function onContentPrepare($context, &$article, &$params, $limitstart) {
-		$app = &JFactory::getApplication();
+		$app = JFactory::getApplication();
 		
 		if (!$app->isSite()) return;
 		
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$view = JRequest::getVar('view');
 		$thelength = $this->params->def('length', 155);
 		$thecontent = $article->text;
@@ -102,7 +102,7 @@ class plgSystemSEOSimple extends JPlugin {
 		}
 
 		if ($view == 'category' && $catdesc == 0) { 
-			$db1 = &JFactory::getDBO();
+			$db1 = JFactory::getDBO();
 			$catid = JRequest::getVar('id');
 			$db1->setQuery('SELECT cat.description FROM #__categories cat WHERE cat.id='.$catid);   
       		$catdesc = $db1->loadResult();

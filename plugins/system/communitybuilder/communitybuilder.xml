@@ -6,8 +6,8 @@
 	<authorEmail>cbteam@joomlapolis.com</authorEmail>
 	<copyright>Copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved</copyright>
 	<license>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2. All copyright statements must be kept and derivative work must prominently duly acknowledge original work on web interface and on website where downloaded.</license>
-	<creationDate>2016-03-22</creationDate>
-	<version>2.0.14</version>
+	<creationDate>2016-08-24</creationDate>
+	<version>2.0.15</version>
 	<description>Community Builder System Plugin for Joomla!</description>
 	<scriptfile>script.communitybuilder.php</scriptfile>
 	<files>

@@ -1574,7 +1574,6 @@ class CBframework
 											'rating'			=>	array( 'jquery/rating/rating.css' => array( false, null ) ),
 											'cluetip'			=>	array( 'jquery/cluetip/cluetip.css' => array( false, null ) ),
 											'timepicker'		=>	array( 'jquery/timepicker/timepicker.css' => array( false, null ) ),
-											'jcrop'				=>	array( 'jquery/jcrop/jcrop.css' => array( false, null ) ),
 											'media'				=>	array( 'jquery/media/media.css' => array( false, null ) ),
 											'rateit'			=>	array( 'jquery/rateit/rateit.css' => array( false, null ) ),
 											'qtip'				=>	array( 'jquery/qtip/qtip.css' => array( false, null ) ),

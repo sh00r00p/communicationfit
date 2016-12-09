@@ -30,6 +30,8 @@ class TabTable extends OrderedTable
 	/** @var int */
 	public $ordering			=	null;
 	/** @var int */
+	public $ordering_edit		=	null;
+	/** @var int */
 	public $ordering_register	=	null;
 	/** @var string */
 	public $width				=	null;
@@ -74,7 +76,7 @@ class TabTable extends OrderedTable
 	 * E.g.; array( 'ordering' => array( 'tab' ), 'ordering_registration' => array() )
 	 * @var array
 	 */
-	protected $_orderings		=	array( 'ordering' => array( 'position' ), 'ordering_register' => array() );
+	protected $_orderings		=	array( 'ordering' => array( 'position' ), 'ordering_edit' => array(), 'ordering_register' => array() );
 
 	/**
 	 * If table key (id) is NULL : inserts a new row

@@ -8,6 +8,7 @@
 */
 
 use CBLib\Application\Application;
+use CBLib\Core\CBLib;
 use CBLib\Language\CBTxt;
 use CBLib\Xml\SimpleXMLElement;
 use CBLib\Registry\Registry;
@@ -1881,27 +1882,31 @@ function uploadFileURL( $userfileURL, $userfile_name, &$msg ) {
 
 // Ajax: administrator/index.php?option=com_comprofiler&task=latestVersion :
 function latestVersion(){
-	global $_CB_framework, $ueConfig;
+	global $_CB_framework;
 
 	cbimport( 'cb.snoopy' );
 
 	$s = new CBSnoopy();
 	$s->read_timeout = 90;
 	$s->referer = $_CB_framework->getCfg( 'live_site' );
-	@$s->fetch('http://www.joomlapolis.com/versions/comprofilerversion.php?currentversion='.urlencode($ueConfig['version']));
+	@$s->fetch( 'http://www.joomlapolis.com/versions/comprofilerversion.php?currentversion='.urlencode( CBLib::versionWithBuild() ) );
 	$version_info = $s->results;
 	$version_info_pos = strpos($version_info, ":");
-	if ($version_info_pos === false) {
+
+	if ( $version_info_pos === false ) {
 		$version = $version_info;
 		$info = null;
 	} else {
 		$version = substr( $version_info, 0, $version_info_pos );
 		$info = substr( $version_info, $version_info_pos + 1 );
 	}
-	if($s->error || $s->status != 200){
-    	echo '<span class="text-danger">' . CBTxt::T('Connection to update server failed') . ': ' . CBTxt::T('ERROR') . ': ' . $s->error . ($s->status == -100 ? CBTxt::T('Timeout') : $s->status).'</span>';
-    } else if($version == $ueConfig['version']){
-    	echo '<span class="text-success">' . $version . '</span>' . $info;
+
+	if ( $s->error || $s->status != 200 ) {
+		echo '<span class="text-danger">' . CBTxt::T('Connection to update server failed') . ': ' . CBTxt::T('ERROR') . ': ' . $s->error . ($s->status == -100 ? CBTxt::T('Timeout') : $s->status).'</span>';
+	} elseif ( $version === CBLib::versionWithBuild() ) {
+		echo '<span class="text-success">' . $version . '</span>' . $info;
+	} elseif ( $version === CBLib::version() ) {
+		echo '<span class="text-info">' . $version . '</span>' . $info;
     } else {
     	echo '<span class="text-danger">' . $version . '</span>' . $info;
     }

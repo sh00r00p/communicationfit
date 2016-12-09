@@ -242,23 +242,31 @@ class Joomla3 implements CmsInterface
 	/**
 	 * Prepares the HTML $htmlText with triggering CMS Content Plugins
 	 *
-	 * @param  string   $htmlText
+	 * @param  string $htmlText
+	 * @param  string $context
+	 * @param  int    $userId
 	 * @return string
 	 */
-	public function prepareHtmlContentPlugins( $htmlText ) {
-		$previousDocType	=	\JFactory::getDocument()->getType();
+	public function prepareHtmlContentPlugins( $htmlText, $context = 'text', $userId = 0 ) {
+		$previousDocType		=	\JFactory::getDocument()->getType();
 
 		\JFactory::getDocument()->setType( 'html' );
 
-		jimport( 'joomla.application.module.helper' );
+		$content				=	new \stdClass();
+		$content->text			=	$htmlText;
+		$content->created_by	=	(int) $userId;
+
+		$params					=	new \Joomla\Registry\Registry();
 
 		try {
-			$htmlText			=	 \JHtml::_( 'content.prepare', $htmlText );
+			\JPluginHelper::importPlugin( 'content' );
+
+			\JEventDispatcher::getInstance()->trigger( 'onContentPrepare', array( 'com_comprofiler' . ( $context ? '.' . $context : null ), &$content, &$params, 0 ) );
 		} catch ( \Exception $e ) {}
 
 		\JFactory::getDocument()->setType( $previousDocType );
 
-		return $htmlText;
+		return $content->text;
 	}
 
 	/**
@@ -267,6 +275,6 @@ class Joomla3 implements CmsInterface
 	 */
 	public function getCmsDatabaseDriver( )
 	{
-		return \JFactory::getDBO();
+		return \JFactory::getDbo();
 	}
 }

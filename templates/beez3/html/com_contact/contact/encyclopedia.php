@@ -3,7 +3,7 @@
  * @package     Joomla.Site
  * @subpackage  Templates.beez3
  *
- * @copyright   Copyright (C) 2005 - 2015 Open Source Matters, Inc. All rights reserved.
+ * @copyright   Copyright (C) 2005 - 2016 Open Source Matters, Inc. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  */
 
@@ -24,6 +24,10 @@ $cparams = JComponentHelper::getParams('com_media');
 		</h2>
 	<?php endif;  ?>
 
+	<?php echo $this->item->event->afterDisplayTitle; ?>
+
+	<?php echo $this->item->event->beforeDisplayContent; ?>
+
 	<div class="encyclopedia_col1">
 		<?php if ($this->contact->image ) : ?>
 			<div class="contact-image">
@@ -33,7 +37,7 @@ $cparams = JComponentHelper::getParams('com_media');
 			{
 				JHtml::_('behavior.caption');
 			}?>
-				<?php echo JHtml::_('image', $this->contact->image, JText::_('COM_CONTACT_IMAGE_DETAILS'), array('align' => 'middle', 'class' => 'caption', 'title' => $this->contact->address)); ?>
+				<?php echo JHtml::_('image', $this->contact->image, $this->contact->name, array('align' => 'middle', 'class' => 'caption', 'title' => $this->contact->address)); ?>
 			</div>
 		<?php endif; ?>
 	</div>
@@ -73,3 +77,4 @@ $cparams = JComponentHelper::getParams('com_media');
 			<?php echo JHtml::_($this->params->get('presentation_style').'.end'); ?>
 			<?php endif; ?>
 </div>
+<?php echo $this->item->event->afterDisplayContent; ?>

@@ -39,6 +39,10 @@ class ComprofilerTable extends Table
 	public $avatar					=	null;
 	/** @var int */
 	public $avatarapproved			=	null;
+	/** @var string */
+	public $canvas					=	null;
+	/** @var int */
+	public $canvasapproved			=	null;
 	/** @var int */
 	public $approved				=	null;
 	/** @var int */

@@ -216,14 +216,24 @@
 							cbtooltip.element.triggerHandler( 'cbtooltip.hidden', [cbtooltip, event, api] );
 
 							if ( tooltipDialog ) {
-								cbtooltip.element.cbtooltip( 'destroy' );
-								cbtooltip.element.remove();
+								if ( ! cbtooltip.element.data( 'cbtooltip' ) ) {
+									// We lost our data; lets clean up directly with qtip API:
+									api.destroy( true );
+								} else {
+									cbtooltip.element.cbtooltip( 'destroy' );
+									cbtooltip.element.remove();
+								}
 							} else {
 								if ( ! cbtooltip.settings.keepAlive ) {
-									cbtooltip.options.id = api.get( 'id' );
+									if ( ! cbtooltip.element.data( 'cbtooltip' ) ) {
+										// We lost our data; lets clean up directly with qtip API:
+										api.destroy( true );
+									} else {
+										cbtooltip.options.id = api.get( 'id' );
 
-									cbtooltip.element.cbtooltip( 'destroy' );
-									cbtooltip.element.cbtooltip( cbtooltip.options );
+										cbtooltip.element.cbtooltip( 'destroy' );
+										cbtooltip.element.cbtooltip( cbtooltip.options );
+									}
 								}
 							}
 						},
@@ -244,9 +254,16 @@
 				});
 
 				// Destroy the cbtooltip element:
-				cbtooltip.element.on( 'remove destroy.cbtooltip', function() {
-					cbtooltip.element.cbtooltip( 'destroy' );
-				});
+				if ( tooltipModal || tooltipDialog ) {
+					// Only destroy modal or dialog if it has been directly closed:
+					cbtooltip.element.on( 'destroy.cbtooltip', function() {
+						cbtooltip.element.cbtooltip( 'destroy' );
+					});
+				} else {
+					cbtooltip.element.on( 'remove destroy.cbtooltip', function() {
+						cbtooltip.element.cbtooltip( 'destroy' );
+					});
+				}
 
 				// Rebind the cbtooltip element to pick up any data attribute modifications:
 				cbtooltip.element.on( 'rebind.cbtooltip', function() {

@@ -924,6 +924,7 @@
 				<column name="title" type="sql:varchar(50)" />
 				<column name="description" type="sql:text" null="true" />
 				<column name="ordering" type="sql:int(11)" />
+				<column name="ordering_edit" type="sql:int(11)" default="10" initialvalue="ordering_register" initialvaluetype="sql:field" />
 				<column name="ordering_register" type="sql:int(11)" default="10" />
 				<column name="width" type="sql:varchar(10)" default=".5" />
 				<column name="enabled" type="sql:tinyint(1)" default="1" />
@@ -949,6 +950,12 @@
 					<column name="position" />
 					<column name="ordering" />
 				</index>
+				<index name="orderedit_enabled_pos_order">
+					<column name="enabled" />
+					<column name="ordering_edit" />
+					<column name="position" />
+					<column name="ordering" />
+				</index>
 				<index name="orderreg_enabled_pos_order">
 					<column name="enabled" />
 					<column name="ordering_register" />
@@ -963,6 +970,7 @@
 					<field name="title" value="USER_STATISTICS_TITLE" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="1" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value=".5" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -980,6 +988,7 @@
 					<field name="title" value="USER_CANVAS_TITLE" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="1" valuetype="const:int" />
+					<field name="ordering_edit" value="11" valuetype="const:int" />
 					<field name="ordering_register" value="11" valuetype="const:int" />
 					<field name="width" value="1" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -997,6 +1006,7 @@
 					<field name="title" value="BLOGS_TITLE" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="3" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value="1" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -1014,6 +1024,7 @@
 					<field name="title" value="FORUMS_TITLE" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="4" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value="1" valuetype="const:string" />
 					<field name="enabled" value="0" valuetype="const:int" />
@@ -1031,6 +1042,7 @@
 					<field name="title" value="ARTICLES_TITLE" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="2" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value="1" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -1048,6 +1060,7 @@
 					<field name="title" value="_UE_CONTACT_INFO_HEADER" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="1" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value="1" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -1065,6 +1078,7 @@
 					<field name="title" value="_UE_CONNECTION" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="5" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value="1" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -1082,6 +1096,7 @@
 					<field name="title" value="_UE_MENU" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="1" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value="1" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -1099,6 +1114,7 @@
 					<field name="title" value="_UE_CONNECTIONPATHS" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="1" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value="1" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -1116,6 +1132,7 @@
 					<field name="title" value="_UE_PROFILE_PAGE_TITLE" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="1" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value="1" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -1133,6 +1150,7 @@
 					<field name="title" value="_UE_PORTRAIT" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="1" valuetype="const:int" />
+					<field name="ordering_edit" value="11" valuetype="const:int" />
 					<field name="ordering_register" value="11" valuetype="const:int" />
 					<field name="width" value="1" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -1150,6 +1168,7 @@
 					<field name="title" value="_UE_USER_STATUS" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="1" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value=".5" valuetype="const:string" />
 					<field name="enabled" value="1" valuetype="const:int" />
@@ -1167,6 +1186,7 @@
 					<field name="title" value="_UE_PMSTAB" valuetype="const:string" />
 					<field name="description" value="" valuetype="const:string" />
 					<field name="ordering" value="6" valuetype="const:int" />
+					<field name="ordering_edit" value="10" valuetype="const:int" />
 					<field name="ordering_register" value="10" valuetype="const:int" />
 					<field name="width" value=".5" valuetype="const:string" />
 					<field name="enabled" value="0" valuetype="const:int" />

@@ -2200,7 +2200,7 @@ class RegistryEditView {
 			*/
 			case 'trigger':
 				$isSaving			=	( $htmlFormatting == 'fieldsListArray' );
-				$errorText			=	$this->triggerXML( $param, $this->_pluginObject, $this, $isSaving );
+				$errorText			=	$this->triggerXML( $param, $this->_pluginObject, $isSaving );
 				if ( $errorText ) {
 					$html[]			=	$errorText;
 				}
@@ -3001,16 +3001,16 @@ class RegistryEditView {
 	 * checks if there is an <attributes> extension in a <param> and sets attributes depending on any other param type
 	 *
 	 * @param  SimpleXMLElement  $param         The element to extend (modified by adding attributes from <attributes>)
-	 * @param  string              $control_name  The control name
-	 * @param  boolean            $view           true if view only, false if editable
+	 * @param  string            $control_name  The control name
+	 * @param  boolean           $view          true if view only, false if editable
 	 * @return void
 	 */
 	function extendParamAttributes( &$param, $control_name = 'params', $view = true ) {
 		$attributes											=	$param->getElementByPath( 'attributes' );
-		if ( $attributes ) {
+		if ( $attributes && Access::authorised( $attributes ) ) {
 			foreach ( $attributes->children() as $attr ) {
 				/** @var  SimpleXMLElement  $attr */
-				if ( $attr->getName() == 'attribute' ) {
+				if ( ( $attr->getName() == 'attribute' ) && Access::authorised( $attr ) ) {
 					$attName								=	$attr->attributes( 'name' );
 					$attSeparator							=	$attr->attributes( 'separator' );
 					$attTransform							=	$attr->attributes( 'transform' );
@@ -3021,6 +3021,9 @@ class RegistryEditView {
 						if ( $attName ) {
 							foreach ( $attr->children() as $dataAttr ) {
 								/** @var  SimpleXMLElement  $dataAttr */
+								if ( ( ! Access::authorised( $dataAttr ) ) && ( ! ( ( $dataAttr->getName() == 'if' ) && ( $dataAttr->attributes( 'type' ) == 'permission' ) ) ) ) {
+									continue;
+								}
 								if ( $dataAttr->getName() == 'param' ) {
 									$this->extendParamAttributes( $dataAttr, $control_name );
 									$result					=	$this->renderParam( $dataAttr, $control_name, true, 'table' );
@@ -6222,7 +6225,7 @@ class RegistryEditView {
 			if ( $type == 'folderlist' ) {
 				$filter					=	'^[^.]+$';
 			} elseif ( $type == 'imagelist' ) {
-				$filter					=	'\.png$|\.gif$|\.jpg$|\.bmp$|\.ico$';
+				$filter					=	'\.png$|\.gif$|\.jpg$|\.bmp$|\.ico$|\.svg$';
 			} else {
 				$filter					=	$node->attributes( 'filter' );
 
@@ -6978,7 +6981,7 @@ class RegistryEditView {
 		if ( $this->_view ) {
 			return ( $value == 1 ? $yes : $no );
 		} else {
-			$classes			=	'class="' . htmlspecialchars( RegistryEditView::buildClasses( $node, array( 'btn-group-yesno' ) ) ) . '"';
+			$classes			=	'class="' . htmlspecialchars( RegistryEditView::buildClasses( $node, array( 'btn-group', 'btn-group-yesno' ) ) ) . '"';
 			$attributes			=	$this->getTooltipAttr( $node, $classes );
 
 			$return				=	'<div' . ( $attributes ? ' ' . trim( $attributes ) : null ) . '>'

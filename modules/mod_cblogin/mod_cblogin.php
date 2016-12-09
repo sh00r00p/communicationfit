@@ -54,6 +54,17 @@ $showForgotLogin					=	(int) $params->get( 'show_lostpass', 1 );
 $showRegister						=	( ( $_CB_framework->getCfg( 'allowUserRegistration' ) || ( isset( $ueConfig['reg_admin_allowcbregistration'] ) && ( $ueConfig['reg_admin_allowcbregistration'] == 1 ) ) ) && $params->get( 'show_newaccount', 1 ) );
 $showPrivateMessages				=	(int) $params->get( 'show_pms', 0 );
 $showConnectionRequests				=	(int) $params->get( 'show_connection_notifications', 0 );
+$styleUsername						=	$params->get( 'style_username_cssclass' );
+$stylePassword						=	$params->get( 'style_password_cssclass' );
+$styleSecretKey						=	$params->get( 'style_secretkey_cssclass' );
+$styleLogin							=	$params->get( 'style_login_cssclass' );
+$styleLogout						=	$params->get( 'style_logout_cssclass' );
+$styleForgotLogin					=	$params->get( 'style_forgotlogin_cssclass' );
+$styleRegister						=	$params->get( 'style_register_cssclass' );
+$styleProfile						=	$params->get( 'style_profile_cssclass' );
+$styleProfileEdit					=	$params->get( 'style_profileedit_cssclass' );
+$styleConnRequests					=	$params->get( 'style_connrequests_cssclass' );
+$stylePrivateMsgs					=	$params->get( 'style_privatemsgs_cssclass' );
 
 if ( $params->get( 'logoutpretext' ) ) {
 	$preLogoutText					=	$cbUser->replaceUserVars( $params->get( 'logoutpretext' ) );

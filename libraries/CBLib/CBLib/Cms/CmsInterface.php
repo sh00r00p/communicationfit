@@ -102,10 +102,12 @@ interface CmsInterface
 	/**
 	 * Prepares the HTML $htmlText with triggering CMS Content Plugins
 	 *
-	 * @param  string   $htmlText
+	 * @param  string $htmlText
+	 * @param  string $context
+	 * @param  int    $userId
 	 * @return string
 	 */
-	public function prepareHtmlContentPlugins( $htmlText );
+	public function prepareHtmlContentPlugins( $htmlText, $context = 'text', $userId = 0 );
 
 	/**
 	 * Get CMS Database object
