@@ -3055,45 +3055,8 @@ namespace
 
 	function cbPoweredBy()
 	{
-		global $ueConfig;
 
-		if ( isset( $ueConfig['poweredBy'] ) && ( ! $ueConfig['poweredBy'] ) ) {
-			return null;
-		}
-
-		$input				=	Application::Input();
-		$url				=	$input->get( 'server/SERVER_NAME', null, GetterInterface::STRING ) . $input->get( 'server/REQUEST_URI', null, GetterInterface::STRING );
-
-		$urls				=	array(
-										array( 'title' => 'social network platform', 'url' => 'http://www.joomlapolis.com/social-networking?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'community software', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'online community software', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'social networking software', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'open source social networking', 'url' => 'http://www.joomlapolis.com/social-networking?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'social network script', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'social community software', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'online social networking', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'social websites', 'url' => 'http://www.joomlapolis.com/social-networking?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'online community sites', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'how to build a social networking site', 'url' => 'http://www.joomlapolis.com?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'how to create a social network', 'url' => 'http://www.joomlapolis.com?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'online membership sites', 'url' => 'http://www.joomlapolis.com/cb-solutions/cbsubs?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'online paid subscription sites', 'url' => 'http://www.joomlapolis.com/cb-solutions/cbsubs?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'membership sites', 'url' => 'http://www.joomlapolis.com/cb-solutions/cbsubs?pk_campaign=in-cb&pk_kwd=poweredby' ),
-										array( 'title' => 'paid membership sites', 'url' => 'http://www.joomlapolis.com/cb-solutions/cbsubs?pk_campaign=in-cb&pk_kwd=poweredby' )
-									);
-
-		list( $urlBits )	=	sscanf( substr( md5( $url ), -4 ), '%4x' );
-
-		$key				=	( $urlBits % count( $urls ) );
-
-		$return				=	'<div class="cbPoweredBy cb_template cb_template_' . selectTemplate( 'dir' ) . '">'
-							.		'<div class="text-center text-small content-spacer">'
-							.			'<a title="' . htmlspecialchars( $urls[$key]['title'] ) . '" href="' . htmlspecialchars( $urls[$key]['url'] ) . '" target="_blank">'
-							.				'Powered by Community Builder'
-							.			'</a>'
-							.		'</div>'
-							.	'</div>';
+		$return				=	'';
 
 		return $return;
 	}
