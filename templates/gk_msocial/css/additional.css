@@ -1,58 +1,17 @@
-#gkUserArea {
-    border: none;
-}
-
-.gkLogo {
-	margin: 0 10px;
-}
-
-#gkTop {
-    padding: 0;
-}
-
-#gkMainMenu {
-    float: none;
-}
-
-#gkMainMenu .gkMenu > ul > li {
-    font-size: 12px;
-}
-
-span#fb-auth {
-    float: right;
-}
-
-.bigtitle .header, h1, h2, h3, h4, h5, h6, .gkMenu ul li, #gkUserArea, #gkSearch, .gkTabsWrap ol li, #gkLogo.text, #gkFooter, button, .button, .readon, .button.inverse:active, .button.inverse:focus, .button.inverse:hover, input.button, span.button, button.button, div.button, .readmore a, input[type="submit"], input[type="button"], .gkPriceTable dd a, article header > time, .gkPriceTable dt, section > header div p, .big-btn, .gkAuthor, #community-wrap h1, #community-wrap h2, #community-wrap h3, #community-wrap h4, #community-wrap h5, #community-wrap h6, #community-wrap .cFilter .filters li, #community-wrap .app-box-footer, .box .app-box-footer, .gkJSFeed .gkUsername, .cGuest .hero-area h1 + p, #gkMenuOverlayContent .gkcol li a, #community-wrap .cStream-Author, #community-wrap .cSubmenu li a, #community-wrap .js-focus-menu a {
-    font-family: Tahoma, sans-serif !important;
-}
-
-.img-fulltext-none img, .img-fulltext-left img, .img-fulltext-right img {
-    width: 50%!important;
-}
-
-footer .desc {
-    text-transform: none;
-}
-
-.gkPhoto > a:hover {
-    opacity: 0.5;
-}
-
-.gkPhoto > a:hover {
-	text-indent: inherit;
-}
-
-.icon-users:before {
-  content: "\f0c0";
-}
-
-.icon-newspaper-o:before {
-	content: "\f1ea";
-}
-
-.icon-graduation-cap:before {
-	content: "\f19d";
-}
+#gkUserArea { border: none; }
+.gkLogo { margin: 0 10px; }
+#gkTop { padding: 0; }
+#gkMainMenu { float: none; }
+#gkMainMenu .gkMenu > ul > li { font-size: 12px; }
+span#fb-auth { float: right; }
+.bigtitle .header, h1, h2, h3, h4, h5, h6, .gkMenu ul li, #gkUserArea, #gkSearch, .gkTabsWrap ol li, #gkLogo.text, #gkFooter, button, .button, .readon, .button.inverse:active, .button.inverse:focus, .button.inverse:hover, input.button, span.button, button.button, div.button, .readmore a, input[type="submit"], input[type="button"], .gkPriceTable dd a, article header > time, .gkPriceTable dt, section > header div p, .big-btn, .gkAuthor, #community-wrap h1, #community-wrap h2, #community-wrap h3, #community-wrap h4, #community-wrap h5, #community-wrap h6, #community-wrap .cFilter .filters li, #community-wrap .app-box-footer, .box .app-box-footer, .gkJSFeed .gkUsername, .cGuest .hero-area h1 + p, #gkMenuOverlayContent .gkcol li a, #community-wrap .cStream-Author, #community-wrap .cSubmenu li a, #community-wrap .js-focus-menu a { font-family: Tahoma, sans-serif !important; }
+.img-fulltext-none img, .img-fulltext-left img, .img-fulltext-right img { width: 50%!important; }
+footer .desc { text-transform: none; }
+.gkPhoto > a:hover { opacity: 0.5; }
+.gkPhoto > a:hover { text-indent: inherit; }
+.icon-users:before { content: "\f0c0"; }
+.icon-newspaper-o:before { content: "\f1ea"; }
+.icon-graduation-cap:before { content: "\f19d"; }
 
 .gridMenu .title {
 	position: absolute;
@@ -64,16 +23,13 @@ footer .desc {
 	text-align: center;
 }
 
-.gkIcon > i {
-	top: 30%;
-}
+.gkIcon > i { top: 30%; }
+.categories-list .left .cat-img, .left, .right { width: 50%; }
+.left { float: left; }
+.right { float: right; }
+
 
 @media screen and (max-width: 1030px) {
-    #gkTop {
-        padding: 0!important;
-    }
-    
-    #gkTop #gkMobileMenu {
-        margin: 10px 10px 0 10px!important;
-    }
+    #gkTop { padding: 0!important; }
+    #gkTop #gkMobileMenu { margin: 10px 10px 0 10px!important; }
 }

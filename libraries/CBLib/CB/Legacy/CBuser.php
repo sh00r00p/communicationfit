@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/16/14 4:46 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -334,17 +334,40 @@ class CBuser
 	{
 		global $_CB_framework, $_PLUGINS;
 
-		$tabs			=&	$this->_getCbTabs( false );
-		$fields			=	$tabs->_getTabFieldsDb( null, $this->getMyUserDataInstance( $_CB_framework->myId() ), $reason, $fieldName, true, $fullAccess );
+		$tabs							=&	$this->_getCbTabs( false );
+		$fields							=	$tabs->_getTabFieldsDb( null, $this->getMyUserDataInstance( $_CB_framework->myId() ), $reason, $fieldName, true, $fullAccess );
+
 		if ( isset( $fields[0] ) ) {
-			$field		=	$fields[0];
-			if ( $fieldVariables ) foreach ( $fieldVariables as $name => $value ) {
-				$field->set( $name, $value );
+			$field						=	$fields[0];
+			$variableCache				=	array();
+
+			// If custom variables were supplied lets set them:
+			if ( $fieldVariables ) foreach ( $fieldVariables as $k => $v ) {
+				if ( $k == 'params' ) {
+					$variableCache[$k]	=	$field->params->asArray();
+
+					$field->params->load( $v );
+				} else {
+					$variableCache[$k]	=	$field->get( $k );
+
+					$field->set( $k, $v );
+				}
 			}
-			$value		=	$_PLUGINS->callField( $field->type, 'getFieldRow', array( &$field, &$this->_cbuser, $output, $formatting, $reason, $list_compare_types ), $field );
+
+			$value						=	$_PLUGINS->callField( $field->type, 'getFieldRow', array( &$field, &$this->_cbuser, $output, $formatting, $reason, $list_compare_types ), $field );
+
+			// Revert the custom variables so we don't modify our reference field object from _getTabFieldsDb:
+			foreach ( $variableCache as $k => $v ) {
+				if ( $k == 'params' ) {
+					$field->params->reset()->load( $v );
+				} else {
+					$field->set( $k, $v );
+				}
+			}
 		} else {
-			$value		=	$defaultValue;
+			$value						=	$defaultValue;
 		}
+
 		return $value;
 	}
 
@@ -604,6 +627,8 @@ class CBuser
 	 */
 	public function replaceUserVars( $msg, $htmlspecialchars = true, $menuStats = true, $extraStrings = null, $translateLanguage = true )
 	{
+		global $_PLUGINS;
+
 		if ( $extraStrings === null ) {
 			$extraStrings	=	array();
 		}
@@ -619,6 +644,8 @@ class CBuser
 		$msg				=	$this->_evaluateIfs( $msg, $extraStrings );
 		$msg				=	$this->_evaluateCbTags( $msg );
 		$msg				=	$this->_evaluateCbFields( $msg, $htmlspecialchars );
+
+		$_PLUGINS->trigger( 'onAfterSubstitutions', array( &$msg, $htmlspecialchars, $menuStats, &$extraStrings, $translateLanguage ) );
 
 		foreach( $extraStrings AS $k => $v ) {
 			if( ( ! is_object( $v ) ) && ( ! is_array( $v ) ) ) {
@@ -849,16 +876,25 @@ class CBuser
 	 *
 	 * @param  string|array  $input
 	 * @param  array         $extraStrings
+	 * @param  bool          $elseIf
 	 * @return string
 	 */
-	public function _evaluateIfs( $input, $extraStrings = array() )
+	public function _evaluateIfs( $input, $extraStrings = array(), $elseIf = false )
 	{
 //		$regex										=	"#\[if ([^\]]+)\](.*?)\[/if\]#s";
 //		$regex 										=	'#\[indent]((?:[^[]|\[(?!/?indent])|(?R))+)\[/indent]#s';
-		$regex										=	'#\[cb:if(?: +user="([^"/\[\] ]+)")?( +[^\]]+)\]((?:[^\[]|\[(?!/?cb:if[^\]]*])|(?R))+)\[/cb:if]#';
+		$regex										=	'#\[cb:if(?: +user="([^"/\[\] ]+)")?( +[^\]]+)\]((?:[^\[]+|\[(?!/?cb:if[^\]]*])|(?R))+)\[/cb:if]#';
+		$regexElseIf								=	'#\[cb:elseif(?: +user="([^"/\[\] ]+)")?( +[^\]]+)\]((?:[^\[]+|\[(?!/?cb:elseif[^\]]*])|(?R))+)\[/cb:elseif]#';
+		$regexElse									=	'#\[cb:else\]((?:[^\[]+|\[(?!/?cb:else[^\]]*])|(?R))+)\[/cb:else]#';
+
+		if ( ( ! $input ) || strpos( $input, ( $elseIf ? '[cb:elseif' : '[cb:if' ) ) === false ) {
+			// There's nothing to even check for so don't waste resources doing a preg_replace_callback when we don't have to:
+			return $input;
+		}
+
 		$that										=	$this;
 
-		return preg_replace_callback( $regex, function( array $matches ) use ( $extraStrings, $that )
+		return preg_replace_callback( ( $elseIf ? $regexElseIf : $regex ), function( array $matches ) use ( $extraStrings, $elseIf, $regexElseIf, $regexElse, $that )
 		{
 			$regex2									=	'# +(?:(&&|and|\|\||or|) +)?([^=<!>~ ]+) *(=|<|>|>=|<=|<>|!=|=~|!~| includes |!includes ) *"([^"]*)"#';
 			$conditions								=	null;
@@ -987,7 +1023,39 @@ class CBuser
 					$r								=	( $r || $rr );
 				}
 
-				return ( $r ? $matches[3] : '' );
+				$string								=	$matches[3];
+				$stringElse							=	'';
+
+				if ( ! $elseIf ) {
+					// Check for an elseif usage and parse:
+					if ( ( strpos( $string, '[cb:elseif' ) !== false ) && preg_match_all( $regexElseIf, $string, $matchesElseIf ) ) {
+						for ( $i = 0, $n = count( $matchesElseIf[0] ); $i < $n; $i++ ) {
+							if ( $r ) {
+								// The if usage matched so we need to remove these elseif strings:
+								$string				=	str_replace( $matchesElseIf[0][$i], '', $string );
+							} else {
+								$stringElse			=	$that->_evaluateIfs( $matchesElseIf[0][$i], $extraStrings, true );
+
+								if ( $stringElse ) {
+									// We found an elseif match so stop as we don't need to check the others:
+									break;
+								}
+							}
+						}
+					}
+
+					// Check for else usage and parse if an else string (from elseif) hasn't already been found:
+					if ( ( strpos( $string, '[cb:else]' ) !== false ) && ( ! $stringElse ) && preg_match( $regexElse, $string, $matchesElse ) ) {
+						if ( $r ) {
+							// The if usage matched so we need to remove this else string:
+							$string					=	str_replace( $matchesElse[0], '', $string );
+						} else {
+							$stringElse				=	$matchesElse[1];
+						}
+					}
+				}
+
+				return $that->_evaluateIfs( ( $r ? $string : $stringElse ), $extraStrings );
 			} else {
 				return '';
 			}

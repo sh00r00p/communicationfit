@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/17/14 11:36 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -121,13 +121,6 @@ class cbConnection
 		$rowFrom->load( (int) $userId );
 
 		$fromName				=	getNameFormat( $rowFrom->name, $rowFrom->username, $ueConfig['name_format'] );
-		$fromURL				=	'index.php?option=com_comprofiler&amp;view=userprofile&amp;user=' . $userId . '&amp;tab=1' . getCBprofileItemid(true);
-		$fromURL				=	cbSef( $fromURL );
-
-		if ( strncasecmp( 'http', $fromURL, 4 ) != 0 ) {
-			$fromURL			=	$_CB_framework->getCfg( 'live_site' ) . '/' . $fromURL;
-		}
-
 		$subject				=	sprintf( $subject, $fromName );
 
 		if ( $userMessage != null ) {
@@ -139,18 +132,11 @@ class cbConnection
 											 $userMessage );
 		}
 
-		$notificationMsgHTML	=	sprintf( $messageHTML, '<strong><a href="' . $fromURL . '">' . htmlspecialchars( $fromName ) . '</a></strong>' );
+		$notificationMsgHTML	=	sprintf( $messageHTML, '<strong><a href="' . $_CB_framework->viewUrl( 'userprofile', true, array( 'user' => $userId ) ) . '">' . htmlspecialchars( $fromName ) . '</a></strong>' );
 		$notificationMsgText	=	sprintf( $messageText, $fromName );
 
-		$manageURL				=	'index.php?option=com_comprofiler&amp;view=manageconnections' . getCBprofileItemid( true );
-		$manageURL				=	cbSef( $manageURL );
-
-		if ( strncasecmp( 'http', $manageURL, 4 ) != 0 ) {
-			$manageURL			=	$_CB_framework->getCfg( 'live_site' ) . '/' . $manageURL;
-		}
-
 		$notificationMsgHTML	=	$notificationMsgHTML
-								.	"\n<br /><br /><a href=\"" . $manageURL . '">'
+								.	"\n<br /><br /><a href=\"" . $_CB_framework->viewUrl( 'manageconnections' ) . '">'
 								.	CBTxt::T( 'UE_MANAGECONNECTIONS_LINK UE_MANAGECONNECTIONS', 'Manage Connections' )
 								.	"</a>\n";
 
@@ -158,13 +144,13 @@ class cbConnection
 								.	"\r\n\r\n\r\n" . $fromName . ' '
 								.	CBTxt::T( 'CONNECTION_PROFILE UE_PROFILE', 'Profile' )
 								.	': '
-								.	cbUnHtmlspecialchars( $fromURL );
+								.	$_CB_framework->viewUrl( 'userprofile', false, array( 'user' => $userId ) );
 
 		$notificationMsgText	=	$notificationMsgText
 								.	"\r\n\r\n"
 								.	CBTxt::T( 'UE_MANAGECONNECTIONS_URL_LABEL UE_MANAGECONNECTIONS', 'Manage Connections' )
 								.	': '
-								.	cbUnHtmlspecialchars( $manageURL )
+								.	$_CB_framework->viewUrl( 'manageconnections', false )
 								.	"\r\n";
 
 		$notificationMsgHTML	=	'<div style="padding: 4px; margin: 4px 3px 6px 0px; background: #C44; font-weight: bold;" class="cbNotice">'

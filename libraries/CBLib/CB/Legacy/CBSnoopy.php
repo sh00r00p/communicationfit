@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/20/14 12:24 AM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -46,6 +46,7 @@ http://snoopy.sourceforge.net/
 /**
  * CBSnoopy Class implementation
  * //BB renamed for CB 1.2.2 to avoid namespace collisions as much as possible
+ * @deprecated CB 2.1 : use Guzzle
  */
 class CBSnoopy
 {

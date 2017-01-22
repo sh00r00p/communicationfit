@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/16/14 9:50 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -1402,16 +1402,18 @@ class CBframework
 			$menu		=	JFactory::getApplication()->getMenu()->getActive();
 
 			if ( $menu && isset( $menu->id ) ) {
+				$cbUser	=	CBuser::getMyInstance();
+
 				if ( $menu->params->get( 'page_title' ) ) {
-					$this->setPageTitle( CBTxt::T( $menu->params->get( 'page_title' ) ) );
+					$this->setPageTitle( $cbUser->replaceUserVars( $menu->params->get( 'page_title' ), true, false ) );
 				}
 
 				if ( $menu->params->get( 'menu-meta_description' ) ) {
-					$this->document->addHeadMetaData( 'description', CBTxt::T( $menu->params->get( 'menu-meta_description' ) ) );
+					$this->document->addHeadMetaData( 'description', $cbUser->replaceUserVars( $menu->params->get( 'menu-meta_description' ), true, false ) );
 				}
 
 				if ( $menu->params->get( 'menu-meta_keywords' ) ) {
-					$this->document->addHeadMetaData( 'keywords', CBTxt::T( $menu->params->get( 'menu-meta_keywords' ) ) );
+					$this->document->addHeadMetaData( 'keywords', $cbUser->replaceUserVars( $menu->params->get( 'menu-meta_keywords' ), true, false ) );
 				}
 
 				if ( $menu->params->get( 'robots' ) ) {
@@ -1550,6 +1552,7 @@ class CBframework
 	 * @var array
 	 */
 	var $_jqueryDependencies	=	array(
+											'ui-all'			=>	array( 1 => array( 'touchpunch' ) ),
 											'flot'				=>	array( 1 => array( 'excanvas' ) ),
 											'fileupload'		=>	array( -1 => array( 'ui-all', 'iframe-transport' ) ),
 											'colorpicker'		=>	array( -1 => array( 'ui-all' ) ),
@@ -1557,7 +1560,7 @@ class CBframework
 											'cbvalidate'		=>	array( -1 => array( 'validate', 'scrollto' ) ),
 											'cbtooltip'			=>	array( -1 => array( 'qtip' ) ),
 											'cbtimeago'			=>	array( -1 => array( 'livestamp' ) ),
-											'cbselect'			=>	array( -1 => array( 'select2', 'multiple.select' ) ),
+											'cbselect'			=>	array( -1 => array( 'select2' ) ),
 											'cbrepeat'			=>	array( -1 => array( 'ui-all' ) ),
 											'cbdatepicker'		=>	array( -1 => array( 'ui-all', 'timepicker', 'combodate' ) ),
 											'cbscroller'		=>	array( -1 => array( 'scrollto' ) )
@@ -1576,8 +1579,7 @@ class CBframework
 											'timepicker'		=>	array( 'jquery/timepicker/timepicker.css' => array( false, null ) ),
 											'media'				=>	array( 'jquery/media/media.css' => array( false, null ) ),
 											'rateit'			=>	array( 'jquery/rateit/rateit.css' => array( false, null ) ),
-											'qtip'				=>	array( 'jquery/qtip/qtip.css' => array( false, null ) ),
-											'multiple.select'	=>	array( 'jquery/multipleselect/multiple-select.css' => array( false, null ) )
+											'qtip'				=>	array( 'jquery/qtip/qtip.css' => array( false, null ) )
 										 );
 	/**
 	 * related JS files with min: array( 'pluginName => array( 'jsFile.js' => boolean: minifiedVersionExists? )
@@ -1585,7 +1587,7 @@ class CBframework
 	 */
 	var $_jqueryJsFiles			=	array(
 											'livestamp'			=>	array( 'moment.js' => true ),
-											'combodate'			=>	array( 'moment.js' => true )
+											'combodate'			=>	array( 'moment.js' => true, 'moment-timezone.js' => true )
 										 );
 
 	/**
@@ -1640,7 +1642,7 @@ class CBframework
 				if ( isset( $this->_jqueryDependencies[$jQueryPlugin][-1] ) ) {
 					foreach ( $this->_jqueryDependencies[$jQueryPlugin][-1] as $jLib ) {
 						if ( ! isset( $this->_jQueryPlugins[$jLib] ) ) {
-							$this->_jQueryPlugins[$jLib]	=	$this->_coreJQueryFilePath( $jLib );
+							$this->addJQueryPlugin( $jLib, true );
 						}
 					}
 				}
@@ -1649,7 +1651,7 @@ class CBframework
 				if ( isset( $this->_jqueryDependencies[$jQueryPlugin][1] ) ) {
 					foreach ( $this->_jqueryDependencies[$jQueryPlugin][1] as $jLib ) {
 						if ( ! isset( $this->_jQueryPlugins[$jLib] ) ) {
-							$this->_jQueryPlugins[$jLib]	=	$this->_coreJQueryFilePath( $jLib );
+							$this->addJQueryPlugin( $jLib, true );
 						}
 					}
 				}

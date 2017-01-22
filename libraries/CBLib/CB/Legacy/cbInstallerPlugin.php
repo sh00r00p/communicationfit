@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/20/14 1:24 AM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -87,7 +87,7 @@ class cbInstallerPlugin extends cbInstaller
 		$v						=	$cbInstallXML->getElementByPath( 'version' );
 		$version				=	$v->data();
 		// We need to keep the use of a duplicate string here for upgrades from CB 2.0.13-. Can't use CBLib::version() as old CBLib may already be loaded. (fixes bug #5881)
-		$THISCBVERSION			=	'2.0.15';               // IMPORTANT: DO NOT CHANGE MANUALLY, but when changing version automatically here also change 2 times in CBLib.php, the 8 XML installation files and build.xml
+		$THISCBVERSION			=	'2.1.2';               // IMPORTANT: DO NOT CHANGE MANUALLY, but when changing version automatically here also change 2 times in CBLib.php, the 8 XML installation files and build.xml
 		if ( ( $version == $ueConfig['version'] ) || ( $version == $THISCBVERSION ) || ( version_compare( $version, $ueConfig['version'], '<=' ) && version_compare( $version, '1.0', '>=' ) ) ) {
 			;
 		} else {

@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 5/17/14 5:32 PM $
 * @package CBLib\Entity\User
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -53,12 +53,6 @@ class User implements EntityInterface, AuthoriseInterface, GetterInterface
 	 * @var array
 	 */
 	private static $viewAccessLevelsCache;
-
-	/**
-	 * User id of logged-in user
-	 * @var int|boolean
-	 */
-	protected static $myId			=	false;
 
 	/**
 	 * User id
@@ -111,13 +105,9 @@ class User implements EntityInterface, AuthoriseInterface, GetterInterface
 		if ( $idOrConditions === null )
 		{
 			// Get viewing user:
-			if ( self::$myId === false )
-			{
-				$cmsUser		=	$cms->getCmsUser( null );
-				self::$myId		=	(int) $cmsUser->get( 'id' );
-			}
+			$cmsUser			=	$cms->getCmsUser( null );
 
-			$idOrConditions		=	self::$myId;
+			$idOrConditions		=	(int) $cmsUser->get( 'id' );
 		}
 		elseif ( is_string( $idOrConditions ) && ! is_numeric( $idOrConditions ) )
 		{
@@ -168,11 +158,6 @@ class User implements EntityInterface, AuthoriseInterface, GetterInterface
 	{
 		$this->cmsUser->resetCache();
 		unset( self::$usersCache[$this->id] );
-
-		if ( $this->id == self::$myId )
-		{
-			self::$myId		=	false;
-		}
 	}
 
 	/**

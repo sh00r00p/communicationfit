@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 08.06.13 17:29 $
 * @package CBLib\Database
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -324,6 +324,7 @@ class Date
 			$format			=	preg_replace( '/(^|[^\\\])D/', "\\1" . self::DAY_ABBR, $format );
 			$format			=	preg_replace( '/(^|[^\\\])l/', "\\1" . self::DAY_NAME, $format );
 			$format			=	preg_replace( '/(^|[^\\\])M/', "\\1" . self::MONTH_ABBR, $format );
+			$format			=	preg_replace( '/(^|[^\\\])F/', "\\1" . self::MONTH_NAME, $format );
 			$format			=	preg_replace( '/(^|[^\\\])a/', "\\1" . self::MERIDIEM_LOWER, $format );
 			$format			=	preg_replace( '/(^|[^\\\])A/', "\\1" . self::MERIDIEM_UPPER, $format );
 		}

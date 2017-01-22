@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 5/17/14 5:37 PM $
 * @package CBLib\Entity
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 

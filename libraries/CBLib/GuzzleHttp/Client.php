@@ -255,9 +255,13 @@ class Client implements ClientInterface
             $settings['verify'] = ini_get('openssl.cafile') ?: true;
         }
 
-        // Use the standard Linux HTTP_PROXY and HTTPS_PROXY if set
-        if (isset($_SERVER['HTTP_PROXY'])) {
-            $settings['proxy']['http'] = $_SERVER['HTTP_PROXY'];
+        // Use the standard Linux HTTP_PROXY and HTTPS_PROXY if set.
+
+        // We can only trust the HTTP_PROXY environment variable in a CLI
+        // process due to the fact that PHP has no reliable mechanism to
+        // get environment variables that start with "HTTP_".
+        if (php_sapi_name() == 'cli' && getenv('HTTP_PROXY')) {
+            $settings['proxy']['http'] = getenv('HTTP_PROXY');
         }
 
         if (isset($_SERVER['HTTPS_PROXY'])) {

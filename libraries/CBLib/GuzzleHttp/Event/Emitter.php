@@ -45,8 +45,7 @@ class Emitter implements EmitterInterface
     {
 		$that	=	$this;
         $onceListener = function (
-            EventInterface $event,
-            $eventName
+            EventInterface $event
         ) use (&$onceListener, $eventName, $listener, $priority, $that) {
             $that->removeListener($eventName, $onceListener);
             call_user_func_array($listener, array($event, $eventName, $that));

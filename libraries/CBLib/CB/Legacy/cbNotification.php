@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/17/14 11:39 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -301,21 +301,21 @@ class cbNotification
 	 * Send email from system to a user
 	 * Replaces optionally variables
 	 *
-	 * @param  int|UserTable  $toUserOrUserId    Receiver
-	 * @param  string         $subject           Subject
-	 * @param  string         $message           HTML message for PMS
-	 * @param  boolean|int    $replaceVariables  Should we replace variables ?
-	 * @param  int            $mode              false = plain text, true = HTML
-	 * @param  null|string    $cc                Email CC address
-	 * @param  null|string    $bcc               Email BCC address
-	 * @param  null|string    $attachment        Email attachment files
-	 * @param  array          $extraStrings      Extra replacement strings to use if $replaceVariables = true
-	 * @param  boolean        $footer            Add footer "Automated message sent from" ?
-	 * @param  null|string    $fromName          [optional] From name
-	 * @param  null|string    $fromEmail         [optional] From email address
-	 * @param  null|string    $replyToName       [optional] Reply-To name
-	 * @param  null|string    $replyToEmail      [optional] Reply-To email address
-	 * @return boolean                           Result
+	 * @param  int|string|UserTable  $toUserOrUserId    Receiver
+	 * @param  string                $subject           Subject
+	 * @param  string                $message           HTML message for PMS
+	 * @param  boolean|int           $replaceVariables  Should we replace variables ?
+	 * @param  int                   $mode              false = plain text, true = HTML
+	 * @param  null|string           $cc                Email CC address
+	 * @param  null|string           $bcc               Email BCC address
+	 * @param  null|string           $attachment        Email attachment files
+	 * @param  array                 $extraStrings      Extra replacement strings to use if $replaceVariables = true
+	 * @param  boolean               $footer            Add footer "Automated message sent from" ?
+	 * @param  null|string           $fromName          [optional] From name
+	 * @param  null|string           $fromEmail         [optional] From email address
+	 * @param  null|string           $replyToName       [optional] Reply-To name
+	 * @param  null|string           $replyToEmail      [optional] Reply-To email address
+	 * @return boolean                                  Result
 	 */
 	public function sendFromSystem( $toUserOrUserId, $subject, $message, $replaceVariables = true, $mode = 0, $cc = null, $bcc = null, $attachment = null, $extraStrings = array(), $footer = true, $fromName = null, $fromEmail = null, $replyToName = null, $replyToEmail = null )
 	{
@@ -336,7 +336,15 @@ class cbNotification
 		}
 
 		if ( ! is_object( $toUserOrUserId ) ) {
-			$rowTo					=	CBuser::getUserDataInstance( (int) $toUserOrUserId );
+			if ( is_numeric( $toUserOrUserId ) ) {
+				$rowTo				=	CBuser::getUserDataInstance( (int) $toUserOrUserId );
+			} else {
+				// From system to custom email address:
+				$rowTo				=	new UserTable();
+				$rowTo->name		=	$toUserOrUserId;
+				$rowTo->username	=	$toUserOrUserId;
+				$rowTo->email		=	$toUserOrUserId;
+			}
 		} else {
 			if ( ! ( $toUserOrUserId instanceof UserTable ) ) {
 				$rowTo				=	CBuser::getUserDataInstance( (int) $toUserOrUserId->id );

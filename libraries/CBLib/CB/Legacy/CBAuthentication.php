@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/20/14 1:10 AM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -35,7 +35,6 @@ class CBAuthentication
 	{
 		global $_CB_framework, $ueConfig, $_PLUGINS;
 
-		$returnURL										=	null;
 		$loggedIn										=	false;
 
 		if ( ( ! $username ) || ( ( ! $password ) && ( $password !== false ) ) ) {
@@ -198,22 +197,16 @@ class CBAuthentication
 					$resultError						=	CBTxt::T( 'LOGIN_INCORRECT_USER_AUTHENTICATION_FAILED LOGIN_INCORRECT', 'Incorrect username or password. Please try again.' );
 				}
 
-				// changing com_comprofiler to comprofiler is a quick-fix for SEF ON on return path...
-				if ( $return && !( strpos( $return, 'comprofiler' /* 'com_comprofiler' */ ) && ( strpos( $return, 'login') || strpos( $return, 'logout') || strpos( $return, 'registers' ) || strpos( strtolower( $return ), 'lostpassword' ) ) ) ) {
-					// checks for the presence of a return url
-					// and ensures that this url is not the registration or login pages
-					$returnURL							=	$return;
-				} elseif ( ! $returnURL ) {
-					$returnURL							=	'index.php';
+				// If there's no return url or we're trying to return to internal pages that don't make sense then send to home page:
+				if ( ( ! $return ) || ( strpos( $return, 'comprofiler' /* 'com_comprofiler' */ ) && ( strpos( $return, 'login') || strpos( $return, 'logout') || strpos( $return, 'registers' ) || strpos( strtolower( $return ), 'lostpassword' ) || ( strpos( strtolower( $return ), 'confirm' ) && strpos( strtolower( $return ), 'confirmCode' ) ) ) ) ) {
+					$return								=	'index.php';
 				}
 			}
 		}
 
 		if ( ! $loggedIn ) {
-			$_PLUGINS->trigger( 'onLoginFailed', array( &$resultError, &$returnURL ) );
+			$_PLUGINS->trigger( 'onLoginFailed', array( &$resultError, &$return ) );
 		}
-
-		$return											=	$returnURL;
 
 		return $resultError;
 	}

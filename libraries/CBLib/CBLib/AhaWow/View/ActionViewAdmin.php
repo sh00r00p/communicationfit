@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 11/29/13 12:16 AM $
 * @package CBLib\AhaWow\View
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -68,12 +68,20 @@ class ActionViewAdmin {
 		if ( is_object( $data ) ) {
 			$dataArray				=	get_object_vars( $data );
 
-			if ( in_array( 'id', $dataArray ) ) { // General object
+			if ( key_exists( 'id', $dataArray ) ) { // General object
 				$id					=	(int) $data->id;
-			} elseif ( in_array( 'tabid', $dataArray ) ) { // Field object
+			} elseif ( key_exists( 'tabid', $dataArray ) ) { // Tab object
 				$id					=	(int) $data->tabid;
-			} elseif ( in_array( 'fieldid', $dataArray ) ) { // Tab object
+
+				if ( ! $pluginRow ) {
+					$pluginRow		=	$_PLUGINS->getCachedPluginObject( (int) $data->pluginid );
+				}
+			} elseif ( key_exists( 'fieldid', $dataArray ) ) { // Field object
 				$id					=	(int) $data->fieldid;
+
+				if ( ! $pluginRow ) {
+					$pluginRow		=	$_PLUGINS->getCachedPluginObject( (int) $data->pluginid );
+				}
 			}
 		}
 

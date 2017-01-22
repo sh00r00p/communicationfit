@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 11/26/13 1:02 AM $
 * @package CBLib\AhaWow\Controller\Elements
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -144,7 +144,7 @@ class TableBrowser {
 	 * Possible operators for advanced search
 	 * @var array
 	 */
-	protected $possibleOperators			=	array( '=', '<>||ISNULL', '<', '>', '<=', '>=', 'LIKE', 'NOT LIKE||ISNULL', 'IN', 'NOT IN||ISNULL' );
+	protected $possibleOperators			=	array( '=', '<>||ISNULL', '<', '>', '<=', '>=', 'REGEXP', 'NOT REGEXP||ISNULL', 'LIKE', 'NOT LIKE||ISNULL', 'IN', 'NOT IN||ISNULL' );
 
 	/**
 	 * Constructor
@@ -556,23 +556,50 @@ EOT
 
 			case 'field':
 				global $_CB_database;
-				$where						=	array();
-				$where[]					=	"f." . $_CB_database->NameQuote( 'published' ) . " = 1";
-				$where[]					=	"f." . $_CB_database->NameQuote( 'name' ) . " != " . $_CB_database->Quote( 'NA' );
-				$where[]					=	"f." . $_CB_database->NameQuote( 'tablecolumns' ) . " != " . $_CB_database->Quote( '' );
-				$query	=	"SELECT f." . $_CB_database->NameQuote( 'fieldid' ) . " AS value"
-					.	", f." . $_CB_database->NameQuote( 'name' )  . ' AS ' . $_CB_database->NameQuote( 'index' )
-					.	", f." . $_CB_database->NameQuote( 'title' ) . ' AS ' . $_CB_database->NameQuote( 'text' )
-					.	", f." . $_CB_database->NameQuote( 'table' ) . ' AS ' . $_CB_database->NameQuote( 'table' )
-					.	", " . $_CB_database->Quote( 'id' ) . ' AS ' . $_CB_database->NameQuote( 'table_key' )
-					.	", " . $_CB_database->Quote( '=' ) . " AS operator"
-					.	"\n FROM " . $_CB_database->NameQuote( '#__comprofiler_fields' ) . " AS f"
-					.	"\n LEFT JOIN " . $_CB_database->NameQuote( '#__comprofiler_tabs' ) . " AS t"
-					.	" ON t." . $_CB_database->NameQuote( 'tabid' ) . " = f." . $_CB_database->NameQuote( 'tabid' )
-					.	"\n WHERE " . implode( "\n AND ", $where )
-					.	"\n ORDER BY t." . $_CB_database->NameQuote( 'position' ) . ", t." . $_CB_database->NameQuote( 'ordering' ) . ", f." . $_CB_database->NameQuote( 'ordering' );
+
+				$key							=	$o->attributes( 'key' );
+
+				if ( ! $key ) {
+					$key						=	'fieldid';
+				}
+
+				$query							=	"SELECT f." . $_CB_database->NameQuote( $key ) . " AS value"
+												.	", f." . $_CB_database->NameQuote( 'name' )  . ' AS ' . $_CB_database->NameQuote( 'index' )
+												.	", f." . $_CB_database->NameQuote( 'title' ) . ' AS ' . $_CB_database->NameQuote( 'text' )
+												.	", f." . $_CB_database->NameQuote( 'table' ) . ' AS ' . $_CB_database->NameQuote( 'table' )
+												.	", " . $_CB_database->Quote( 'id' ) . ' AS ' . $_CB_database->NameQuote( 'table_key' )
+												.	", " . $_CB_database->Quote( '=' ) . " AS operator"
+												.	"\n FROM " . $_CB_database->NameQuote( '#__comprofiler_fields' ) . " AS f"
+												.	"\n LEFT JOIN " . $_CB_database->NameQuote( '#__comprofiler_tabs' ) . " AS t"
+												.	" ON t." . $_CB_database->NameQuote( 'tabid' ) . " = f." . $_CB_database->NameQuote( 'tabid' )
+												.	"\n WHERE f." . $_CB_database->NameQuote( 'published' ) . " = 1"
+												.	"\n AND f." . $_CB_database->NameQuote( 'name' ) . " != " . $_CB_database->Quote( 'NA' )
+												.	"\n AND f." . $_CB_database->NameQuote( 'tablecolumns' ) . " != " . $_CB_database->Quote( '' )
+												.	"\n ORDER BY t." . $_CB_database->NameQuote( 'position' ) . ", t." . $_CB_database->NameQuote( 'ordering' ) . ", f." . $_CB_database->NameQuote( 'ordering' );
 				$_CB_database->setQuery( $query );
-				$fieldValuesInDb			=	$_CB_database->loadObjectList();
+				$fieldValuesInDb				=	$_CB_database->loadObjectList();
+
+				if ( $key == 'tablecolumns' ) {
+					foreach ( $fieldValuesInDb as $k => $fieldValueInDb ) {
+						$tableColumns			=	explode( ',', $fieldValueInDb->value );
+
+						if ( count( $tableColumns ) <= 1 ) {
+							continue;
+						}
+
+						foreach ( $tableColumns as $tableColumn ) {
+							$cOpt				=	clone $fieldValueInDb;
+							$cOpt->value		=	$tableColumn;
+							$cOpt->index		=	$tableColumn;
+
+							$fieldValuesInDb[]	=	$cOpt;
+						}
+
+						unset( $fieldValuesInDb[$k] );
+					}
+
+					$fieldValuesInDb			=	array_values( $fieldValuesInDb );
+				}
 				break;
 
 			default:

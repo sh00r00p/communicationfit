@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 09.06.13 01:29 $
 * @package ${NAMESPACE}
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -44,6 +44,13 @@ class CBTxt
 	 * @var array[]
 	 */
 	protected $strings					=	array();
+
+	/**
+	 * The overrides translation tables array[language][key]
+	 *
+	 * @var array[]
+	 */
+	protected $overrides				=	array();
 
 	/**
 	 * The current translation language in ISO format 'en-GB'
@@ -451,9 +458,10 @@ class CBTxt
 	 * @param  string  $language  ISO language (ISO 639-1 language code, a dash (-), then the ISO 3166-1 alpha-2 country code: e.g. 'en-GB') (which is also the name of the language folder)
 	 * @param  string  $filename  Filename of the php language file (ending with '.php')
 	 * @param  bool    $fallback  True (default): Falls back to default_language if $filename does not exist
+	 * @param  bool    $override  False (default): Overrides all existing strings
 	 * @return bool               True if language loaded successfully
 	 */
-	public static function import( $langPath, $language, $filename, $fallback = true )
+	public static function import( $langPath, $language, $filename, $fallback = true, $override = false )
 	{
 		if ( isset( static::$self->importedLangPathFiles[$language][$langPath][$filename] ) ) {
 			return true;
@@ -465,7 +473,7 @@ class CBTxt
 
 		if ( ! file_exists( $file ) ) {
 			// If fallback is allowed, last resort is default_language without fallback:
-			return $fallback && static::import( $langPath, 'default_language', $filename, false );
+			return $fallback && static::import( $langPath, 'default_language', $filename, false, $override );
 		}
 
 		$extension			=	substr( $file, -4, 4 );
@@ -484,7 +492,7 @@ class CBTxt
 		}
 
 		/** @noinspection PhpDeprecationInspection */
-		static::addStrings( $strings, $language );
+		static::addStrings( $strings, $language, $override );
 
 		// Now if we already import other non-default languages, we also want to import this file in those other languages:
 		if ( ( $language != 'default_language' ) && count( static::$self->importedLangPathFiles ) > 1 ) {
@@ -558,6 +566,10 @@ class CBTxt
 	 */
 	private function hasKey( $key )
 	{
+		if ( isset( $this->overrides[$this->currentLanguage][$key] ) ) {
+			return true;
+		}
+
 		return isset( $this->strings[$this->currentLanguage][$key] );
 	}
 
@@ -571,7 +583,39 @@ class CBTxt
 	private function getKey( $key )
 	{
 		$this->lastKeyUsed		=	$key;
+
+		if ( isset( $this->overrides[static::$self->currentLanguage][$key] ) ) {
+			return $this->overrides[static::$self->currentLanguage][$key];
+		}
+
 		return $this->strings[static::$self->currentLanguage][$key];
+	}
+
+	/**
+	 * Gets an array of all existing translations for the specified language or current language
+	 *
+	 * @param string $language
+	 * @return array
+	 */
+	public static function getStrings( $language = null )
+	{
+		if ( ! $language ) {
+			$language	=	static::$self->currentLanguage;
+		}
+
+		if ( isset( static::$self->overrides[$language] ) ) {
+			if ( isset( static::$self->strings[$language] ) ) {
+				return array_merge( static::$self->strings[$language], static::$self->overrides[$language] );
+			}
+
+			return static::$self->overrides[$language];
+		}
+
+		if ( isset( static::$self->strings[$language] ) ) {
+			return static::$self->strings[$language];
+		}
+
+		return array();
 	}
 
 	/**
@@ -579,19 +623,28 @@ class CBTxt
 	 *
 	 * @deprecated 2.0 : return the array in language file instead of calling this method
 	 *
-	 * @param  array        $array     Keyed array of translation strings
-	 * @param  string|null  $language  Language of the array [param added in 2.0]
+	 * @param  array       $array    Keyed array of translation strings
+	 * @param  string|null $language Language of the array [param added in 2.0]
+	 * @param  bool        $override True: add strings to overrides array; False: add strings to global strings array
 	 * @return void
 	 */
-	public static function addStrings( $array, $language = null )
+	public static function addStrings( $array, $language = null, $override = false )
 	{
 		static::setCurrentLanguage( $language );
 
 		if ( ! empty( $array ) ) {
-			if ( isset( static::$self->strings[static::$self->currentLanguage] ) ) {
-				static::$self->strings[static::$self->currentLanguage]	=	array_merge( static::$self->strings[static::$self->currentLanguage], $array );
+			if ( $override ) {
+				if ( isset( static::$self->overrides[static::$self->currentLanguage] ) ) {
+					static::$self->overrides[static::$self->currentLanguage]	=	array_merge( static::$self->overrides[static::$self->currentLanguage], $array );
+				} else {
+					static::$self->overrides[static::$self->currentLanguage]	=	$array;
+				}
 			} else {
-				static::$self->strings[static::$self->currentLanguage]	=	$array;
+				if ( isset( static::$self->strings[static::$self->currentLanguage] ) ) {
+					static::$self->strings[static::$self->currentLanguage]	=	array_merge( static::$self->strings[static::$self->currentLanguage], $array );
+				} else {
+					static::$self->strings[static::$self->currentLanguage]	=	$array;
+				}
 			}
 		}
 	}

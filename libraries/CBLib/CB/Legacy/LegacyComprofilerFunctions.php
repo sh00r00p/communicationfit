@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 7/8/14 6:22 PM $
 * @package CB\Legacy
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -278,14 +278,18 @@ namespace
 
 		$_PLUGINS->trigger( 'onBeforeCreateMailer', array( &$mail, &$from, &$fromname, &$subject, &$body ) );
 
+		if ( ( ! $from ) || ( $from == 'registration@whatever' ) || ( ! cbIsValidEmail( $from ) ) ) {
+			$from				=	$_CB_framework->getCfg( 'mailfrom' );
+		}
+
+		if ( ! $fromname ) {
+			$fromname			=	$_CB_framework->getCfg( 'fromname' );
+		}
+
 		$mail->SetLanguage( 'en' );
 		$mail->CharSet 			=	$_CB_framework->outputCharset();
 		$mail->IsMail();
-		$mail->From				=	$from ? $from : $_CB_framework->getCfg( 'mailfrom' );
-		if ( ( $mail->From == '' ) || ( $mail->From == 'registration@whatever' ) ) {
-			$mail->From			=	$_CB_framework->getCfg( 'mailfrom' );
-		}
-		$mail->FromName			=	$fromname ? $fromname : $_CB_framework->getCfg( 'fromname' );
+		$mail->setFrom( $from, $fromname, false );
 		$mail->Mailer 			=	$_CB_framework->getCfg( 'mailer' );
 
 		if ( $_CB_framework->getCfg( 'mailer' ) == 'smtp' ) {
@@ -393,18 +397,26 @@ namespace
 
 		if ( is_array( $recipient ) ) {
 			foreach ( $recipient as $to ) {
+				if ( ! cbIsValidEmail( $to ) ) {
+					continue;
+				}
+
 				$mail->AddAddress( $to );
 			}
-		} else {
+		} elseif ( cbIsValidEmail( $recipient ) ) {
 			$mail->AddAddress( $recipient );
 		}
 
 		if ( isset( $cc ) ) {
 			if ( is_array( $cc ) ) {
 				foreach ( $cc as $to ) {
+					if ( ! cbIsValidEmail( $to ) ) {
+						continue;
+					}
+
 					$mail->AddCC( $to );
 				}
-			} else {
+			} elseif ( cbIsValidEmail( $cc ) ) {
 				$mail->AddCC( $cc );
 			}
 		}
@@ -412,9 +424,13 @@ namespace
 		if ( isset( $bcc ) ) {
 			if ( is_array( $bcc ) ) {
 				foreach ( $bcc as $to ) {
+					if ( ! cbIsValidEmail( $to ) ) {
+						continue;
+					}
+
 					$mail->AddBCC( $to );
 				}
-			} else {
+			} elseif ( cbIsValidEmail( $bcc ) ) {
 				$mail->AddBCC( $bcc );
 			}
 		}
@@ -438,9 +454,13 @@ namespace
 				reset( $replytoname );
 
 				foreach ( $replyto as $to ) {
+					if ( ! cbIsValidEmail( $to ) ) {
+						continue;
+					}
+
 					$mail->AddReplyTo( $to, ( ( false !== (list( , $value ) = each( $replytoname ) ) ) ? $value : '' ) );
 				}
-			} else {
+			} elseif ( cbIsValidEmail( $replyto ) ) {
 				$mail->AddReplyTo( $replyto, $replytoname );
 			}
 		}
@@ -520,6 +540,7 @@ namespace
 		array_multisort( $mxWeights, SORT_ASC, SORT_NUMERIC, $mxRecords );
 
 		$mail					=&	comprofilerCreateMail( $from, '', '', '' );
+		$mail->Timeout			=	10; // Set timeout to 10 seconds from 300 (5 minutes) as we don't want lookups taking so long
 		$mail->SMTPAuth			=	false;
 		// $mail->SMTPDebug		=	2;
 
@@ -1075,7 +1096,7 @@ namespace
 					$oReturn[1]		=	$oReturn[0];
 				}
 
-				return '<a href="http://' . htmlspecialchars( $oReturn[0] ) . '" target="_blank" rel="nofollow">' . htmlspecialchars( $oReturn[1] ) . '</a>';
+				return '<a href="http://' . htmlspecialchars( $oReturn[0] ) . '" target="_blank" rel="nofollow noopener noreferrer">' . htmlspecialchars( $oReturn[1] ) . '</a>';
 			}
 			return htmlspecialchars( $oValue );
 		}
@@ -1131,9 +1152,7 @@ namespace
 			if ( $_CB_framework->document->getDirection() == 'rtl' ) {
 				outputCbTemplate( null, 'rtl.css', $media );
 			}
-		}
 
-		if ( ( $templateFile === 'template.css' ) && ( selectTemplate( 'dir' ) != 'default' ) ) {
 			// Add style overrides if available:
 			outputCbTemplate( null, 'override.css', $media );
 		}
@@ -1497,7 +1516,7 @@ namespace
 							.	"$.fn.cbtooltip.defaults.buttonYes = '" . addslashes( CBTxt::T( 'TOOLTIP_YES', 'Ok' ) ) . "';"
 							.	"$.fn.cbtooltip.defaults.buttonNo = '" . addslashes( CBTxt::T( 'TOOLTIP_NO', 'Cancel' ) ) . "';"
 							.	( $width ? "$.fn.cbtooltip.defaults.width = " . (int) $width . ";" : null )
-							.	"$( window ).load( function() {"
+							.	"$( window ).on( 'load', function() {"
 							.		"$( '.cbTooltip,[data-hascbtooltip=\"true\"]' ).cbtooltip();"
 							.	"});";
 
@@ -3055,8 +3074,45 @@ namespace
 
 	function cbPoweredBy()
 	{
+		global $ueConfig;
 
-		$return				=	'';
+		if ( isset( $ueConfig['poweredBy'] ) && ( ! $ueConfig['poweredBy'] ) ) {
+			return null;
+		}
+
+		$input				=	Application::Input();
+		$url				=	$input->get( 'server/SERVER_NAME', null, GetterInterface::STRING ) . $input->get( 'server/REQUEST_URI', null, GetterInterface::STRING );
+
+		$urls				=	array(
+										array( 'title' => 'social network platform', 'url' => 'http://www.joomlapolis.com/social-networking?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'community software', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'online community software', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'social networking software', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'open source social networking', 'url' => 'http://www.joomlapolis.com/social-networking?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'social network script', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'social community software', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'online social networking', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'social websites', 'url' => 'http://www.joomlapolis.com/social-networking?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'online community sites', 'url' => 'http://www.joomlapolis.com/community-builder?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'how to build a social networking site', 'url' => 'http://www.joomlapolis.com?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'how to create a social network', 'url' => 'http://www.joomlapolis.com?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'online membership sites', 'url' => 'http://www.joomlapolis.com/cb-solutions/cbsubs?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'online paid subscription sites', 'url' => 'http://www.joomlapolis.com/cb-solutions/cbsubs?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'membership sites', 'url' => 'http://www.joomlapolis.com/cb-solutions/cbsubs?pk_campaign=in-cb&pk_kwd=poweredby' ),
+										array( 'title' => 'paid membership sites', 'url' => 'http://www.joomlapolis.com/cb-solutions/cbsubs?pk_campaign=in-cb&pk_kwd=poweredby' )
+									);
+
+		list( $urlBits )	=	sscanf( substr( md5( $url ), -4 ), '%4x' );
+
+		$key				=	( $urlBits % count( $urls ) );
+
+		$return				=	'<div class="cbPoweredBy cb_template cb_template_' . selectTemplate( 'dir' ) . '">'
+							.		'<div class="text-center text-small content-spacer">'
+							.			'<a title="' . htmlspecialchars( $urls[$key]['title'] ) . '" href="' . htmlspecialchars( $urls[$key]['url'] ) . '" target="_blank">'
+							.				'Powered by Community Builder'
+							.			'</a>'
+							.		'</div>'
+							.	'</div>';
 
 		return $return;
 	}

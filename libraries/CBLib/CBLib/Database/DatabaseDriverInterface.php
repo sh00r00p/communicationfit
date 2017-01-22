@@ -4,7 +4,7 @@
  *
  * @version       $Id: 4/27/14 2:26 AM $
  * @package       ${NAMESPACE}
- * @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+ * @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
  * @license       http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
  */
 

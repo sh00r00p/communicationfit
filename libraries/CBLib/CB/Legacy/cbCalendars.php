@@ -2,10 +2,11 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/17/14 11:22 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
+use CBLib\Application\Application;
 use CBLib\Language\CBTxt;
 
 defined('CBLIB') or die();
@@ -52,7 +53,7 @@ class cbCalendars
 	 * Includes files needed for displaying calendar for date fields
 	 *
 	 * @param  int     $ui            User interface: 1 = Front End, 2 = Admin
-	 * @param  int     $calendarType  Calendar type: 1 = popup only, 2 = drop downs with popup, 3 = drop downs without popup, null = config
+	 * @param  int     $calendarType  Calendar type: 1 = popup only with input, 2 = drop downs with popup, 3 = drop downs without popup, 4 = popup only without input, null = config
 	 * @param  string  $dateFormat    Default date format: overrides the default date format provided by configuration
 	 * @param  string  $timeFormat    Default time format: overrides the default time format provided by configuration
 	 */
@@ -68,16 +69,25 @@ class cbCalendars
 		$this->timeFormat				=	array();
 
 		// Popup formats:
-		$this->dateFormat[1]			=	'yy-mm-dd'; // Y-m-d
-		$this->timeFormat[1]			=	'HH:mm:ss'; // H:i:s
+		$this->dateFormat[1]			=	array();
+
+		// Popup date template:
+		$this->dateFormat[1][1]			=	$this->formatToTemplate( $this->defDateFormat, 'popup' );
+
+		// Popup date sql format:
+		$this->dateFormat[1][2]			=	'yy-mm-dd'; // Y-m-d
+
+		// Popup time template:
+		$this->timeFormat[1][1]			=	$this->formatToTemplate( $this->defTimeFormat, 'popup' );
+
+		// Popup time sql format:
+		$this->timeFormat[1][2]			=	'HH:mm:ss'; // H:i:s
 
 		// Dropdown formats:
 		$this->dateFormat[2]			=	array();
 
 		// Dropdown date template:
-		$dFind							=	array( 'd', 'm', 'Y', 'y', '/', '-', '.' );
-		$dReplace						=	array( 'DD', 'MMMM', 'YYYY', 'YYYY', ' / ', ' - ', ' . ' );
-		$this->dateFormat[2][1]			=	str_replace( $dFind, $dReplace, $this->defDateFormat );
+		$this->dateFormat[2][1]			=	$this->formatToTemplate( $this->defDateFormat );
 
 		// Dropdown date sql format:
 		$this->dateFormat[2][2]			=	'YYYY-MM-DD'; // Y-m-d
@@ -85,9 +95,7 @@ class cbCalendars
 		$this->timeFormat[2]			=	array();
 
 		// Dropdown time template:
-		$tFind							=	array( 'H', 'h', 'G', 'g', 'i', 's', ':' );
-		$tReplace						=	array( 'HH', 'hh', 'H', 'h', 'mm', 'ss', ' : ' );
-		$this->timeFormat[2][1]			=	str_replace( $tFind, $tReplace, $this->defTimeFormat );
+		$this->timeFormat[2][1]			=	$this->formatToTemplate( $this->defTimeFormat );
 
 		// Dropdown time sql format:
 		$this->timeFormat[2][2]			=	'HH:mm:ss'; // H:i:s
@@ -179,6 +187,60 @@ class cbCalendars
 	}
 
 	/**
+	 * Converts PHP date format to calendar template
+	 *
+	 * @param string $format
+	 * @param string $calendar
+	 * @return string
+	 */
+	private function formatToTemplate( $format, $calendar = 'dropdown' )
+	{
+		// From PHP to generic:
+		$replace			=	array(	'd'	=>	'{#01}',	'D'	=>	'{#02}',	'j'	=>	'{#03}',	'l'	=>	'{#04}',	'N'	=>	'{#05}',
+										'S'	=>	'{#06}',	'w'	=>	'{#07}',	'z'	=>	'{#08}',	'W'	=>	'{#09}',	'F'	=>	'{#10}',
+										'm'	=>	'{#11}',	'M'	=>	'{#12}',	'n'	=>	'{#13}',	't'	=>	'{#14}',	'L'	=>	'{#15}',
+										'o'	=>	'{#16}',	'Y'	=>	'{#17}',	'y'	=>	'{#18}',	'a'	=>	'{#19}',	'A'	=>	'{#20}',
+										'B'	=>	'{#21}',	'g'	=>	'{#22}',	'G'	=>	'{#23}',	'h'	=>	'{#24}',	'H'	=>	'{#25}',
+										'i'	=>	'{#26}',	's'	=>	'{#27}',	'u'	=>	'{#28}',	'v'	=>	'{#29}',	'e'	=>	'{#30}',
+										'I'	=>	'{#31}',	'O'	=>	'{#32}',	'P'	=>	'{#33}',	'T'	=>	'{#34}',	'Z'	=>	'{#35}',
+										'c'	=>	'{#36}',	'r'	=>	'{#47}',	'U'	=>	'{#38}'
+									);
+
+		$format				=	str_replace( array_keys( $replace ), array_values( $replace ), $format );
+
+		if ( $calendar == 'popup' ) {
+			// From generic to datepicker:
+			$replace		=	array(	'{#01}'	=>	'dd',	'{#02}'	=>	'D',	'{#03}'	=>	'd',	'{#04}'	=>	'DD',	'{#05}'	=>	'',
+										'{#06}'	=>	'',		'{#07}'	=>	'',		'{#08}'	=>	'o',	'{#09}'	=>	'',		'{#10}'	=>	'MM',
+										'{#11}'	=>	'mm',	'{#12}'	=>	'M',	'{#13}'	=>	'm',	'{#14}'	=>	'',		'{#15}'	=>	'',
+										'{#16}'	=>	'',		'{#17}'	=>	'yy',	'{#18}'	=>	'y',	'{#19}'	=>	'tt',	'{#20}'	=>	'TT',
+										'{#21}'	=>	'',		'{#22}'	=>	'h',	'{#23}'	=>	'H',	'{#24}'	=>	'hh',	'{#25}'	=>	'HH',
+										'{#26}'	=>	'mm',	'{#27}'	=>	'ss',	'{#28}'	=>	'c',	'{#29}'	=>	'l',	'{#30}'	=>	'',
+										'{#31}'	=>	'',		'{#32}'	=>	'',		'{#33}'	=>	'',		'{#34}'	=>	'',		'{#35}'	=>	'',
+										'{#36}'	=>	'',		'{#37}'	=>	'',		'{#38}'	=>	''
+									);
+
+			$format			=	str_replace( array_keys( $replace ), array_values( $replace ), $format );
+		} elseif ( $calendar == 'dropdown' ) {
+			// From generic to combodate:
+			$replace		=	array(	'{#01}'	=>	'DD',	'{#02}'	=>	'',		'{#03}'	=>	'D',	'{#04}'	=>	'',		'{#05}'	=>	'',
+										'{#06}'	=>	'',		'{#07}'	=>	'',		'{#08}'	=>	'DDD',	'{#09}'	=>	'',		'{#10}'	=>	'MMMM',
+										'{#11}'	=>	'MM',	'{#12}'	=>	'MMM',	'{#13}'	=>	'M',	'{#14}'	=>	'',		'{#15}'	=>	'',
+										'{#16}'	=>	'',		'{#17}'	=>	'YYYY',	'{#18}'	=>	'YY',	'{#19}'	=>	'a',	'{#20}'	=>	'A',
+										'{#21}'	=>	'',		'{#22}'	=>	'h',	'{#23}'	=>	'H',	'{#24}'	=>	'hh',	'{#25}'	=>	'HH',
+										'{#26}'	=>	'mm',	'{#27}'	=>	'ss',	'{#28}'	=>	'',		'{#29}'	=>	'',		'{#30}'	=>	'',
+										'{#31}'	=>	'',		'{#32}'	=>	'',		'{#33}'	=>	'',		'{#34}'	=>	'',		'{#35}'	=>	'',
+										'{#36}'	=>	'',		'{#37}'	=>	'',		'{#38}'	=>	'',		'/'		=>	' / ',	'-'		=>	' - ',
+										'.'		=>	' . ',	':'		=>	' : '
+									);
+
+			$format			=	str_replace( array_keys( $replace ), array_values( $replace ), $format );
+		}
+
+		return $format;
+	}
+
+	/**
 	 * Outputs calendar driven field
 	 *
 	 * @param  string          $name             Name of field
@@ -222,7 +284,7 @@ class cbCalendars
 			}
 
 			// We always expect an SQL formatted date or timestamp; if it's anything otherwise then this function was used wrong:
-			$value							=	$_CB_framework->getUTCDate( 'Y-m-d' . ( $showTime ? ' H:i:s' : null ), $value );
+			$value							=	Application::Date( $value, 'UTC' )->format( 'Y-m-d' . ( $showTime ? ' H:i:s' : null ) );
 		}
 
 		if ( ( ! $value ) || ( $value == '0000-00-00 00:00:00' ) || ( $value == '0000-00-00' ) ) {
@@ -264,23 +326,25 @@ class cbCalendars
 				$attributes					.=	' data-cbdatepicker-isrtl="true"';
 			}
 
+			// This determines the final format of the date or datetime for storage (set in the hidden input):
+			$attributes						.=	' data-cbdatepicker-format="' . htmlspecialchars( $this->dateFormat[2][2] . ( $showTime ? ' ' . $this->timeFormat[2][2] : null ) ) . '"';
+
 			if ( in_array( $this->calendarType, array( 2, 3 ) ) ) {
 				$tooltipTarget				=	'#' . htmlspecialchars( $inputId ) . 'Picker + .combodate';
 
 				$attributes					.=	' data-cbtooltip-open-target="' . $tooltipTarget . '" data-cbtooltip-close-target="' . $tooltipTarget . '" data-cbtooltip-position-target="' . $tooltipTarget . '"'
-											.	' data-cbdatepicker-format="' . htmlspecialchars( $this->dateFormat[2][2] . ( $showTime ? ' ' . $this->timeFormat[2][2] : null ) ) . '"'
-											.	' data-cbdatepicker-template="' . htmlspecialchars( $this->dateFormat[2][1] . ( $showTime ? '  ' . $this->timeFormat[2][1] : null ) ) . '"';
+											.	' data-cbdatepicker-template="' . htmlspecialchars( $this->dateFormat[2][1] . ( $showTime ? ' ' . $this->timeFormat[2][1] : null ) ) . '"';
 
 				if ( $required && ( ! $isEmpty ) ) {
 					$attributes				.=	' data-cbdatepicker-firstitem="none"';
 				}
 			}
 
-			if ( ( $this->calendarType == 1 ) || $addPopup ) {
-				$return						=	'&nbsp;&nbsp;<span id="' . htmlspecialchars( $inputId ) . 'Calendar" class="hasCalendar fa fa-calendar" title="' . htmlspecialchars( CBTxt::T( 'UE_CALENDAR_TITLE', 'Calendar' ) ) . '"></span>';
+			if ( in_array( $this->calendarType, array( 1, 4 ) ) || $addPopup ) {
+				$return						=	'&nbsp;&nbsp;<span id="' . htmlspecialchars( $inputId ) . 'Calendar" class="cbDatePickerCalendar hasCalendar fa fa-calendar" title="' . htmlspecialchars( CBTxt::T( 'UE_CALENDAR_TITLE', 'Calendar' ) ) . '"></span>';
 
 				if ( $showTime ) {
-					$attributes				.=	' data-cbdatepicker-showtime="true" data-cbdatepicker-timeformat="' . htmlspecialchars( $this->timeFormat[1] ) . '"';
+					$attributes				.=	' data-cbdatepicker-showtime="true" data-cbdatepicker-timeformat="' . htmlspecialchars( $this->timeFormat[1][2] ) . '"';
 				}
 
 				if ( $addPopup ) {
@@ -293,27 +357,40 @@ class cbCalendars
 					$attributes				.=	' data-cbdatepicker-firstday="' . (int) CBTxt::T( 'UE_CALENDAR_FIRSTDAY', '' ) . '"';
 				}
 
-				$attributes					.=	' data-cbdatepicker-dateformat="' . htmlspecialchars( $this->dateFormat[1] ) . '"';
+				$attributes					.=	' data-cbdatepicker-dateformat="' . htmlspecialchars( $this->dateFormat[1][2] ) . '"';
+
+				if ( in_array( $this->calendarType, array( 1, 4 ) ) ) {
+					$attributes				.=	' data-cbdatepicker-datetemplate="' . htmlspecialchars( $this->dateFormat[1][1] ) . '"';
+
+					if ( $showTime ) {
+						$attributes			.=	' data-cbdatepicker-timetemplate="' . htmlspecialchars( $this->timeFormat[1][1] ) . '"';
+					}
+				}
 			}
 
 			// If server time offset is enabled then tell jquery the offset in minutes:
 			if ( $showTime && $serverTimeOffset ) {
 				$offset						=	( $offsetOverride !== null ? $offsetOverride : $_CB_framework->getCfg( 'user_timezone' ) );
 
-				// Ignore offset entirely if there is no offset value:
-				if ( $offset ) {
+				// Ignore offset entirely if there is no offset value or it's UTC (we're already in UTC):
+				if ( $offset && ( $offset != 'UTC' ) ) {
 					// If the date has a time then offset it and send it to the jquery:
 					if ( ( strlen( $offsetValue ) > 10 ) && $offsetValue ) {
-						$offsetValue		=	$_CB_framework->getUTCDate( 'Y-m-d H:i:s', $offsetValue, $offset );
+						$offsetValue		=	Application::Date( $offsetValue, $offset )->format( 'Y-m-d H:i:s' );
 					}
 
-					// Pass the UTC offset in minutes for momentjs:
-					$attributes				.=	' data-cbdatepicker-offset="' . htmlspecialchars( ( $_CB_framework->getUTCDate( 'Z', null, $offset ) / 60 ) ) . '"';
+					// Pass the timezone name for momentjs-timezone:
+					$attributes				.=	' data-cbdatepicker-timezone="' . htmlspecialchars( $offset ) . '"';
 				}
 			}
 
+			if ( in_array( $this->calendarType, array( 1, 4 ) ) ) {
+				$offsetValue				=	Application::Date( $offsetValue, 'UTC' )->format( $this->defDateFormat . ( $showTime ? ' ' . $this->defTimeFormat : null ) );
+			}
+
 			$return							=	'<input type="hidden" name="' . htmlspecialchars( $name ) . '" id="' . htmlspecialchars( $inputId ) . '" value="' . htmlspecialchars( $value ) . '" />'
-											.	'<input type="text" id="' . htmlspecialchars( $inputId ) . 'Picker" value="' . htmlspecialchars( $offsetValue ) . '" class="cbDatePicker form-control' . ( $required ? ' required' : null ) . '"' . ( $readOnly ? ' disabled="disabled"' : null ) . ( $label ? ' title="' . htmlspecialchars( $label ) . '"' : null ) . ( trim( $attributes ) ? ' ' . $attributes : null ) . ' />'
+											.	'<input type="text" id="' . htmlspecialchars( $inputId ) . 'Picker" value="' . htmlspecialchars( $offsetValue ) . '" class="cbDatePicker form-control' . ( $required ? ' required' : null ) . ( $this->calendarType == 4 ? ' hidden' : null ) . '"' . ( $readOnly ? ' disabled="disabled"' : null ) . ( $label ? ' title="' . htmlspecialchars( $label ) . '"' : null ) . ( trim( $attributes ) ? ' ' . $attributes : null ) . ' />'
+											.	( $this->calendarType == 4 ? '<span id="' . htmlspecialchars( $inputId ) . 'Selected" class="cbDatePickerSelected">' . htmlspecialchars( $offsetValue ) . '</span>' : null )
 											.	$return;
 		}
 

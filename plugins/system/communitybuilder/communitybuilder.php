@@ -3,7 +3,7 @@
 * Community Builder (TM)
 * @version $Id: $
 * @package CommunityBuilder
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 if ( ! ( defined( '_VALID_CB' ) || defined( '_JEXEC' ) || defined( '_VALID_MOS' ) ) ) { die( 'Direct Access to this location is not allowed.' ); }
@@ -52,7 +52,22 @@ class plgSystemCommunityBuilder extends JPlugin {
 		$app							=	JFactory::getApplication();
 
 		if ( $app->isSite() && ( $app->input->get( 'option' ) == 'com_comprofiler' ) ) {
-			// Map the current menu item variables to GET:
+			// Map the current route variables to GET if missing:
+			$route						=	$app->getRouter()->getVars();
+
+			if ( $route && ( isset( $route['option'] ) ) && ( $route['option'] == 'com_comprofiler' ) ) {
+				foreach( $route as $k => $v ) {
+					if ( ! isset( $_GET[$k] ) ) {
+						$_GET[$k]		=	$v;
+					}
+
+					if ( ! isset( $_REQUEST[$k] ) ) {
+						$_REQUEST[$k]	=	$v;
+					}
+				}
+			}
+
+			// Map the current menu item variables to GET if missing:
 			$menu						=	$app->getMenu()->getActive();
 
 			if ( $menu && isset( $menu->query ) && ( isset( $menu->query['option'] ) ) && ( $menu->query['option'] == 'com_comprofiler' ) ) {
@@ -67,19 +82,20 @@ class plgSystemCommunityBuilder extends JPlugin {
 				}
 			}
 
-			// Map the current route variables to GET:
-			$route						=	$app->getRouter()->getVars();
+			// Adjust the reset password overrides so CB profile edit can be used to reset the password:
+			if ( $this->params->get( 'rewrite_urls', 1 ) ) {
+				$view						=	$app->input->get( 'view' );
 
-			if ( $route && ( isset( $route['option'] ) ) && ( $route['option'] == 'com_comprofiler' ) ) {
-				foreach( $route as $k => $v ) {
-					if ( ! isset( $_GET[$k] ) ) {
-						$_GET[$k]		=	$v;
-					}
+				$app->set( 'site_reset_password_override', 1 );
+				$app->set( 'site_reset_password_option', 'com_comprofiler' );
+				$app->set( 'site_reset_password_view', 'userdetails' );
 
-					if ( ! isset( $_REQUEST[$k] ) ) {
-						$_REQUEST[$k]	=	$v;
-					}
+				if ( in_array( $view, array( 'saveuseredit', 'logout', 'fieldclass' ) ) ) {
+					$app->set( 'site_reset_password_view', $view );
 				}
+
+				$app->set( 'site_reset_password_layout', '' );
+				$app->set( 'site_reset_password_tasks', 'com_comprofiler/userdetails,com_comprofiler/saveuseredit,com_comprofiler/logout,com_comprofiler/fieldclass' );
 			}
 		}
 	}
@@ -129,8 +145,53 @@ class plgSystemCommunityBuilder extends JPlugin {
 							break;
 						case 'user.login':
 						case 'login':
+							$task								=	'login';
+
+							if ( $_POST && JSession::checkToken( 'post' ) ) {
+								$cbLoaded						=	true;
+
+								if ( ( ! file_exists( JPATH_SITE . '/libraries/CBLib/CBLib/Core/CBLib.php' ) ) || ( ! file_exists( JPATH_ADMINISTRATOR . '/components/com_comprofiler/plugin.foundation.php' ) ) ) {
+									$cbLoaded					=	false;
+								}
+
+								if ( $cbLoaded ) {
+									include_once( JPATH_ADMINISTRATOR . '/components/com_comprofiler/plugin.foundation.php' );
+
+									$cbSpoofField				=	cbSpoofField();
+									$cbSpoofString				=	cbSpoofString( null, 'login' );
+
+									// Change the request variables so it points to CBs login page before rendering in CB:
+									$app->input->set( 'option', 'com_comprofiler' );
+									$app->input->set( 'task', 'login' );
+									$app->input->set( 'view', 'login' );
+									$app->input->set( $cbSpoofField, $cbSpoofString );
+
+									$_REQUEST['option']			=	'com_comprofiler';
+									$_REQUEST['task']			=	'login';
+									$_REQUEST['view']			=	'login';
+									$_REQUEST[$cbSpoofField]	=	$cbSpoofString;
+
+									$_GET['option']				=	'com_comprofiler';
+									$_GET['task']				=	'login';
+									$_GET['view']				=	'login';
+
+									$_POST[$cbSpoofField]		=	$cbSpoofString;
+
+									if ( isset( $_POST['return'] ) ) {
+										// Make the return redirect compatible with CB:
+										$_POST['return']		=	'B:' . $_POST['return'];
+									}
+
+									try {
+										JComponentHelper::renderComponent( 'com_comprofiler' );
+									} catch( Exception $e ) {
+										// Just silently fail and do a normal redirect if CB didn't render
+									}
+								}
+							}
+							break;
 						default:
-							$task			=	'login';
+							$task								=	'login';
 							break;
 					}
 

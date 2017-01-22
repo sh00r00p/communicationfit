@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 11/12/13 4:59 PM $
 * @package CBLib\AhaWow\View
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -475,11 +475,7 @@ class RegistryEditView {
 								.			"searching: function() {"
 								.				"return '" . addslashes( CBTxt::T( 'Searching...' ) ) . "';"
 								.			"}"
-								.		"},"
-								.		"selectAllText: '" . addslashes( CBTxt::T( 'Select All' ) ) . "',"
-								.		"allSelected: '" . addslashes( CBTxt::T( 'All Selected' ) ) . "',"
-								.		"noMatchesFound: '" . addslashes( CBTxt::T( 'No matches found.' ) ) . "',"
-								.		"countSelected: '" . addslashes( CBTxt::T( '# of % selected' ) ) . "'"
+								.		"}"
 								.	"});";
 
 					$_CB_framework->outputCbJQuery( $js, 'cbselect' );
@@ -1535,6 +1531,7 @@ class RegistryEditView {
 				if ( ( ( $paramsType == 'params' ) && $paramsName ) || ( $paramsType == 'pluginparams' ) ) {
 					$repeat					=	( $param->attributes( 'repeat' ) == 'true' );
 					$repeatOrdering			=	( $param->attributes( 'repeatordering' ) != 'false' );
+					$repeatCount			=	( $param->attributes( 'repeatcount' ) != 'false' );
 					$repeatMax				=	(int) $param->attributes( 'repeatmax' );
 
 					if ( $control_name ) {
@@ -1595,10 +1592,7 @@ class RegistryEditView {
 
 								if ( $viewType != 'view' ) {
 									$return	.=				'<div class="text-right cbRepeatRowIncrement">'
-											.					'<div class="cbRepeatRowAddRemove">'
-											.						'<div class="cbRepeatRowRemove fa fa-minus btn btn-danger" title="' . htmlspecialchars( CBTxt::T( 'Click to remove this row.' ) ) . '"></div>'
-											.						'<div class="cbRepeatRowAdd fa fa-plus btn btn-success" title="' . htmlspecialchars( CBTxt::T( 'Click to add new row.' ) ) . '"></div>'
-											.					'</div>'
+											.					'<div class="cbRepeatRowRemove fa fa-minus btn btn-danger" title="' . htmlspecialchars( CBTxt::T( 'Click to remove this row.' ) ) . '"></div>'
 											.				'</div>';
 								}
 
@@ -1619,14 +1613,13 @@ class RegistryEditView {
 											.						'<table class="table table-noborder">'
 											.							( $htmlFormatting == 'td' ? '<tr>' : null )
 											.							$this->renderAllParams( $param, $child_cnam, $tabs, $viewType, $htmlFormatting )
-											.							( $htmlFormatting == 'td' ? '<tr>' : null )
+											.							( $htmlFormatting == 'td' ? '</tr>' : null )
 											.						'</table>'
 											.					'</td>';
 
 								if ( $viewType != 'view' ) {
-									$return	.=					'<td class="text-center cbRepeatRowIncrement" style="width: 10%; vertical-align: middle;">'
+									$return	.=					'<td class="text-center cbRepeatRowIncrement" style="width: 1%; vertical-align: middle;">'
 											.						'<div class="cbRepeatRowRemove fa fa-minus btn btn-danger" title="' . htmlspecialchars( CBTxt::T( 'Click to remove this row.' ) ) . '"></div>'
-											.						'<div class="cbRepeatRowAdd fa fa-plus btn btn-success" title="' . htmlspecialchars( CBTxt::T( 'Click to add new row.' ) ) . '"></div>'
 											.					'</td>';
 								}
 
@@ -1674,12 +1667,26 @@ class RegistryEditView {
 							}
 
 							if ( $viewType != 'view' ) {
-								$result[1]	=	'<div class="cbRepeat"' . ( ! $repeatOrdering ? ' data-cbrepeat-sortable="false"' : null ) . ( $repeatIgnore ? ' data-cbrepeat-ignore="' . htmlspecialchars( $repeatIgnore ) . '"' : null ) . ( $repeatMax ? ' data-cbrepeat-max="' . (int) $repeatMax . '"' : null ) . '>'
+								$return		=	'<div class="cbRepeat"' . ( ! $repeatOrdering ? ' data-cbrepeat-sortable="false"' : null ) . ( $repeatIgnore ? ' data-cbrepeat-ignore="' . htmlspecialchars( $repeatIgnore ) . '"' : null ) . ( $repeatMax ? ' data-cbrepeat-max="' . (int) $repeatMax . '"' : null ) . '>'
 											.		$return
+											.		'<div class="form-inline text-right cbRepeatIncrement">';
+
+								if ( $repeatCount ) {
+									$return	.=			'<div class="input-group">'
+											.				'<input type="text" class="form-control text-center cbRepeatRowAddCount" size="2" placeholder="1" />'
+											.				'<span class="input-group-btn">'
+											.					'<div class="cbRepeatRowAdd btn btn-success" title="' . htmlspecialchars( CBTxt::T( 'Click to add new row.' ) ) . '"><span class="fa fa-plus"></span> ' . CBTxt::Th( 'Add Rows' ) . '</div>'
+											.				'</span>'
+											.			'</div>';
+								} else {
+									$return	.=			'<div class="cbRepeatRowAdd btn btn-success" title="' . htmlspecialchars( CBTxt::T( 'Click to add new row.' ) ) . '"><span class="fa fa-plus"></span> ' . CBTxt::Th( 'Add Row' ) . '</div>';
+								}
+
+								$return		.=		'</div>'
 											.	'</div>';
-							} else {
-								$result[1]	=	$return;
 							}
+
+							$result[1]		=	$return;
 						}
 
 						$html[]				=	$this->_renderLine( $param, $result, $control_name, $htmlFormatting, true, ( $viewType == 'view' ) );
@@ -1751,9 +1758,42 @@ class RegistryEditView {
 				$legend				=	$param->attributes( 'label' );
 				$description		=	$param->attributes( 'description' );
 				$name				=	$param->attributes( 'name' );
-				$class				=	RegistryEditView::buildClasses( $param );
+				$collapsed			=	( $legend ? $param->attributes( 'collapsed' ) : null );
 
-				$fieldsethtml		=	'<fieldset' . ( $class ? ' class="' . htmlspecialchars( $class ) . '"' : ( $name ? ( ' class="cbFieldset cbfieldset_' . $name . '"' ) : '' ) ) . '>';
+				$class				=	array( 'cbFieldset' );
+
+				if ( $name ) {
+					$class[]		=	'cbfieldset_' . htmlspecialchars( $name );
+				}
+
+				if ( $collapsed == 'true' ) {
+					$class[]		=	'cbFieldsetCollapsed';
+				}
+
+				$class				=	RegistryEditView::buildClasses( $param, $class );
+
+				if ( $collapsed ) {
+					static $FIELDSET_JS		=	0;
+
+					if ( ! $FIELDSET_JS++ ) {
+						global $_CB_framework;
+
+						$js					=	"$( '.cbFieldsetExpand' ).on( 'click', function() {"
+											.		"$( this ).closest( '.cbFieldset' ).removeClass( 'cbFieldsetCollapsed' );"
+											.		"$( this ).siblings( '.cbFieldsetCollapse' ).removeClass( 'hidden' );"
+											.		"$( this ).addClass( 'hidden' );"
+											.	"});"
+											.	"$( '.cbFieldsetCollapse' ).on( 'click', function() {"
+											.		"$( this ).closest( '.cbFieldset' ).addClass( 'cbFieldsetCollapsed' );"
+											.		"$( this ).siblings( '.cbFieldsetExpand' ).removeClass( 'hidden' );"
+											.		"$( this ).addClass( 'hidden' );"
+											.	"});";
+
+						$_CB_framework->outputCbJQuery( $js );
+					}
+				}
+
+				$fieldsethtml		=	'<fieldset class="' . htmlspecialchars( $class ) . '">';
 				if ( $htmlFormatting == 'table' ) {
 					$html[] 		=	'<tr' . $htid . '><td colspan="3" width="100%">' . $fieldsethtml;
 				} elseif ( $htmlFormatting == 'td' ) {
@@ -1763,10 +1803,13 @@ class RegistryEditView {
 				} elseif ( $htmlFormatting == 'fieldsListArray' ) {
 					// nothing
 				} else {
-					$html[]			=	'<fieldset' . $htid . ( $class ? ' class="' . htmlspecialchars( $class ) . '"' : ( $name ? ( ' class="cbFieldset cbfieldset_' . $name . '"' ) : '' ) ) . '>';
+					$html[]			=	'<fieldset' . $htid . ' class="' . htmlspecialchars( $class ) . '">';
 				}
 				if ( $legend && ( $htmlFormatting != 'fieldsListArray' ) ) {
-					$html[]			=	'<legend' . ( $class ? ' class="' . htmlspecialchars( $class ) . '"' : '' ) . '>' . CBTxt::Th( $legend ) . '</legend>';
+					$html[]			=	'<legend>'
+									.		CBTxt::Th( $legend )
+									.		( $collapsed ? ' <button type="button" class="cbFieldsetExpand btn btn-xs btn-default' . ( $collapsed != 'true' ? ' hidden' : null ) . '"><span class="fa fa-chevron-down"></span></button><button type="button" class="cbFieldsetCollapse btn btn-xs btn-default' . ( $collapsed == 'true' ? ' hidden' : null ) . '"><span class="fa fa-chevron-up"></span></button>' : null )
+									.	'</legend>';
 				}
 				if ( $htmlFormatting == 'table' ) {
 					$html[]			=	'<table class="table table-noborder">';
@@ -1874,9 +1917,20 @@ class RegistryEditView {
 								if ( $subParam->attributes( 'action' ) == 'set' ) {
 									$correspondingParam						=	$param->getAnyChildByNameAttr( 'param', 'name', $subParam->attributes( 'name' ) );
 									if ( $correspondingParam ) {
+										$ifSubId							=	$this->control_id( $control_name, $subParam->attributes( 'name' ) );
+										$ifSubValue							=	$subParam->attributes( 'value' );
+
+										if ( $correspondingParam->attributes( 'type' ) == 'yesno' ) {
+											if ( $ifSubValue == 1 ) {
+												$ifSubId					=	$ifSubId . '__yes';
+											} elseif ( $ifSubValue == 0 ) {
+												$ifSubId					=	$ifSubId . '__no';
+											}
+										}
+
 										$this->_jsif[$ifName]['set'][]		=	$this->_htmlId( $control_name, $correspondingParam )
-											.	'=' . $this->control_id( $control_name, $subParam->attributes( 'name' ) )
-											.	'=' . $subParam->attributes( 'value' );
+																			.	'=' . $ifSubId
+																			.	'=' . $ifSubValue;
 									} else {
 										echo 'No corresponding param to the else statement for name ' . $subParam->attributes( 'name' ) . ' !';
 									}
@@ -2521,6 +2575,22 @@ class RegistryEditView {
 
 										if ( $htmlFormattingView == 'table' ) {
 											$html[]		=	'<table class="table table-noborder">';
+										}
+
+										if ( ! $plugin->published ) {
+											$published	=	'<div class="alert alert-danger">' . CBTxt::T( 'PLUGIN_NAME_IS_NOT_PUBLISHED', '[plugin_name] is not published.', array( '[plugin_name]' => htmlspecialchars( CBTxt::T( $plugin->name ) ) ) ) . '</div>';
+
+											if ( $htmlFormatting == 'table' ) {
+												$html[]	=	'<tr><td colspan="2">' . $published .  '</td></tr>';
+											} elseif ( $htmlFormatting == 'td' ) {
+												$html[]	=	'<td>' . $published . '</td>';
+											} elseif ( $htmlFormatting == 'div' ) {
+												$html[]	=	'<div class="cb_form_line clearfix">' . $published . '</div>';
+											} elseif ( $htmlFormatting == 'fieldsListArray' ) {
+												// nothing
+											} else {
+												$html[]	= $published;
+											}
 										}
 									}
 
@@ -3638,13 +3708,29 @@ class RegistryEditView {
 	 * @return string                             The rendered HTML tag
 	 */
 	protected function _todom( $tag, &$node, $control_name, $name, $value, $classes, $text ) {
-		$placeholder		=	$node->attributes( 'blanktext' );
+		$placeholder			=	$node->attributes( 'blanktext' );
 
-		$classes			=	'class="' . htmlspecialchars( $classes ) . '"';
-		$attributes			=	$this->getTooltipAttr( $node, $classes );
+		$classes				=	'class="' . htmlspecialchars( $classes ) . '"';
+		$attributes				=	$this->getTooltipAttr( $node, $classes );
 
 		if ( $placeholder ) {
-			$attributes		.=	' placeholder="' . htmlspecialchars( CBTxt::T( $placeholder ) ) . '"';
+			$attributes			.=	' placeholder="' . htmlspecialchars( CBTxt::T( $placeholder ) ) . '"';
+		}
+
+		$validationRules		=	array(	'required', 'requiredIf', 'remote', 'email', 'url', 'date',
+											'dateISO', 'number', 'digits', 'creditcard', 'equalTo', 'notEqualTo', 'accept',
+											'maxlength', 'minlength', 'maxselect', 'minselect', 'rangelength', 'range',
+											'max', 'min', 'step', 'maxWords', 'minWords', 'rangeWords', 'extension', 'pattern',
+											'isPattern', 'cbfield', 'cbremote', 'cbusername', 'cburl', 'filesize',
+											'filesizemin', 'filesizemax', 'cropwidth', 'cropheight', 'forbiddenWords'
+										);
+
+		foreach ( $validationRules as $validationRule ) {
+			$validationParam	=	$node->attributes( 'validate-' . $validationRule );
+
+			if ( $validationParam ) {
+				$attributes		.=	cbValidator::getRuleHtmlAttributes( $validationRule, $validationParam );
+			}
 		}
 
 		if ( in_array( $tag, array( 'button', 'textarea' ) ) ) {
@@ -4448,7 +4534,7 @@ class RegistryEditView {
 	 * @param  array             $classes       The list element classes
 	 * @param  boolean           $multiple      If multiple values can be selected
 	 */
-	function _list_select2( $node, $control_name, $name, $options, &$attributes, &$classes, $multiple = false ) {
+	function _list_select2( $node, $control_name, $name, &$options, &$attributes, &$classes, $multiple = false ) {
 		$filterSelect			=	$node->attributes( 'filteringselect' );
 		$select2				=	false;
 
@@ -4460,14 +4546,18 @@ class RegistryEditView {
 			} elseif ( count( $options ) >= ( $multiple ? 30 : 15 ) ) {
 				$select2		=	true;
 			}
-
-			if ( $select2 && ( count( $options ) >= 150 ) ) {
-				// Very large lists cause too much of a performance hit so force select2 off:
-				$select2		=	false;
-			}
 		}
 
 		if ( $select2 ) {
+			if ( $multiple ) {
+				if ( isset( $options[0] ) && ( $options[0]->value == '' ) ) {
+					// If the first value is the blank value then add it as the placeholder instead:
+					$attributes	.=	' data-cbselect-placeholder="' . htmlspecialchars( $options[0]->text ) . '"';
+				}
+
+				$attributes		.=	' data-cbselect-close-on-select="false"';
+			}
+
 			$this->_jsselect2	=	true;
 
 			// Add the cb specific select 2 class for jQuery binding:
@@ -5293,6 +5383,38 @@ class RegistryEditView {
 
 			$sqlOptions						=	$optionCache[$cacheId];
 
+			if ( ( $node->attributes( 'type' ) == 'field' ) && ( $node->attributes( 'key' ) == 'tablecolumns' ) ) {
+				foreach ( $sqlOptions as $k => $sqlOption ) {
+					$tableColumns					=	explode( ',', $sqlOption->value );
+
+					if ( count( $tableColumns ) <= 1 ) {
+						continue;
+					}
+
+					foreach ( $tableColumns as $tableColumn ) {
+						$cOpt						=	clone $sqlOption;
+						$cOpt->value				=	$tableColumn;
+
+						if ( in_array( $node->attributes( 'title' ), array( 'name', 'tablecolumns' ) ) ) {
+							$cOpt->text				=	$tableColumn;
+						} else {
+							if ( in_array( $node->attributes( 'title' ), array( 'title', 'description' ) ) ) {
+								$cOpt->text			=	CBTxt::T( $sqlOption->text ) . ' (' . $tableColumn . ')';
+								$cOpt->translate	=	false;
+							} else {
+								$cOpt->text			=	( $sqlOption->text != $tableColumn ? $sqlOption->text . ' (' . $tableColumn . ')' : $sqlOption->text );
+							}
+						}
+
+						$sqlOptions[]				=	$cOpt;
+					}
+
+					unset( $sqlOptions[$k] );
+				}
+
+				$sqlOptions							=	array_values( $sqlOptions );
+			}
+
 			$this->_list_options_data( $node, $options, $sqlOptions );
 
 			$selected						=	explode( '|*|', $value );
@@ -5624,6 +5746,22 @@ class RegistryEditView {
 
 		if ( $key ) {
 			$keytype				=	$node->attributes( 'keytype' );
+
+			if ( ! $keytype )  {
+				switch ( $key ) {
+					case 'name';
+					case 'tablecolumns';
+					case 'table';
+					case 'title';
+					case 'description';
+					case 'type';
+					case 'value';
+					case 'default';
+					case 'cssclass';
+						$keytype	=	'sql:string';
+						break;
+				}
+			}
 		} else {
 			$key					=	'fieldid';
 		}
@@ -5704,7 +5842,7 @@ class RegistryEditView {
 		} else {
 			$query					=	"SELECT f." . $_CB_database->NameQuote( $key ) . " AS value"
 									.	", f." . $_CB_database->NameQuote( $title ) . " AS text"
-									.	( $title == 'name' ? ", " . $_CB_database->Quote( 'no' ) . " AS translate" : null )
+									.	( ! in_array( $title, array( 'title', 'description' ) ) ? ", " . $_CB_database->Quote( 'no' ) . " AS translate" : null )
 									.	"\n FROM " . $_CB_database->NameQuote( '#__comprofiler_fields' ) . " AS f"
 									.	"\n LEFT JOIN " . $_CB_database->NameQuote( '#__comprofiler_tabs' ) . " AS t"
 									.	" ON t." . $_CB_database->NameQuote( 'tabid' ) . " = f." . $_CB_database->NameQuote( 'tabid' )
@@ -6467,7 +6605,7 @@ class RegistryEditView {
 															  : "location.href='" . addslashes( str_replace( '&amp;', '&', htmlspecialchars( $href ) ) ) . "'" ) );
 
 				if ( $message ) {
-					 $js	=	"if ( confirm( '" . addslashes( CBTxt::T( $message ) ) . "' ) ) { " . $js . " }";
+					 $js	=	'cbjQuery.cbconfirm( \'' . addslashes( CBTxt::T( $message ) ) . '\' ).done( function() { ' . $js . '; })';
 				}
 
 				$attributes	=	' onclick="' . $js . '"';

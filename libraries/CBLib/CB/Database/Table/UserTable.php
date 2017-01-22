@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 5/4/14 1:08 AM $
 * @package CB\Database\Table
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -31,6 +31,8 @@ class UserTable extends ComprofilerTable
 	/** @var string */
 	public $username					=	null;
 	/** @var string */
+	public $alias						=	null;
+	/** @var string */
 	public $email						=	null;
 	/** @var string */
 	public $password					=	null;
@@ -55,6 +57,12 @@ class UserTable extends ComprofilerTable
 	public $lastupdatedate				=	null;
 	/** @var string */
 	public $activation					=	null;
+	/** @var string */
+	public $otpKey						=	null;
+	/** @var string */
+	public $otep						=	null;
+	/** @var int */
+	public $requireReset				=	null;
 	/** @var string */
 	public $params						=	null;
 
@@ -89,7 +97,7 @@ class UserTable extends ComprofilerTable
 	 * Fields from Cms User table (this array is initialized in constructor calling function _reinitNonComprofileVars())
 	 * @var array
 	 */
-	protected $_nonComprofilerVars		 =	array( 'name', 'username', 'email', 'password', 'params', 'block', 'sendEmail', 'gids', 'registerDate', 'activation', 'lastvisitDate', 'lastResetTime', 'resetCount' );
+	protected $_nonComprofilerVars		 =	array( 'name', 'username', 'email', 'password', 'params', 'block', 'sendEmail', 'gids', 'registerDate', 'activation', 'lastvisitDate', 'lastResetTime', 'resetCount', 'otpKey', 'otep', 'requireReset' );
 
 	/**
 	 * Fields from Cms User table that can be bound from frontend when a user is saveSafely in frontend (additional safety measure)

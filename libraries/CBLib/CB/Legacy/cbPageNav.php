@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/20/14 1:42 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -44,6 +44,13 @@ class cbPageNav
 	 * @var string
 	 */
 	protected $baseUrl				=	null;
+
+	/**
+	 * determines if the paging should continue to use onclick post behavior even if baseurl is supplied
+	 *
+	 * @var bool
+	 */
+	protected $forcePost			=	false;
 
 	/**
 	 * function name for custom input name formatting
@@ -148,14 +155,16 @@ class cbPageNav
 	}
 
 	/**
-	 * set pagination base url to use url based pagination instead of js based paging
+	 * set pagination base url to use url based pagination instead of js based paging unless $forcePost is true
 	 *
 	 * @param string $url
+	 * @param bool   $forcePost
 	 */
-	public function setBaseURL( $url )
+	public function setBaseURL( $url, $forcePost = false )
 	{
 		if ( $url && is_string( $url ) ) {
-			$this->baseUrl	=	$url;
+			$this->baseUrl		=	$url;
+			$this->forcePost	=	$forcePost;
 		}
 	}
 
@@ -556,7 +565,7 @@ class cbPageNav
 			$page				=	( ( $currentPage - 2 ) * $this->limit );
 
 			if ( $showBegin ) {
-				$pageHtml		=	'<a ' . ( $this->getBaseURL() ? 'href="' . $this->limitstartUrl( 0 ) . '"' : 'href="#beg" onclick="' . $this->limitstartJs( 0 ) . '"' ) . ' title="' .  htmlspecialchars( CBTxt::T( 'PAGENAV_FIRST_PAGE', 'First page' ) ) . '">&laquo;</a>';
+				$pageHtml		=	'<a' . ( $this->getBaseURL() ? ' href="' . $this->limitstartUrl( 0 ) . '"' : ' href="#beg"' ) . ( ( ! $this->getBaseURL() ) || $this->forcePost ? ' onclick="' . $this->limitstartJs( 0 ) . '"' : null ) . ' title="' .  htmlspecialchars( CBTxt::T( 'PAGENAV_FIRST_PAGE', 'First page' ) ) . '">&laquo;</a>';
 
 				if ( $format == 'li' ) {
 					$return		.=	'<li class="' . htmlspecialchars( trim( $this->classes['cbPageNav'] . ' ' . $this->classes['cbPageNavStart'] ) ) . '">' . $pageHtml . '</li>';
@@ -566,7 +575,7 @@ class cbPageNav
 			}
 
 			if ( $showPrev ) {
-				$pageHtml		=	'<a ' . ( $this->getBaseURL() ? 'href="' . $this->limitstartUrl( $page ) . '"' : 'href="#prev" onclick="' . $this->limitstartJs( $page ) . '"' ) . ' title="' . htmlspecialchars( CBTxt::T( 'PAGENAV_PREVIOUS_PAGE', 'Previous page' )  ) . '">&lsaquo;</a>';
+				$pageHtml		=	'<a' . ( $this->getBaseURL() ? ' href="' . $this->limitstartUrl( $page ) . '"' : ' href="#prev"' ) . ( ( ! $this->getBaseURL() ) || $this->forcePost ? ' onclick="' . $this->limitstartJs( $page ) . '"' : null ) . ' title="' . htmlspecialchars( CBTxt::T( 'PAGENAV_PREVIOUS_PAGE', 'Previous page' )  ) . '">&lsaquo;</a>';
 
 				if ( $format == 'li' ) {
 					$return		.=	'<li class="' . htmlspecialchars( trim( $this->classes['cbPageNav'] . ' ' . $this->classes['cbPageNavPrev'] ) ) . '">' . $pageHtml . '</li>';
@@ -576,7 +585,7 @@ class cbPageNav
 			}
 
 			if ( ( $startLoop > 1 ) && $showLinks ) {
-				$pageHtml		=	'<a ' . ( $this->getBaseURL() ? 'href="' . $this->limitstartUrl( 0 ) . '"' : 'href="#beg" onclick="' . $this->limitstartJs( 0 ) . '"' ) . ' title="'  . htmlspecialchars( CBTxt::T('PAGENAV_FIRST_PAGE', 'First page' ) ) . '" onclick="' . $this->limitstartJs( 0 ) . '">1</a>';
+				$pageHtml		=	'<a' . ( $this->getBaseURL() ? ' href="' . $this->limitstartUrl( 0 ) . '"' : ' href="#beg"' ) . ( ( ! $this->getBaseURL() ) || $this->forcePost ? ' onclick="' . $this->limitstartJs( 0 ) . '"' : null ) . ' title="'  . htmlspecialchars( CBTxt::T('PAGENAV_FIRST_PAGE', 'First page' ) ) . '" onclick="' . $this->limitstartJs( 0 ) . '">1</a>';
 
 				if ( $format == 'li' ) {
 					$return		.=	'<li class="' . htmlspecialchars( trim( $this->classes['cbPageNav'] . ' ' . $this->classes['cbPageNavFirst'] ) ) . '">' . $pageHtml . '</li>';
@@ -628,7 +637,7 @@ class cbPageNav
 					$return		.=	'<span class="' . htmlspecialchars( trim( $this->classes['cbPageNav'] . ' ' . $this->classes['cbPageNavActive'] ) ) . '">' . $pageHtml . '</span>';
 				}
 			} else {
-				$pageHtml		=	'<a ' . ( $this->getBaseURL() ? 'href="' . $this->limitstartUrl( $page ) . '"' : 'href="#' . (int) $i . '" onclick="' . $this->limitstartJs( $page ) . '"' ) . '>' . (int) $i . '</a>';
+				$pageHtml		=	'<a' . ( $this->getBaseURL() ? ' href="' . $this->limitstartUrl( $page ) . '"' : ' href="#' . (int) $i . '"' ) . ( ( ! $this->getBaseURL() ) || $this->forcePost ? ' onclick="' . $this->limitstartJs( $page ) . '"' : null ) . '>' . (int) $i . '</a>';
 
 				if ( $format == 'li' ) {
 					$return		.=	'<li class="' . htmlspecialchars( trim( $this->classes['cbPageNav'] . ' ' . $this->classes['cbPageNavLink'] ) ) . '">' . $pageHtml . '</li>';
@@ -653,7 +662,7 @@ class cbPageNav
 			}
 
 			if ( ( $stopLoop < $totalPages ) && $showLinks ) {
-				$pageHtml		=	'<a ' . ( $this->getBaseURL() ? 'href="' . $this->limitstartUrl( $endPage ) . '"' : 'href="#end" onclick="' . $this->limitstartJs( $endPage ) . '"' ) . ' title="' . htmlspecialchars( CBTxt::T( 'PAGENAV_LAST_PAGE', 'Last page' ) ) . '">' . (int) $totalPages . '</a>';
+				$pageHtml		=	'<a' . ( $this->getBaseURL() ? ' href="' . $this->limitstartUrl( $endPage ) . '"' : ' href="#end"' ) . ( ( ! $this->getBaseURL() ) || $this->forcePost ? ' onclick="' . $this->limitstartJs( $endPage ) . '"' : null ) . ' title="' . htmlspecialchars( CBTxt::T( 'PAGENAV_LAST_PAGE', 'Last page' ) ) . '">' . (int) $totalPages . '</a>';
 
 				if ( $format == 'li' ) {
 					$return		.=	'<li class="' . htmlspecialchars( trim( $this->classes['cbPageNav'] . ' ' . $this->classes['cbPageNavLast'] ) ) . '">' . $pageHtml . '</li>';
@@ -663,7 +672,7 @@ class cbPageNav
 			}
 
 			if ( $showNext ) {
-				$pageHtml		=	'<a ' . ( $this->getBaseURL() ? 'href="' . $this->limitstartUrl( $page ) . '"' : 'href="#next" onclick="' . $this->limitstartJs( $page ) . '"' ) . ' title="' . htmlspecialchars( CBTxt::T( 'PAGENAV_NEXT_PAGE', 'Next page' ) ) . '">&rsaquo;</a>';
+				$pageHtml		=	'<a' . ( $this->getBaseURL() ? ' href="' . $this->limitstartUrl( $page ) . '"' : ' href="#next"' ) . ( ( ! $this->getBaseURL() ) || $this->forcePost ? ' onclick="' . $this->limitstartJs( $page ) . '"' : null ) . ' title="' . htmlspecialchars( CBTxt::T( 'PAGENAV_NEXT_PAGE', 'Next page' ) ) . '">&rsaquo;</a>';
 
 				if ( $format == 'li' ) {
 					$return		.=	'<li class="' . htmlspecialchars( trim( $this->classes['cbPageNav'] . ' ' . $this->classes['cbPageNavNext'] ) ) . '">' . $pageHtml . '</li>';
@@ -673,7 +682,7 @@ class cbPageNav
 			}
 
 			if ( $showEnd ) {
-				$pageHtml		=	'<a ' . ( $this->getBaseURL() ? 'href="' . $this->limitstartUrl( $endPage ) . '"' : 'href="#end" onclick="' . $this->limitstartJs( $endPage ) . '"' ) . ' title="' . htmlspecialchars( CBTxt::T( 'PAGENAV_LAST_PAGE', 'Last page' ) ) . '">&raquo;</a>';
+				$pageHtml		=	'<a' . ( $this->getBaseURL() ? ' href="' . $this->limitstartUrl( $endPage ) . '"' : ' href="#end"' ) . ( ( ! $this->getBaseURL() ) || $this->forcePost ? ' onclick="' . $this->limitstartJs( $endPage ) . '"' : null ) . ' title="' . htmlspecialchars( CBTxt::T( 'PAGENAV_LAST_PAGE', 'Last page' ) ) . '">&raquo;</a>';
 
 				if ( $format == 'li' ) {
 					$return		.=	'<li class="' . htmlspecialchars( trim( $this->classes['cbPageNav'] . ' ' . $this->classes['cbPageNavEnd'] ) ) . '">' . $pageHtml . '</li>';

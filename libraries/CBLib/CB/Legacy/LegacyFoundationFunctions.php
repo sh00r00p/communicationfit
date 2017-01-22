@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 7/8/14 5:34 PM $
 * @package CB\Legacy
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -46,7 +46,7 @@ namespace CB\Legacy
 
 			self::$loaded		=	true;
 
-			define( '_CB_JQUERY_VERSION', '1.11.2' );		// IMPORTANT: when changing version here also change in the 2 XML installation files
+			define( '_CB_JQUERY_VERSION', '2.2.4' );
 
 			/**
 			 * CB GLOBALS and initializations
@@ -181,19 +181,19 @@ namespace
 	}
 
 	/**
-	 * Gets CB $task Itemid or by default userprofile Itemid
+	 * Gets CB $view Itemid or by default userprofile Itemid
 	 *
-	 * @param bool $htmlspecialchars TRUE if should return "&amp:Itemid...." instead of "&Itemid..." (with FALSE as default), === 0 if return only int
-	 * @param string $task task/view  e.g. 'userslist'
-	 * @param null|string $additional append additional string to end of URL for deeper URL matching (note: this is unchecked)
+	 * @param bool        $htmlspecialchars TRUE if should return "&amp:Itemid...." instead of "&Itemid..." (with FALSE as default), === 0 if return only int
+	 * @param string      $view             view  e.g. 'userslist'
+	 * @param null|string $additional       append additional string to end of URL for deeper URL matching (note: this is unchecked)
 	 * @return null|string
 	 */
-	function getCBprofileItemid( $htmlspecialchars = false, $task = 'userprofile', $additional = null ) {
+	function getCBprofileItemid( $htmlspecialchars = false, $view = 'userprofile', $additional = null ) {
 		global $_CB_database, $_CB_framework;
 
 		static $cacheItemids									=	array();
 
-		if ( ! isset( $cacheItemids[$task][$additional] ) ) {
+		if ( ! isset( $cacheItemids[$view][$additional] ) ) {
 			if ( class_exists( 'CB\Database\Table\UserTable', false ) ) {
 				$viewLevels										=	Application::MyUser()->getAuthorisedViewLevels();
 			} else {
@@ -208,45 +208,25 @@ namespace
 			}
 
 			// Try to find an itemid for the supplied task/view with additional parameter parsing included:
-			if ( ( $task !== 'userprofile' ) && is_string( $task ) ) {
+			if ( ( $view !== 'userprofile' ) && $view ) {
 				// Check the current active menu item first to avoid an unnecessary query:
-				$Itemid											=	$_CB_framework->itemid( 'option=com_comprofiler&view=' . $task . $additional );
+				$Itemid											=	$_CB_framework->itemid( 'option=com_comprofiler&view=' . $view . $additional );
 
 				if ( ! $Itemid ) {
 					$query										=	'SELECT ' . $_CB_database->NameQuote( 'id' )
 																.	"\n FROM " . $_CB_database->NameQuote( '#__menu' )
-																.	"\n WHERE ( " . $_CB_database->NameQuote( 'link' ) . " LIKE " . $_CB_database->Quote( 'index.php?option=com_comprofiler&task=' . $_CB_database->getEscaped( $task, true ) . $additional . '%', false )
-																.	' OR ' . $_CB_database->NameQuote( 'link' ) . ' LIKE ' . $_CB_database->Quote( 'index.php?option=com_comprofiler&view=' . $_CB_database->getEscaped( $task, true ) . $additional . '%', false ) . ' )'
+																.	"\n WHERE ( " . $_CB_database->NameQuote( 'link' ) . " LIKE " . $_CB_database->Quote( 'index.php?option=com_comprofiler&view=' . $_CB_database->getEscaped( $view, true ) . $additional . '%', false )
+																.	' OR ' . $_CB_database->NameQuote( 'link' ) . ' LIKE ' . $_CB_database->Quote( 'index.php?option=com_comprofiler&task=' . $_CB_database->getEscaped( $view, true ) . $additional . '%', false ) . ' )'
 																.	$queryAccess;
 					$_CB_database->setQuery( $query );
 					$Itemid										=	(int) $_CB_database->loadResult();
-				}
-
-				// If additional was specified and no itemid found then lets see if a more top level itemid is available for same task/view:
-				if ( ( ! $Itemid ) && $additional ) {
-					// Check the current active menu item first to avoid an unnecessary query:
-					if ( ! isset( $cacheItemids[$task][null] ) ) {
-						$cacheItemids[$task][null]				=	$_CB_framework->itemid( 'option=com_comprofiler&view=' . $task );
-
-						if ( ! $cacheItemids[$task][null] ) {
-							$query								=	'SELECT ' . $_CB_database->NameQuote( 'id' )
-																.	"\n FROM " . $_CB_database->NameQuote( '#__menu' )
-																.	"\n WHERE ( " . $_CB_database->NameQuote( 'link' ) . " LIKE " . $_CB_database->Quote( 'index.php?option=com_comprofiler&task=' . $_CB_database->getEscaped( $task, true ) . '%', false )
-																.	' OR ' . $_CB_database->NameQuote( 'link' ) . ' LIKE ' . $_CB_database->Quote( 'index.php?option=com_comprofiler&view=' . $_CB_database->getEscaped( $task, true ) . '%', false ) . ' )'
-																.	$queryAccess;
-							$_CB_database->setQuery( $query );
-							$cacheItemids[$task][null]			=	(int) $_CB_database->loadResult();
-						}
-					}
-
-					$Itemid										=	$cacheItemids[$task][null];
 				}
 			} else {
 				$Itemid											=	null;
 			}
 
-			if ( ( $task === 'userprofile' ) || ( ! $Itemid ) ) {
-				// $task used to be a boolean before CB 1.2.3 but with no effect:
+			// No Itemid was found or we're trying to grab profile Itemid:
+			if ( ( $view === 'userprofile' ) || ( ! $Itemid ) ) {
 				if ( ! isset( $cacheItemids['userprofile'][null] ) ) {
 					// Check the current active menu item first to avoid an unnecessary query:
 					$cacheItemids['userprofile'][null]			=	$_CB_framework->itemid( 'option=com_comprofiler&view=userprofile' );
@@ -254,9 +234,9 @@ namespace
 					if ( ! $cacheItemids['userprofile'][null] ) {
 						$query									=	'SELECT ' . $_CB_database->NameQuote( 'id' )
 																.	"\n FROM " . $_CB_database->NameQuote( '#__menu' )
-																.	"\n WHERE ( " . $_CB_database->NameQuote( 'link' ) . " LIKE " . $_CB_database->Quote( 'index.php?option=com_comprofiler' )
-																.	' OR ' . $_CB_database->NameQuote( 'link' ) . ' LIKE ' . $_CB_database->Quote( 'index.php?option=com_comprofiler&task=userprofile' )
-																.	' OR ' . $_CB_database->NameQuote( 'link' ) . ' LIKE ' . $_CB_database->Quote( 'index.php?option=com_comprofiler&view=userprofile' ) . ' )'
+																.	"\n WHERE ( " . $_CB_database->NameQuote( 'link' ) . ' = ' . $_CB_database->Quote( 'index.php?option=com_comprofiler&view=userprofile' )
+																.	' OR ' . $_CB_database->NameQuote( 'link' ) . ' = ' . $_CB_database->Quote( 'index.php?option=com_comprofiler&task=userprofile' )
+																.	' OR ' . $_CB_database->NameQuote( 'link' ) . ' = ' . $_CB_database->Quote( 'index.php?option=com_comprofiler' ) . ' )'
 																.	$queryAccess;
 						$_CB_database->setQuery( $query );
 						$cacheItemids['userprofile'][null]		=	(int) $_CB_database->loadResult();
@@ -264,36 +244,16 @@ namespace
 				}
 
 				$Itemid											=	$cacheItemids['userprofile'][null];
-
-				// if no user profile, try getting itemid of the default list:
-				if ( ! $Itemid ) {
-					if ( ! isset( $cacheItemids['userslist'][null] ) ) {
-						// Check the current active menu item first to avoid an unnecessary query:
-						$cacheItemids['userslist'][null]		=	$_CB_framework->itemid( 'option=com_comprofiler&view=userslist' );
-
-						if ( ! $cacheItemids['userslist'][null] ) {
-							$query								=	'SELECT ' . $_CB_database->NameQuote( 'id' )
-																.	"\n FROM " . $_CB_database->NameQuote( '#__menu' )
-																.	"\n WHERE ( " . $_CB_database->NameQuote( 'link' ) . " LIKE " . $_CB_database->Quote( 'index.php?option=com_comprofiler&task=userslist' )
-																.	' OR ' . $_CB_database->NameQuote( 'link' ) . ' LIKE ' . $_CB_database->Quote( 'index.php?option=com_comprofiler&view=userslist' ) . ' )'
-																.	$queryAccess;
-							$_CB_database->setQuery( $query );
-							$cacheItemids['userslist'][null]	=	(int) $_CB_database->loadResult();
-						}
-					}
-
-					$Itemid										=	$cacheItemids['userslist'][null];
-				}
 			}
 
-			$cacheItemids[$task][$additional]					=	$Itemid;
+			$cacheItemids[$view][$additional]					=	$Itemid;
 		}
 
-		if ( $cacheItemids[$task][$additional] ) {
+		if ( $cacheItemids[$view][$additional] ) {
 			if ( is_bool( $htmlspecialchars ) ) {
-				return ( $htmlspecialchars ? "&amp;" : "&") . "Itemid=" . $cacheItemids[$task][$additional];
+				return ( $htmlspecialchars ? "&amp;" : "&") . "Itemid=" . $cacheItemids[$view][$additional];
 			} else {
-				return $cacheItemids[$task][$additional];
+				return $cacheItemids[$view][$additional];
 			}
 		} else {
 			return null;
@@ -333,6 +293,11 @@ namespace
 					CBTxt::import( $langPath, $langTag, 'admin_language.php' );
 				}
 
+				if ( ! isset( $imported['language.override'] ) ) {
+					$imported['language.override']	=	true;
+
+					CBTxt::import( $langPath, $langTag, 'override.php', true, true );
+				}
 			} elseif ( $lib == 'cb.plugins' ) {
 				// this part is temporary until we refactor those 2 files into the corresponding CB libraries:
 				/** @noinspection PhpIncludeInspection */

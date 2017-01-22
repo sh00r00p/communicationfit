@@ -3,12 +3,12 @@
 	<name>Community Builder Library</name>
 	<libraryname>CBLib</libraryname>
 	<author>CB Team</author>
-	<creationDate>2016-08-24</creationDate>
-	<copyright>(C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved</copyright>
+	<creationDate>2017-01-20</creationDate>
+	<copyright>(C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved</copyright>
 	<license>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2. All copyright statements must be kept and derivative work must prominently duly acknowledge original work on web interface and on website where downloaded.</license>
 	<authorEmail>cbteam@joomlapolis.com</authorEmail>
 	<authorUrl>http://www.joomlapolis.com/</authorUrl>
-	<version>2.0.15</version>
+	<version>2.1.2</version>
 	<description>Community Builder Library</description>
 	<files>
 		<file>CBLib.xml</file>

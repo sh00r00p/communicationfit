@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/20/14 7:18 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -649,7 +649,6 @@ class CBInstallPlugin extends Table
 	{
 		global $_CB_framework;
 
-		cbimport( 'cb.snoopy' );
 		cbimport( 'cb.adminfilesystem' );
 		$adminFS					=	cbAdminFileSystem::getInstance();
 
@@ -661,25 +660,33 @@ class CBInstallPlugin extends Table
 
 		if ( file_exists( $baseDir ) ) {
 			if ( $adminFS->is_writable( $baseDir ) || ! $adminFS->isUsingStandardPHP() ) {
+				$resultError			=	null;
 
-				$s					=	new CBSnoopy();
-				$fetchResult		=	@$s->fetch( $userfileURL );
+				try {
+					$guzzleHttpClient	=	new GuzzleHttp\Client();
+					$guzzleRequest		=	$guzzleHttpClient->get( $userfileURL, array( 'timeout' => 90 ) );
+				} catch( \GuzzleHttp\Exception\RequestException $e ) {
+					$resultError		=	$e->getMessage();
+					$guzzleRequest		=	false;
+				}
 
-				if ( $fetchResult && ! $s->error && ( $s->status == 200 ) ) {
-					cbimport( 'cb.adminfilesystem' );
-					$adminFS		=	cbAdminFileSystem::getInstance();
-					if ( $adminFS->file_put_contents( $baseDir . $userfile_name, $s->results ) ) {
-						if ( $this->_cbAdmin_chmod( $baseDir . $userfile_name ) ) {
-							return true;
+				if ( $guzzleRequest !== false ) {
+					if ( $guzzleRequest->getStatusCode() == 200 ) {
+						$adminFS		=	cbAdminFileSystem::getInstance();
+						if ( $adminFS->file_put_contents( $baseDir . $userfile_name, (string) $guzzleRequest->getBody() ) ) {
+							if ( _cbAdmin_chmod( $baseDir . $userfile_name ) ) {
+								return true;
+							} else {
+								$msg = sprintf(CBTxt::T('Failed to change the permissions of the uploaded file %s'), $baseDir.$userfile_name);
+							}
 						} else {
-							$msg = sprintf(CBTxt::T('Failed to change the permissions of the uploaded file %s'), $baseDir.$userfile_name);
+							$msg = sprintf(CBTxt::T('Failed to create and write uploaded file in %s'), $baseDir.$userfile_name);
 						}
 					} else {
-						$msg = sprintf(CBTxt::T('Failed to create and write uploaded file in %s'), $baseDir.$userfile_name);
+						$msg = sprintf( CBTxt::T('Failed to download package file from <code>%s</code> to webserver due to following status: %s'), $userfileURL, htmlspecialchars( $guzzleRequest->getReasonPhrase() ) . ': ' . $guzzleRequest->getStatusCode() );
 					}
-				} else {
-					$msg = ( $s->error ? sprintf( CBTxt::T('Failed to download package file from <code>%s</code> to webserver due to following error: %s'),  $userfileURL, $s->error ) :
-						sprintf( CBTxt::T('Failed to download package file from <code>%s</code> to webserver due to following status: %s'), $userfileURL, $s->status . ': ' . $s->response_code ) );
+				} elseif ( $resultError ) {
+					$msg = sprintf( CBTxt::T('Failed to download package file from <code>%s</code> to webserver due to following error: %s'),  $userfileURL, htmlspecialchars( $resultError ) );
 				}
 			} else {
 				$msg = sprintf( CBTxt::T('Upload failed as %s directory is not writable.'), '<code>' . htmlspecialchars( $baseDir ) . '</code>' );

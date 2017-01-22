@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/18/14 2:27 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -118,7 +118,7 @@ class cbFieldHandler extends cbPluginHandler
 			&& $displayTitle
 		)
 		{
-			$oValue									=	cbReplaceVars( $ueConfig['emptyFieldsText'], $user );
+			$oValue									=	cbReplaceVars( $ueConfig['emptyFieldsText'], $user, true, true, array( 'reason' => $reason ) );
 		}
 
 		if ( $oValue != null || trim($oValue) != '' ) {
@@ -376,10 +376,10 @@ class cbFieldHandler extends cbPluginHandler
 	public function getFieldTitle( &$field, &$user, $output, /** @noinspection PhpUnusedParameterInspection */ $reason )
 	{
 		if ( $output === 'text' ) {
-			return strip_tags( cbReplaceVars( $field->title, $user ) );
+			return strip_tags( cbReplaceVars( $field->title, $user, true, true, array( 'reason' => $reason ) ) );
 		}
 
-		return cbReplaceVars( $field->title, $user );
+		return cbReplaceVars( $field->title, $user, true, true, array( 'reason' => $reason ) );
 	}
 
 	/**
@@ -401,10 +401,10 @@ class cbFieldHandler extends cbPluginHandler
 		}
 
 		if ( $output === 'text' ) {
-			return strip_tags( cbReplaceVars( $placeholder, $user ) );
+			return strip_tags( cbReplaceVars( $placeholder, $user, true, true, array( 'reason' => $reason ) ) );
 		}
 
-		return cbReplaceVars( $placeholder, $user );
+		return cbReplaceVars( $placeholder, $user, true, true, array( 'reason' => $reason ) );
 	}
 
 	/**
@@ -420,11 +420,11 @@ class cbFieldHandler extends cbPluginHandler
 	public function getFieldDescription( &$field, &$user, $output, /** @noinspection PhpUnusedParameterInspection */ $reason )
 	{
 		if ( $output === 'text' ) {
-			return trim( strip_tags( cbReplaceVars( $field->description, $user ) ) );
+			return trim( strip_tags( cbReplaceVars( $field->description, $user, true, true, array( 'reason' => $reason ) ) ) );
 		}
 
 		if ( $output === 'htmledit' ) {
-			return trim( cbReplaceVars( $field->description, $user ) );
+			return trim( cbReplaceVars( $field->description, $user, true, true, array( 'reason' => $reason ) ) );
 		}
 
 		return null;
@@ -529,19 +529,26 @@ class cbFieldHandler extends cbPluginHandler
 				return false;
 			}
 
-			$len						=	cbIsoUtf_strlen( $value );
+			$isMultiselect				=	preg_match( '/multicheckbox|multiselect/', $field->type );
+			$len						=	( $isMultiselect ? count( $this->_explodeCBvalues( $value ) ) : cbIsoUtf_strlen( $value ) );
 
 			// Minimum field length:
 			$fieldMinLength				=	$this->getMinLength( $field );
 
 			if ( ( $len > 0 ) && ( $len < $fieldMinLength ) ) {
-				$this->_setValidationError(
-					$field, $user, $reason,
-					CBTxt::T( 'UE_VALIDATE_ERROR_MIN_CHARS_PLEASE', 'Please enter a valid [FIELDNAME]: at least ||%%NUMBERCHARSREQUIRED%% character|%%NUMBERCHARSREQUIRED%% characters||: you entered ||%%NUMBERCHARSENTERED%% character.|%%NUMBERCHARSENTERED%% characters.',
-						array( '[FIELDNAME]'			=> $this->getFieldTitle( $field, $user, 'text', $reason ),
-							   '%%NUMBERCHARSREQUIRED%%'	=> $fieldMinLength,
-							   '%%NUMBERCHARSENTERED%%'	=> $len ) )
-				);
+				if ( $isMultiselect ) {
+					$fieldMinError		=	CBTxt::T( 'UE_VALIDATE_ERROR_MIN_OPTS_PLEASE', 'Please select a valid [FIELDNAME]: at least ||%%NUMBEROPTSREQUIRED%% option|%%NUMBEROPTSREQUIRED%% options||: you selected ||%%NUMBEROPTSENTERED%% option.|%%NUMBEROPTSENTERED%% options.',
+												array( '[FIELDNAME]'			=> $this->getFieldTitle( $field, $user, 'text', $reason ),
+													   '%%NUMBEROPTSREQUIRED%%'	=> $fieldMinLength,
+													   '%%NUMBEROPTSENTERED%%'	=> $len ) );
+				} else {
+					$fieldMinError		=	CBTxt::T( 'UE_VALIDATE_ERROR_MIN_CHARS_PLEASE', 'Please enter a valid [FIELDNAME]: at least ||%%NUMBERCHARSREQUIRED%% character|%%NUMBERCHARSREQUIRED%% characters||: you entered ||%%NUMBERCHARSENTERED%% character.|%%NUMBERCHARSENTERED%% characters.',
+												array( '[FIELDNAME]'			=> $this->getFieldTitle( $field, $user, 'text', $reason ),
+													   '%%NUMBERCHARSREQUIRED%%'	=> $fieldMinLength,
+													   '%%NUMBERCHARSENTERED%%'	=> $len ) );
+				}
+
+				$this->_setValidationError( $field, $user, $reason, $fieldMinError );
 
 				return false;
 			}
@@ -549,12 +556,19 @@ class cbFieldHandler extends cbPluginHandler
 			// Maximum field length:
 			$fieldMaxLength				=	$this->getMaxLength( $field );
 			if ( $fieldMaxLength && ( $len > $fieldMaxLength ) ) {
-				$this->_setValidationError( $field, $user, $reason,
-					CBTxt::T( 'UE_VALIDATE_ERROR_MAX_CHARS_PLEASE', 'Please enter a valid [FIELDNAME]: maximum ||%%NUMBERCHARSREQUIRED%% character|%%NUMBERCHARSREQUIRED%% characters||: you entered ||%%NUMBERCHARSENTERED%% character.|%%NUMBERCHARSENTERED%% characters.',
-						array( '[FIELDNAME]'			=> $this->getFieldTitle( $field, $user, 'text', $reason ),
-							   '%%NUMBERCHARSREQUIRED%%'	=> $fieldMaxLength,
-							   '%%NUMBERCHARSENTERED%%'	=> $len ) )
-				);
+				if ( $isMultiselect ) {
+					$fieldMaxError		=	CBTxt::T( 'UE_VALIDATE_ERROR_MAX_OPTS_PLEASE', 'Please select a valid [FIELDNAME]: maximum ||%%NUMBEROPTSREQUIRED%% option|%%NUMBEROPTSREQUIRED%% options||: you selected ||%%NUMBEROPTSENTERED%% option.|%%NUMBEROPTSENTERED%% options.',
+												array( '[FIELDNAME]'			=> $this->getFieldTitle( $field, $user, 'text', $reason ),
+													   '%%NUMBEROPTSREQUIRED%%'	=> $fieldMaxLength,
+													   '%%NUMBEROPTSENTERED%%'	=> $len ) );
+				} else {
+					$fieldMaxError		=	CBTxt::T( 'UE_VALIDATE_ERROR_MAX_CHARS_PLEASE', 'Please enter a valid [FIELDNAME]: maximum ||%%NUMBERCHARSREQUIRED%% character|%%NUMBERCHARSREQUIRED%% characters||: you entered ||%%NUMBERCHARSENTERED%% character.|%%NUMBERCHARSENTERED%% characters.',
+												array( '[FIELDNAME]'			=> $this->getFieldTitle( $field, $user, 'text', $reason ),
+													   '%%NUMBERCHARSREQUIRED%%'	=> $fieldMaxLength,
+													   '%%NUMBERCHARSENTERED%%'	=> $len ) );
+				}
+
+				$this->_setValidationError( $field, $user, $reason, $fieldMaxError );
 
 				return false;
 			}
@@ -567,15 +581,18 @@ class cbFieldHandler extends cbPluginHandler
 			}
 			$forbiddenContent			=	$field->params->get( 'fieldValidateForbiddenList_' . $reason, $defaultForbidden );
 			if ( $forbiddenContent != '' ) {
-				$forbiddenContent		=	explode( ',', $forbiddenContent );
-				if ( in_array( '', $forbiddenContent, true ) ) {
-					// treats case of ',,' or ',,,' to also forbid ',' if in string.
-					$forbiddenContent[] =	',';
+				$forbiddenWords				=	array();
+
+				foreach ( explode( ',', $forbiddenContent ) as $forbiddenWord ) {
+					if ( $forbiddenWord === '' ) {
+						$forbiddenWords[]	=	',';
+					} else {
+						$forbiddenWords[]	=	preg_quote( $forbiddenWord, '/' );
+					}
 				}
-				for ( $i = 0, $n = count( $forbiddenContent ); $i < $n; $i++ ) {
-					$forbiddenContent[$i]	=	preg_quote( $forbiddenContent[$i], '/' );
-				}
-				$replaced				=	preg_replace( '/' . implode( '|', $forbiddenContent ) . '/i', '', $value );
+
+				$replaced					=	preg_replace( '/' . implode( '|', $forbiddenWords ) . '/i', '', $value );
+
 				if ( $replaced != $value ) {
 					$this->_setValidationError( $field, $user, $reason, CBTxt::T( 'UE_INPUT_VALUE_NOT_ALLOWED', 'This input value is not authorized.' ) );
 
@@ -870,7 +887,7 @@ class cbFieldHandler extends cbPluginHandler
 	 */
 	protected function formatFieldValueLayout( $value, $reason = 'profile', $field = null, $user = null, $htmlspecialchars = true, $extra = array() )
 	{
-		if ( in_array( $reason, array( 'profile', 'list', 'edit', 'register' ) ) && ( $value !== null ) && ( $value !== '' ) && ( $field !== null ) && ( ! $field->get( '_hideLayout', 0 ) ) ) {
+		if ( in_array( $reason, array( 'profile', 'list', 'search', 'edit', 'register' ) ) && ( $field !== null ) && ( ! $field->get( '_hideLayout', 0 ) ) ) {
 			switch( $reason ) {
 				case 'register':
 					$layout	=	CBTxt::T( $field->params->get( 'fieldLayoutRegister', null ) );
@@ -882,6 +899,10 @@ class cbFieldHandler extends cbPluginHandler
 
 				case 'list':
 					$layout	=	CBTxt::T( $field->params->get( 'fieldLayoutList', null ) );
+					break;
+
+				case 'search':
+					$layout	=	CBTxt::T( $field->params->get( 'fieldLayoutSearch', null ) );
 					break;
 
 				case 'profile':
@@ -1073,10 +1094,7 @@ class cbFieldHandler extends cbPluginHandler
 						.	( $tag == 'textarea' ? '>' .  htmlspecialchars( $value ) . '</textarea>' : ' />' );
 		}
 		$htmlIcons		=	$this->_fieldIconsHtml( $field, $user, 'htmledit', $reason, $tag, $type, $value, $additional, $allValues, $displayFieldIcons, $oReq );
-
-		if ( $reason != 'search' ) {
-			$htmlInput	=	$this->formatFieldValueLayout( $htmlInput, $reason, $field, $user );
-		}
+		$htmlInput		=	$this->formatFieldValueLayout( $htmlInput, $reason, $field, $user );
 
 		if ( $_PLUGINS->triggerListenersExist( 'onInputFieldHtmlRender' ) ) {
 			return implode( '', $_PLUGINS->trigger( 'onInputFieldHtmlRender', array( $htmlInput, $htmlIcons, $this, $field, $user, $reason, $tag, $type, $inputName, $value, $additional, $htmlDescription, $allValues, $displayFieldIcons, $oReq ) ) );
@@ -1543,16 +1561,17 @@ class cbFieldHandler extends cbPluginHandler
 			$attributeArray				=	array();
 		}
 
+		$isMultiselect					=	preg_match( '/multicheckbox|multiselect/', $field->type );
 		$fieldMinLength					=	$this->getMinLength( $field );
 
 		if ( $fieldMinLength > 0 ) {
-			$attributeArray[]			=	cbValidator::getRuleHtmlAttributes( 'minlength', (int) $fieldMinLength );
+			$attributeArray[]			=	cbValidator::getRuleHtmlAttributes( ( $isMultiselect ? 'minselect' : 'minlength' ), (int) $fieldMinLength );
 		}
 
 		$fieldMaxLength					=	$this->getMaxLength( $field );
 
 		if ( $fieldMaxLength > 0 ) {
-			$attributeArray[]			=	cbValidator::getRuleHtmlAttributes( 'maxlength', (int) $fieldMaxLength );
+			$attributeArray[]			=	cbValidator::getRuleHtmlAttributes( ( $isMultiselect ? 'maxselect' : 'maxlength' ), (int) $fieldMaxLength );
 		}
 
 		if ( isset( $field->_identicalTo ) ) {
@@ -1576,7 +1595,7 @@ class cbFieldHandler extends cbPluginHandler
 	 * @param  FieldTable  $field
 	 * @param  UserTable    $user
 	 * @param  array                 $postdata
-	 * @param  string                $reason     'profile' for user profile view, 'edit' for profile edit, 'register' for registration, 'search' for searches
+	 * @param  string                $reason     'profile' for user profile view, 'edit' for profile edit, 'register' for registration, 'search' for searches (always public!)
 	 * @return string                            Expected output.
 	 */
 	public function fieldClass( /** @noinspection PhpUnusedParameterInspection */ &$field, &$user, &$postdata, $reason )

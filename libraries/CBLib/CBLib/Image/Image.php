@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 07.06.13 23:17 $
 * @package CBLib\Image
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -16,6 +16,7 @@ use Imagine\Image\Point;
 use Imagine\Image\ImagineInterface;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\ManipulatorInterface;
+use Imagine\Filter\Basic\Autorotate;
 use Exception;
 
 defined('CBLIB') or die();
@@ -114,16 +115,22 @@ class Image {
 	 * @throws Exception
 	 */
 	public function openImage() {
-		$source			=	$this->getSource();
+		$source					=	$this->getSource();
 
 		if ( ( ! $source ) || ( ! isset( $source['tmp_name'] ) ) ) {
 			throw new Exception( 'Missing source or source tmp_name.' );
 		}
 
-		$image			=	$this->getImage();
+		$image					=	$this->getImage();
 
 		if ( ! $image ) {
-			$image		=	$this->getImagine()->open( $source['tmp_name'] );
+			$image				=	$this->getImagine()->open( $source['tmp_name'] );
+
+			if ( $image ) {
+				$autoRotate		=	new Autorotate();
+
+				$image			=	$autoRotate->apply( $image );
+			}
 
 			$this->setImage( $image );
 		}

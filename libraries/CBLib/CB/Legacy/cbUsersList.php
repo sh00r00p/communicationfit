@@ -2,11 +2,12 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/20/14 1:35 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
 use CBLib\Application\Application;
+use CBLib\Registry\GetterInterface;
 use CBLib\Language\CBTxt;
 use CBLib\Registry\Registry;
 use CBLib\Registry\RegistryInterface;
@@ -270,7 +271,7 @@ class cbUsersList
 	 */
 	public function drawUsersList( $userId, $listId, $postData )
 	{
-		global $_CB_database, $_PLUGINS;
+		global $_CB_framework, $_CB_database, $_PLUGINS;
 
 		$_PLUGINS->loadPluginGroup( 'user' );
 
@@ -297,15 +298,19 @@ class cbUsersList
 
 		if ( $userLists ) {
 			foreach ( $userLists as $userList ) {
-				$publishedLists[]	=	moscomprofilerHTML::makeOption( (int) $userList->listid, strip_tags( $cbUser->replaceUserVars( $userList->title, false, false ) ) );
-
 				if ( ( ! $listId ) && $userList->default ) {
-					$listId			=	(int) $userList->listid;
+					$listId				=	(int) $userList->listid;
+				}
+
+				$userListParams			=	new Registry( $userList->params );
+
+				if ( ( $listId == (int) $userList->listid ) || $userListParams->get( 'list_show_in_selector', true, GetterInterface::BOOLEAN ) ) {
+					$publishedLists[]	=	moscomprofilerHTML::makeOption( (int) $userList->listid, strip_tags( $cbUser->replaceUserVars( $userList->title, false, false ) ) );
 				}
 			}
 
-			if ( ! $listId ) {
-				$listId				=	(int) $userLists[0]->listid;
+			if ( ( ! $listId ) && $publishedLists ) {
+				$listId					=	(int) $publishedLists[0]->value;
 			}
 		}
 
@@ -314,7 +319,7 @@ class cbUsersList
 			return;
 		}
 
-		if ( $userLists ) {
+		if ( $publishedLists ) {
 			$input['plists']		=	moscomprofilerHTML::selectList( $publishedLists, 'listid', 'class="form-control input-block" onchange="this.form.submit();"', 'value', 'text', (int) $listId, 1 );
 		}
 
@@ -334,7 +339,7 @@ class cbUsersList
 
 		if ( $params->get( 'hotlink_protection', 0 ) == 1 ) {
 			if ( ( $searchData !== null ) || $limitstart ) {
-				cbSpoofCheck( 'userslist', 'GET' );
+				cbSpoofCheck( 'userslist', 'REQUEST' );
 			}
 		}
 
@@ -357,15 +362,24 @@ class cbUsersList
 		$orderBy					=	self::getSorting( $listId, $userId, $random );
 		$filterBy					=	self::getFiltering( $listId, $userId );
 		$columns					=	self::getColumns( $listId, $userId );
+		$tableReferences			=	array( '#__comprofiler' => 'ue', '#__users' => 'u' );
+		$searchableFields			=	array();
+		$newTableIndex				=	0;
 
 		// Grab all the fields the $user can access:
 		$tabs						=	new cbTabs( 0, 1 );
+
+		// Grab all the searchable fields to build the search criteria:
+		if ( $params->get( 'list_search', 1 ) ) {
+			$fields					=	$tabs->_getTabFieldsDb( null, $user, 'search' );
+
+			cbUsersList::getFieldsSQL( $columns, $fields, $tableReferences, $searchableFields, $params, $newTableIndex, true );
+		}
+
+		// Build the field SQL for field display:
 		$fields						=	$tabs->_getTabFieldsDb( null, $user, 'list' );
 
-		// Build the field SQL:
-		$tableReferences			=	array( '#__comprofiler' => 'ue', '#__users' => 'u' );
-		$searchableFields			=	array();
-		$fieldsSQL					=	cbUsersList::getFieldsSQL( $columns, $fields, $tableReferences, $searchableFields, $params );
+		$fieldsSQL					=	cbUsersList::getFieldsSQL( $columns, $fields, $tableReferences, $searchableFields, $params, $newTableIndex );
 
 		$_PLUGINS->trigger( 'onAfterUsersListFieldsSql', array( &$columns, &$fields, &$tableReferences ) );
 
@@ -498,6 +512,8 @@ class cbUsersList
 
 		$pageNav					=	new cbPageNav( $total, $limitstart, $limit );
 
+		$pageNav->setBaseURL( $_CB_framework->rawViewUrl( 'userslist', true, array( 'listid' => (int) $row->listid, 'searchmode' => 0 ), 'html', 0, '&listid=' . (int) $row->listid ), true );
+
 		HTML_comprofiler::usersList( $row, $users, $columns, $fields, $input, $search, $searchMode, $pageNav, $user, $searchableFields, $searchValues, $tabs, $errorMsg, $listAll, $random );
 	}
 
@@ -510,13 +526,19 @@ class cbUsersList
 	 * @param  array              $tables
 	 * @param  array              $searchableFields
 	 * @param  RegistryInterface  $params
+	 * @param  int                $tableIndex
+	 * @param  bool               $searchOnly
 	 * @return string
 	 */
-	public static function getFieldsSQL( &$columns, &$fields, &$tables, &$searchableFields, &$params )
+	public static function getFieldsSQL( &$columns, &$fields, &$tables, &$searchableFields, &$params, &$tableIndex = 0, $searchOnly = false )
 	{
 		$colRefs										=	array();
-		$newTableIndex									=	0;
 		$listSearch										=	(int) $params->get( 'list_search', 1 );
+
+		if ( ( ! $listSearch ) && $searchOnly ) {
+			// This list doesn't allow searching so completely skip checking for searchable fields:
+			return '';
+		}
 
 		foreach ( $columns as $i => $column ) {
 			foreach ( $column->fields as $k => $colField ) {
@@ -526,8 +548,8 @@ class cbUsersList
 					$field								=	$fields[$fieldId];
 
 					if ( ! array_key_exists( $field->table, $tables ) ) {
-						$newTableIndex++;
-						$tables[$field->table]			=  't'.$newTableIndex;
+						$tableIndex++;
+						$tables[$field->table]			=  't'.$tableIndex;
 					}
 
 					if ( ( $tables[$field->table][0] != 'u' ) && ( $field->name != 'NA' ) ) {		// CB 1.1 table compatibility : TBD: remove after CB 1.2
@@ -537,12 +559,14 @@ class cbUsersList
 					}
 
 					if ( $field->searchable && ( $listSearch == 1 ) ) {
-						$searchableFields[]				=	$fields[$fieldId];
+						$searchableFields[$fieldId]		=	$fields[$fieldId];
 					}
 
-					$fields[$fieldId]->_listed		=	true;
-				} else {
-					// field unpublished or deleted but still in list: remove field from columns, so that we don't handle it:
+					if ( ! $searchOnly ) {
+						$fields[$fieldId]->_listed		=	true;
+					}
+				} elseif ( ! $searchOnly ) {
+					// field unpublished or deleted but still in list for display: remove field from columns, so that we don't handle it:
 					unset( $columns[$i]->fields[$k] );
 				}
 			}
@@ -551,7 +575,7 @@ class cbUsersList
 		if ( $listSearch == 2 ) {
 			foreach ( $fields as $fieldId => $field ) {
 				if ( $field->searchable ) {
-					$searchableFields[]					=	$fields[$fieldId];
+					$searchableFields[$fieldId]			=	$fields[$fieldId];
 				}
 			}
 		}
@@ -561,7 +585,7 @@ class cbUsersList
 
 			if ( $listSearchFields ) foreach ( $fields as $fieldId => $field ) {
 				if ( $field->searchable && in_array( $field->fieldid, $listSearchFields ) ) {
-					$searchableFields[]					=	$fields[$fieldId];
+					$searchableFields[$fieldId]			=	$fields[$fieldId];
 				}
 			}
 		}

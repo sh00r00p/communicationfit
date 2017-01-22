@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 5/3/14 12:01 AM $
 * @package CB\Database\Table
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -27,6 +27,8 @@ class FieldValueTable extends OrderedTable
 	public $fieldtitle		=	null;
 	/** @var string */
 	public $fieldlabel		=	null;
+	/** @var string */
+	public $fieldgroup		=	null;
 	/** @var int */
 	public $ordering		=	null;
 	/** @var int */
@@ -72,13 +74,23 @@ class FieldValueTable extends OrderedTable
 	/**
 	 * Update all field values for a given $fieldId to match $fieldValues[]
 	 *
-	 * @param  int    $fieldId      Id of field
-	 * @param  array  $fieldValues  New or existing values: ordered array( array( 'fieldtitle' => 'Title of field', 'fieldlabel' => 'Label of field' ) )
-	 * @return boolean              Result
+	 * @param  FieldTable $field        Object of field
+	 * @param  array      $fieldValues  New or existing values: ordered array( array( 'fieldtitle' => 'Title of field', 'fieldlabel' => 'Label of field' ) )
+	 * @return boolean                  Result
 	 */
-	public function updateFieldValues( $fieldId, array $fieldValues )
+	public function updateFieldValues( $field, array $fieldValues )
 	{
-		$existingFieldValues			=	$this->getFieldValuesOfField( $fieldId );
+		if ( ! is_object( $field ) ) {
+			// For B/C:
+			$fieldObj					=	new FieldTable();
+
+			$fieldObj->load( (int) $field );
+
+			$field						=	$fieldObj;
+		}
+
+		$isSelect						=	preg_match( '/select|multiselect/', $field->type );
+		$existingFieldValues			=	$this->getFieldValuesOfField( $field->fieldid );
 
 		if ( $fieldValues ) {
 			// Remove deleted field values:
@@ -86,12 +98,22 @@ class FieldValueTable extends OrderedTable
 				$i						=	(int) $i;
 				$exists					=	false;
 
-				foreach ( $fieldValues as $fieldValue ) {
+				foreach ( $fieldValues as $index => $fieldValue ) {
 					$fieldValue			=	(array) $fieldValue;
 					$id					=	(int) cbGetParam( $fieldValue, 'fieldvalueid' );		//TODO: Use new Input class
 					$title				=	trim( stripslashes( cbGetParam( $fieldValue, 'fieldtitle' ) ) );
+					$label				=	trim( stripslashes( cbGetParam( $fieldValue, 'fieldlabel' ) ) );
+					$group				=	(int) cbGetParam( $fieldValue, 'fieldgroup', 0 );
 
-					if ( $id && ( $i == $id ) && ( $title != '' ) ) {
+					if ( ! $isSelect ) {
+						$group				=	0;
+					}
+
+					if ( $group ) {
+						$label				=	'';
+					}
+
+					if ( $id && ( $i == $id ) && ( ( $title != '' ) || ( $isSelect && ( $index == 0 ) && ( ( $title != '' ) || ( $label != '' ) ) ) ) ) {
 						$exists			=	true;
 						break;
 					}
@@ -112,14 +134,24 @@ class FieldValueTable extends OrderedTable
 				$id						=	(int) cbGetParam( $fieldValue, 'fieldvalueid' );		//TODO: Use new Input class
 				$title					=	trim( stripslashes( cbGetParam( $fieldValue, 'fieldtitle' ) ) );
 				$label					=	trim( stripslashes( cbGetParam( $fieldValue, 'fieldlabel' ) ) );
+				$group					=	(int) cbGetParam( $fieldValue, 'fieldgroup', 0 );
 
-				if ( $title != '' ) {
+				if ( ! $isSelect ) {
+					$group				=	0;
+				}
+
+				if ( $group ) {
+					$label				=	'';
+				}
+
+				if ( ( $title != '' ) || ( $isSelect && ( $i == 0 ) && ( ( $title != '' ) || ( $label != '' ) ) ) ) {
 					if ( isset( $existingFieldValues[$id] ) ) {
 						$newFieldValue	=	$existingFieldValues[$id];
 
-						if ( ( (int) $newFieldValue->get( 'fieldid' ) == (int) $fieldId )
+						if ( ( (int) $newFieldValue->get( 'fieldid' ) == (int) $field->fieldid )
 								&& ( $newFieldValue->get( 'fieldtitle' ) == $title )
 								&& ( $newFieldValue->get( 'fieldlabel' ) == $label )
+								&& ( $newFieldValue->get( 'fieldgroup' ) == $group )
 								&& ( (int) $newFieldValue->get( 'ordering' ) == (int) ( $i + 1 ) ) )
 						{
 							continue;
@@ -128,9 +160,10 @@ class FieldValueTable extends OrderedTable
 						$newFieldValue	=	new FieldValueTable( $this->_db );
 					}
 
-					$newFieldValue->set( 'fieldid', (int) $fieldId );
+					$newFieldValue->set( 'fieldid', (int) $field->fieldid );
 					$newFieldValue->set( 'fieldtitle', $title );
 					$newFieldValue->set( 'fieldlabel', $label );
+					$newFieldValue->set( 'fieldgroup', (int) $group );
 					$newFieldValue->set( 'ordering', (int) ( $i + 1 ) );
 
 					if ( ! $newFieldValue->store() ) {
@@ -139,12 +172,12 @@ class FieldValueTable extends OrderedTable
 				}
 			}
 
-			$this->updateOrder( $this->_db->NameQuote( 'fieldid' ) . " = " . (int) $fieldId );
+			$this->updateOrder( $this->_db->NameQuote( 'fieldid' ) . " = " . (int) $field->fieldid );
 		} else {
 			// Delete all current field values:
 			$query						=	'DELETE'
 										.	"\n FROM " . $this->_db->NameQuote( $this->_tbl )
-										.	"\n WHERE " . $this->_db->NameQuote( 'fieldid' ) . " = " . (int) $fieldId;
+										.	"\n WHERE " . $this->_db->NameQuote( 'fieldid' ) . " = " . (int) $field->fieldid;
 			$this->_db->setQuery( $query );
 			if ( ! $this->_db->query() ) {
 				return false;

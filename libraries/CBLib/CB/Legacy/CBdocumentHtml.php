@@ -2,10 +2,12 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/16/14 6:37 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
+use CBLib\Application\Application;
+use CBLib\Registry\GetterInterface;
 
 defined('CBLIB') or die();
 
@@ -423,6 +425,10 @@ class CBdocumentHtml
 	 */
 	protected function _renderCheckOutput( )
 	{
+		if ( ( Application::Input()->get( 'no_html', 0, GetterInterface::INT ) == 1 ) || in_array( Application::Input()->get( 'format', null, GetterInterface::STRING ), array( 'raw', 'json' ) ) ) {
+			return;
+		}
+
 		if ( $this->_headsOutputed && ( $this->_cmsDoc !== false ) ) {
 //			$customHead			=	$this->_renderHead();
 //			echo $customHead;		// better late than never...

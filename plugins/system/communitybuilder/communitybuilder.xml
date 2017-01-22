@@ -4,10 +4,10 @@
 	<author>CB Team</author>
 	<authorUrl>http://www.joomlapolis.com/</authorUrl>
 	<authorEmail>cbteam@joomlapolis.com</authorEmail>
-	<copyright>Copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved</copyright>
+	<copyright>Copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved</copyright>
 	<license>http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2. All copyright statements must be kept and derivative work must prominently duly acknowledge original work on web interface and on website where downloaded.</license>
-	<creationDate>2016-08-24</creationDate>
-	<version>2.0.15</version>
+	<creationDate>2017-01-20</creationDate>
+	<version>2.1.2</version>
 	<description>Community Builder System Plugin for Joomla!</description>
 	<scriptfile>script.communitybuilder.php</scriptfile>
 	<files>
@@ -21,7 +21,7 @@
 					<option value="0">Disabled</option>
 					<option value="1">Enabled</option>
 				</field>
-				<field name="rewrite_urls" type="list" default="0" label="Rewrite URLs" description="Enable or disable rewriting of Joomla Users component URLs to CB URLs.">
+				<field name="rewrite_urls" type="list" default="1" label="Rewrite URLs" description="Enable or disable rewriting of Joomla Users component URLs to CB URLs.">
 					<option value="0">Disabled</option>
 					<option value="1">Enabled</option>
 				</field>

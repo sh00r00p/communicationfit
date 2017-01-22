@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/20/14 6:46 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -140,6 +140,7 @@ class cbValidator
 			$regAntiSpamValues		=	cbGetRegAntiSpams();
 
 			$messages				=	array(	'required' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_REQUIRED', 'This field is required.' ) ),
+													'requiredIf' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_REQUIRED', 'This field is required.' ) ),
 													'remote' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_NEEDS_FIX', 'Please fix this field.' ) ),
 													'email' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_EMAIL', 'Please enter a valid email address.' ) ),
 													'url' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_URL', 'Please enter a valid URL.' ) ),
@@ -153,22 +154,29 @@ class cbValidator
 													'accept' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_EXTENSION', 'Please enter a value with a valid extension.' ) ),
 													'maxlength' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_MORE_THAN_CHARS', 'Please enter no more than {0} characters.' ) ),
 													'minlength' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_LEAST_CHARS', 'Please enter at least {0} characters.' ) ),
+													'maxselect' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_MORE_THAN_OPTS', 'Please select no more than {0} options.' ) ),
+													'minselect' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_LEAST_OPTS', 'Please select at least {0} options.' ) ),
 													'rangelength' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_BETWEEN_AND_CHARS', 'Please enter a value between {0} and {1} characters long.' ) ),
 													'range' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_BETWEEN_AND_NUMBER', 'Please enter a value between {0} and {1}.' ) ),
 													'max' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_LESS_OR_EQUAL_TO', 'Please enter a value less than or equal to {0}.' ) ),
 													'min' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_GREATER_OR_EQUAL_TO', 'Please enter a value greater than or equal to {0}.' ) ),
+													'step' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_STEP', 'Please enter a multiple of {0}.' ) ),
 													'maxWords' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_MORE_THAN_WORDS', 'Please enter {0} words or less.' ) ),
 													'minWords' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_LEAST_WORDS', 'Please enter at least {0} words.' ) ),
 													'rangeWords' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_BETWEEN_AND_WORDS', 'Please enter between {0} and {1} words.' ) ),
 													'extension' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_EXTENSION', 'Please enter a value with a valid extension.' ) ),
 													'pattern' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_PATTERN', 'Invalid format.' ) ),
+													'isPattern' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_IS_PATTERN', 'Invalid regular expression.' ) ),
 													'cbfield' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_NEEDS_FIX', 'Please fix this field.' ) ),
 													'cbremote' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_NEEDS_FIX', 'Please fix this field.' ) ),
 													'cbusername' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_USERNAME', 'Please enter a valid username with no space at beginning or end and must not contain the following characters: < > \ " \' % ; ( ) &' ) ),
 													'cburl' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_URL', 'Please enter a valid URL.' ) ),
 													'filesize' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FILZSIZE', 'File size must exceed the minimum of {0} {2}s, but not the maximum of {1} {2}s.' ) ),
 													'filesizemin' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FILZSIZE_MIN', 'File size exceeds the minimum of {0} {2}s.' ) ),
-													'filesizemax' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FILZSIZE_MAX', 'File size exceeds the maximum of {1} {2}s.' ) )
+													'filesizemax' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FILZSIZE_MAX', 'File size exceeds the maximum of {1} {2}s.' ) ),
+													'cropwidth' => addslashes( CBTxt::T( 'VALIDATION_IMAGE_CROP_WIDTH', 'Image exceeds the maximum width. Please select the area to crop your image within the maximum width.' ) ),
+													'cropheight' => addslashes( CBTxt::T( 'VALIDATION_IMAGE_CROP_HEIGHT', 'Image exceeds the maximum height. Please select the area to crop your image within the maximum height.' ) ),
+													'forbiddenWords' => addslashes( CBTxt::T( 'VALIDATION_ERROR_FIELD_PATTERN', 'Invalid format.' ) )
 			);
 
 			$settings				=	array();

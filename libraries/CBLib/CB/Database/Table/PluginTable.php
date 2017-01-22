@@ -3,14 +3,17 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 5/1/14 4:42 PM $
 * @package CB\Database\Table
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
 namespace CB\Database\Table;
 
 use CBLib\Database\Table\CheckedOrderedTable;
+use CBLib\Input\Get;
 use CBLib\Language\CBTxt;
+use CBLib\Registry\GetterInterface;
+use CBLib\Registry\RegistryInterface;
 
 defined('CBLIB') or die();
 
@@ -48,6 +51,11 @@ class PluginTable extends CheckedOrderedTable
 	public $checked_out_time	=	null;
 	/** @var string */
 	public $params				=	null;
+
+	/** @var array */
+	protected $_langoverrides	=	null;
+	/** @var string */
+	protected $_cssoverrides	=	null;
 
 	/**
 	 * Table name in database
@@ -117,38 +125,115 @@ class PluginTable extends CheckedOrderedTable
 	 */
 	public function store( $updateNulls = false )
 	{
-		global $_CB_database;
+		global $_CB_database, $_PLUGINS;
 
-		$return							=	parent::store( $updateNulls );
+		$return								=	parent::store( $updateNulls );
 
-		if ( ( $this->id == 1 ) && $return ) {
-			$config						=	json_decode( $this->params, true );
+		if ( $return ) {
+			if ( $this->id == 1 ) {
+				$config						=	json_decode( $this->params, true );
 
-			if ( isset( $config['name_style'] ) ) {
-				switch ( (int) $config['name_style'] ) {
-					case 2:
-						$nameArray		=	array( 'name' => 0, 'firstname' => 1, 'middlename' => 0, 'lastname' => 1 );
-						break;
-					case 3:
-						$nameArray		=	array( 'name' => 0, 'firstname' => 1, 'middlename' => 1, 'lastname' => 1 );
-						break;
-					case 1:
-					default:
-						$nameArray		=	array( 'name' => 1, 'firstname' => 0, 'middlename' => 0, 'lastname' => 0 );
-						break;
+				if ( isset( $config['name_style'] ) ) {
+					switch ( (int) $config['name_style'] ) {
+						case 2:
+							$nameArray		=	array( 'name' => 0, 'firstname' => 1, 'middlename' => 0, 'lastname' => 1 );
+							break;
+						case 3:
+							$nameArray		=	array( 'name' => 0, 'firstname' => 1, 'middlename' => 1, 'lastname' => 1 );
+							break;
+						case 1:
+						default:
+							$nameArray		=	array( 'name' => 1, 'firstname' => 0, 'middlename' => 0, 'lastname' => 0 );
+							break;
+					}
+
+					foreach ( $nameArray as $name => $published ) {
+						$query				=	'UPDATE ' . $_CB_database->NameQuote( '#__comprofiler_fields' )
+							.	"\n SET " . $_CB_database->NameQuote( 'published' ) . " = " . (int) $published
+							.	"\n WHERE " . $_CB_database->NameQuote( 'name' ) . " = " . $_CB_database->Quote( $name );
+						$_CB_database->setQuery( $query );
+						$_CB_database->query();
+					}
+				}
+			} elseif ( ( $this->type == 'language' ) && ( $this->_langoverrides !== null ) ) {
+				$adminFileSystem						=	\cbAdminFileSystem::getInstance();
+				$langOverrides							=	( is_string( $this->_langoverrides ) ? json_decode( $this->_langoverrides, true ) : $this->_langoverrides );
+				$newLangOverrides						=	array();
+
+				foreach ( $langOverrides as $langOverride ) {
+					$langKey							=	Get::clean( $langOverride['key'], GetterInterface::STRING );
+					$langString							=	Get::clean( $langOverride['text'], GetterInterface::HTML );
+
+					if ( $langKey ) {
+						$newLangOverrides[$langKey]		=	$langString;
+					}
 				}
 
-				foreach ( $nameArray as $name => $published ) {
-					$query				=	'UPDATE ' . $_CB_database->NameQuote( '#__comprofiler_fields' )
-						.	"\n SET " . $_CB_database->NameQuote( 'published' ) . " = " . (int) $published
-						.	"\n WHERE " . $_CB_database->NameQuote( 'name' ) . " = " . $_CB_database->Quote( $name );
-					$_CB_database->setQuery( $query );
-					$_CB_database->query();
+				$langOverrideFilePath					=	$_PLUGINS->getPluginPath( $this ) . '/override.php';
+
+				if ( $newLangOverrides ) {
+					$langOverrideFile					=	"<?php\n\n"
+														.	"defined('CBLIB') or die();\n\n"
+														.	"return " . var_export( $newLangOverrides, true ) . ";";
+
+					$adminFileSystem->file_put_contents( $langOverrideFilePath, $langOverrideFile );
+				} elseif ( $adminFileSystem->file_exists( $langOverrideFilePath ) ) {
+					$adminFileSystem->unlink( $langOverrideFilePath );
+				}
+			} elseif ( ( $this->type == 'templates' ) && ( $this->_cssoverrides !== null ) ) {
+				$adminFileSystem						=	\cbAdminFileSystem::getInstance();
+				$cssOverrideFilePath					=	$_PLUGINS->getPluginPath( $this ) . '/override.css';
+
+				if ( $this->_cssoverrides ) {
+					$adminFileSystem->file_put_contents( $cssOverrideFilePath, Get::clean( $this->_cssoverrides, GetterInterface::STRING ) );
+				} elseif ( $adminFileSystem->file_exists( $cssOverrideFilePath ) ) {
+					$adminFileSystem->unlink( $cssOverrideFilePath );
 				}
 			}
 		}
 
 		return $return;
+	}
+
+	/**
+	 * Copy the named array or object content into this object as vars
+	 * only existing vars of object are filled.
+	 * When undefined in array, object variables are kept.
+	 *
+	 * WARNING: DOES addslashes / escape BY DEFAULT
+	 *
+	 * Can be overridden or overloaded.
+	 *
+	 * @param  array|object  $array         The input array or object
+	 * @param  string        $ignore        Fields to ignore
+	 * @param  string        $prefix        Prefix for the array keys
+	 * @return boolean                      TRUE: ok, FALSE: error on array binding
+	 */
+	public function bind( $array, $ignore = '', $prefix = null ) {
+		$bind						=	parent::bind( $array, $ignore, $prefix );
+
+		if ( $bind ) {
+			// List of custom private plugin variables to parse for and bind:
+			$custom					=	array( '_langoverrides', '_cssoverrides' );
+
+			// Set the ignore variable up like bind does encase this bind call was told to ignore custom variables:
+			$ignore					=	' ' . $ignore . ' ';
+
+			foreach ( $custom as $k ) {
+				// Use the same behavior as a normal bind excluding the _ ignore check for consistency:
+				if ( strpos( $ignore, ' ' . $k . ' ') === false ) {
+					$ak				=	$prefix . $k;
+
+					if ( is_array( $array ) && isset( $array[$ak] ) ) {
+						$this->$k	=	$array[$ak];
+					} elseif ( isset( $array->$ak ) ) {
+						$this->$k	=	$array->$ak;
+					}
+				}
+			}
+		}
+
+		return $bind;
 	}
 
 	/**
@@ -334,5 +419,53 @@ class PluginTable extends CheckedOrderedTable
 		}
 
 		return false;
+	}
+
+	/**
+	 * adds css or language overrides to xml data
+	 * Used by Backend XML only
+	 * @deprecated Do not use directly, only for XML tabs backend
+	 *
+	 * @param string             $value
+	 * @param RegistryInterface  $pluginParams
+	 * @param string             $name
+	 * @param \SimpleXMLElement  $node
+	 * @param string             $control_name
+	 * @param string             $control_name_name
+	 * @param boolean            $view
+	 * @param RegistryInterface  $data
+	 */
+	public function fetchOverrides( /** @noinspection PhpUnusedParameterInspection */ $value, $pluginParams, $name, $node, $control_name, $control_name_name, $view, $data ) {
+		global $_PLUGINS;
+
+		if ( $this->type == 'language' ) {
+			$langOverrides					=	array();
+			$langOverrideFilePath			=	$_PLUGINS->getPluginPath( $this ) . '/override.php';
+
+			if ( file_exists( $langOverrideFilePath ) ) {
+				$langOverrideStrings		=	include $langOverrideFilePath;
+
+				if ( is_array( $langOverrideStrings ) ) {
+					foreach ( $langOverrideStrings as $langKey => $langValue ) {
+						$langOverrides[]	=	array( 'key' => $langKey, 'text' => $langValue );
+					}
+				}
+			}
+
+			$data->set( '_langoverrides', $langOverrides );
+		} elseif ( $this->type == 'templates' ) {
+			$cssOverrides					=	null;
+			$cssOverrideFilePath			=	$_PLUGINS->getPluginPath( $this ) . '/override.css';
+
+			if ( is_readable( $cssOverrideFilePath ) ) {
+				$cssOverrideString			=	file_get_contents( $cssOverrideFilePath );
+
+				if ( $cssOverrideString !== false ) {
+					$cssOverrides			=	$cssOverrideString;
+				}
+			}
+
+			$data->set( '_cssoverrides', $cssOverrides );
+		}
 	}
 }

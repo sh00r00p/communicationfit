@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/18/14 2:22 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -381,18 +381,18 @@ class cbPluginHandler
 			$langPath				=	$_CB_framework->getCfg( 'absolute_path' ) . '/components/com_comprofiler/plugin/language';
 			$lang					=	$_CB_framework->getCfg( 'lang_tag' );
 
+			$langLoaded				=	CBTxt::import( $langPath, $lang, 'cbplugin/' . $plugin->element . '-language.php', false );
+
+			if ( ! $langLoaded ) {
+				CBTxt::import( $plgLangPath, $lang, 'language.php' );
+			}
+
 			if ( $_CB_framework->getUi() == 2 ) {
 				$langLoaded			=	CBTxt::import( $langPath, $lang, 'cbplugin/' . $plugin->element . '-admin_language.php', false );
 
 				if ( ! $langLoaded ) {
 					CBTxt::import( $plgLangPath, $lang, 'admin_language.php' );
 				}
-			}
-
-			$langLoaded				=	CBTxt::import( $langPath, $lang, 'cbplugin/' . $plugin->element . '-language.php', false );
-
-			if ( ! $langLoaded ) {
-				CBTxt::import( $plgLangPath, $lang, 'language.php' );
 			}
 
 			// We don't want plugins language files to alter the current language loaded so lets reset it:
@@ -1398,43 +1398,44 @@ class cbPluginHandler
 	 * returns plugins xml version
 	 *
 	 * @param  null|PluginTable|int  $plugin    The plugin id or object to check version for
-	 * @param  bool                  $raw       1/True: version only (no farm), 0/False: Formatted version (green/red/shortened), 2: array of version information ( $version, $latestVersion, $isLatest, $latestURL )
+	 * @param  boolean|int           $raw       1/True: version only (no farm), 0/False: Formatted version (green/red/shortened), 2: array of version information ( $version, $latestVersion, $isLatest, $latestURL )
 	 * @param  int                   $duration  The duration to cache the plugin version xml file (null/0 for no limit)
 	 * @param  int                   $length    The maximum version length to display (null/0 for no limit)
-	 * @return null|string
+	 * @return null|string|array
 	 */
 	public function getPluginVersion( $plugin, $raw = false, $duration = 24, $length = 0 )
 	{
 		global $_CB_framework;
 
-		cbimport( 'cb.snoopy' );
-
-		static $plgVersions							=	null;
+		static $latestCoreVersion						=	null;
+		static $latestCoreURL							=	null;
+		static $latestCoreBuild							=	null;
+		static $plgVersions								=	null;
 
 		if ( $plgVersions === null ) {
 			if ( Application::Config()->get( 'pluginVersionCheck', true, GetterInterface::BOOLEAN ) ) {
-				$cacheFile							=	$_CB_framework->getCfg( 'absolute_path' ) . '/cache/cbpluginsversions.xml';
-				$plgVersionsXML						=	null;
+				$cacheFile								=	$_CB_framework->getCfg( 'absolute_path' ) . '/cache/cbpluginsversions.xml';
+				$plgVersionsXML							=	null;
 
 				if ( file_exists( $cacheFile ) ) {
 					if ( ( ! $duration ) || ( intval( ( $_CB_framework->now() - filemtime( $cacheFile ) ) / 3600 ) > $duration ) ) {
-						$request					=	true;
+						$request						=	true;
 					} else {
-						$plgVersionsXML				=	new SimpleXMLElement( trim( file_get_contents( $cacheFile ) ) );
+						$plgVersionsXML					=	new SimpleXMLElement( trim( file_get_contents( $cacheFile ) ) );
 
-						$request					=	false;
+						$request						=	false;
 					}
 				} else {
-					$request						=	true;
+					$request							=	true;
 				}
 
 				if ( $request ) {
 					try {
-						$guzzleHttpClient			=	new GuzzleHttp\Client();
-						$results					=	$guzzleHttpClient->get( 'http://update.joomlapolis.net/cbpluginsversions20.xml', array( 'timeout' => 30 ) );
+						$guzzleHttpClient				=	new GuzzleHttp\Client();
+						$results						=	$guzzleHttpClient->get( 'https://update.joomlapolis.net/cbpluginsversions20.xml', array( 'timeout' => 10 ) );
 
 						if ( ( $results !== false ) && ( $results->getStatusCode() == 200 ) ) {
-							$plgVersionsXML			=	new SimpleXMLElement( $results->getBody() );
+							$plgVersionsXML				=	new SimpleXMLElement( $results->getBody() );
 
 							$plgVersionsXML->saveXML( $cacheFile );
 						}
@@ -1442,57 +1443,128 @@ class cbPluginHandler
 				}
 
 				if ( $plgVersionsXML ) {
-					$plgVersions					=	$plgVersionsXML->getElementByPath( 'cb_plugins/' . ( checkJversion() >= 2 ? 'j30' : 'j15' ) );
+					// We only want to check for new build versions for core CB if we already have a build installed:
+					if ( strpos( CBLib::versionWithBuild(), '+build' ) !== false ) {
+						$packageVersions				=	$plgVersionsXML->getElementByPath( 'packages/' . ( checkJversion() >= 2 ? 'j30' : 'j15' ) );
+
+						if ( $packageVersions ) foreach ( $packageVersions as $packageVersion ) {
+							if ( ( (string) $packageVersion->name == 'Community Builder' ) || ( strpos( (string) $packageVersion->file, 'communitybuilder' ) !== false )  ) {
+								$latestCoreVersion		=	(string) $packageVersion->version;
+								$latestCoreURL			=	(string) $packageVersion->url;
+								$latestCoreBuild		=	( strpos( $latestCoreVersion, '+build' ) !== false );
+							}
+						}
+					}
+
+					$plgVersions						=	$plgVersionsXML->getElementByPath( 'cb_plugins/' . ( checkJversion() >= 2 ? 'j30' : 'j15' ) );
 				} else {
-					$plgVersions					=	false;
+					$plgVersions						=	false;
 				}
 			} else {
-				$plgVersions						=	false;
+				$plgVersions							=	false;
 			}
 		}
 
-		$plugin										=	$this->getCachedPluginObject( $plugin );
+		// If the core version couldn't be found during plugin version checking lets just check the stable version only:
+		if ( $latestCoreVersion === null ) {
+			$cacheFile									=	$_CB_framework->getCfg( 'absolute_path' ) . '/cache/cblatestversion.xml';
+			$coreVersionXML								=	null;
+
+			if ( file_exists( $cacheFile ) ) {
+				if ( ( ! $duration ) || ( intval( ( $_CB_framework->now() - filemtime( $cacheFile ) ) / 3600 ) > $duration ) ) {
+					$request							=	true;
+				} else {
+					$coreVersionXML						=	new SimpleXMLElement( trim( file_get_contents( $cacheFile ) ) );
+
+					$request							=	false;
+				}
+			} else {
+				$request								=	true;
+			}
+
+			if ( $request ) {
+				try {
+					$guzzleHttpClient					=	new GuzzleHttp\Client();
+					$guzzleRequest						=	$guzzleHttpClient->get( 'https://www.joomlapolis.com/versions/comprofilerversion.php?currentversion=' . urlencode( CBLib::versionWithBuild() ), array( 'headers' => array( 'referer' =>  $_CB_framework->getCfg( 'live_site' ) ), 'timeout' => 10 ) );
+
+					if ( $guzzleRequest->getStatusCode() == 200 ) {
+						$results						=	(string) $guzzleRequest->getBody();
+						$infoPosition					=	strpos( $results, ':' );
+
+						if ( $infoPosition === false ) {
+							$version					=	$results;
+							$info						=	null;
+						} else {
+							$version					=	substr( $results, 0, $infoPosition );
+							$info						=	substr( $results, $infoPosition + 1 );
+						}
+
+						$coreVersionXML					=	new SimpleXMLElement( '<cbversion version="' . htmlspecialchars( $version ) . '" info="' . htmlspecialchars( $info ) . '"></cbversion>' );
+
+						$coreVersionXML->saveXML( $cacheFile );
+					}
+				} catch( \GuzzleHttp\Exception\RequestException $e ) {}
+			}
+
+			if ( $coreVersionXML ) {
+				$latestCoreVersion						=	(string) $coreVersionXML->attributes( 'version' );
+			}
+
+			$latestCoreURL								=	'index.php?option=com_installer&view=update';
+			$latestCoreBuild							=	false;
+		}
+
+		$plugin											=	$this->getCachedPluginObject( $plugin );
 
 		if ( ! $plugin ) {
 			return ( $raw === 2 ? array( null, null, null, null ) : null );
 		}
 
-		static $cache								=	array();
+		static $cache									=	array();
 
-		$pluginId									=	(int) $plugin->id;
+		if ( $plugin->iscore ) {
+			// Cache all core plugins (to CB Core plugin id) so we only need to call this once for core:
+			$pluginId									=	1;
+		} else {
+			$pluginId									=	(int) $plugin->id;
+		}
 
 		if ( ! isset( $cache[$pluginId][$raw] ) ) {
-			$xmlFile								=	$this->getPluginXmlPath( $plugin );
-			$version								=	null;
-			$latestVersion							=	null;
-			$isLatest								=	null;
-			$latestURL								=	null;
+			$xmlFile									=	$this->getPluginXmlPath( $plugin );
+			$version									=	null;
+			$latestVersion								=	null;
+			$isLatest									=	null;
+			$latestURL									=	null;
+			$isBuild									=	null;
 
 			if ( file_exists( $xmlFile ) ) {
 				try {
 					$xml = new SimpleXMLElement( trim( file_get_contents( $xmlFile ) ) );
 				} catch ( \Exception $e ) {
-					$xml							=	null;
+					$xml								=	null;
 					echo "$xmlFile not an XML file!!!";
 				}
 
 				if ( $xml !== null ) {
-					$version						=	null;
+					$version							=	null;
 
-					if ( isset( $xml->release ) ) {
+					if ( $plugin->iscore ) {
+						// Core plugins are always the same version as CB:
+						$version						=	CBLib::versionWithBuild();
+					} elseif ( isset( $xml->release ) ) {
 						// New release XML variable used by incubator projects:
-						$version					=	$xml->release;
+						$version						=	$xml->release;
 					} elseif ( isset( $xml->cbsubsversion ) ) {
 						// CBSubs plugin versions are same as the CBSubs version; lets grab them:
-						$cbsubsVer					=	$xml->cbsubsversion->attributes();
+						$cbsubsVer						=	$xml->cbsubsversion->attributes();
 
 						if ( isset( $cbsubsVer['version'] ) ) {
-							$version				=	$cbsubsVer['version'];
+							$version					=	$cbsubsVer['version'];
 						}
 					} elseif ( isset( $xml->description ) ) {
 						// Attempt to parse plugin description for a version using logical naming:
 						if ( preg_match( '/(?:plugin|field|fieldtype|ver|version|' . preg_quote( $plugin->name ) . ') ((?:[0-9]+(?:\.)?(?:(?: )?RC)?(?:(?: )?B)?(?:(?: )?BETA)?)+)/i', $xml->description, $matches ) ) {
-							$version				=	$matches[1];
+							$version					=	$matches[1];
 						}
 					}
 
@@ -1500,28 +1572,36 @@ class cbPluginHandler
 					if ( $version ) {
 						// Encase the version is too long lets cut it short for readability and display full version as mouseover title:
 						if ( $version && $length && ( cbIsoUtf_strlen( $version ) > $length ) ) {
-							$versionName			=	rtrim( trim( cbIsoUtf_substr( $version, 0, $length ) ), '.' ) . '&hellip;';
-							$versionShort			=	true;
+							$versionName				=	rtrim( trim( cbIsoUtf_substr( $version, 0, $length ) ), '.' ) . '&hellip;';
+							$versionShort				=	true;
 						} else {
-							$versionName			=	$version;
-							$versionShort			=	false;
+							$versionName				=	$version;
+							$versionShort				=	false;
 						}
 
-						// Lets try and parse out latest version and latest url from versions xml data:
-						if ( $plgVersions ) foreach ( $plgVersions as $plgVersion ) {
-							$plgName				=	(string) $plgVersion->name;
-							$plgFile				=	(string) $plgVersion->file;
+						if ( $plugin->iscore ) {
+							// We already know the core latest version so don't bother trying to find it again:
+							$latestVersion				=	$latestCoreVersion;
+							$latestURL					=	$latestCoreURL;
+							$isBuild					=	$latestCoreBuild;
+						} else {
+							// Lets try and parse out latest version and latest url from versions xml data:
+							if ( $plgVersions ) foreach ( $plgVersions as $plgVersion ) {
+								$plgName				=	(string) $plgVersion->name;
+								$plgFile				=	(string) $plgVersion->file;
 
-							if ( ( $plgName == $plugin->name ) || ( strpos( $plgName, $plugin->name ) !== false ) || ( strpos( $plgFile, $plugin->folder ) !== false ) ) {
-								$latestVersion		=	(string) $plgVersion->version;
-								$latestURL			=	(string) $plgVersion->url;
+								if ( ( $plgName == $plugin->name ) || ( strpos( $plgName, $plugin->name ) !== false ) || ( strpos( $plgFile, $plugin->folder ) !== false ) ) {
+									$latestVersion		=	(string) $plgVersion->version;
+									$latestURL			=	(string) $plgVersion->url;
+									$isBuild			=	( strpos( $latestVersion, '+build' ) !== false );
+								}
 							}
 						}
 
 						if ( $latestVersion ) {
-							$versionCompare			=	str_replace( '+build.', '+', $version );
+							$versionCompare				=	str_replace( '+build.', '+', $version );
 
-							if ( strpos( $latestVersion, '+build' ) === false ) {
+							if ( ! $isBuild ) {
 								// Stable doesn't store metadata in XML so we need to remove it before comparing:
 								$latestVersionCompare	=	preg_replace( '/\+.*/', '', $latestVersion );
 							} else {
@@ -1529,11 +1609,11 @@ class cbPluginHandler
 							}
 
 							if ( $versionCompare == $latestVersionCompare ) {
-								$isLatest			=	true;
+								$isLatest				=	true;
 							} elseif ( version_compare( $latestVersionCompare, $versionCompare, '>' ) ) {
-								$isLatest			=	false;
+								$isLatest				=	false;
 							} else {
-								$isLatest			=	true;
+								$isLatest				=	true;
 							}
 						}
 
@@ -1541,19 +1621,19 @@ class cbPluginHandler
 						if ( ! $raw ) {
 							if ( $latestVersion ) {
 								if ( $isLatest ) {
-									$version		=	'<span class="text-success"' . ( $versionShort ? ' title="' . htmlspecialchars( $version ) . '"' : null ) . '><strong>' . $versionName . '</strong></span>';
+									$version			=	'<span class="text-success"' . ( $versionShort ? ' title="' . htmlspecialchars( $version ) . '"' : null ) . '><strong>' . $versionName . '</strong></span>';
 								} else {
-									$version		=	'<span class="text-danger" title="' . htmlspecialchars( $latestVersion ) . '"><strong>' . $versionName . '</strong></span>';
+									$version			=	'<span class="text-danger" title="' . htmlspecialchars( $latestVersion ) . '"><strong>' . $versionName . '</strong></span>';
 
 									if ( $latestURL ) {
-										$version	=	'<a href="' . htmlspecialchars( $latestURL ) . '" target="_blank">' . $version . '</a>';
+										$version		=	'<a href="' . htmlspecialchars( $latestURL ) . '" target="_blank">' . $version . '</a>';
 									}
 								}
 							} else {
 								if ( $versionShort ) {
-									$version		=	'<span title="' . htmlspecialchars( $version ) . '">' . $versionName . '</span>';
+									$version			=	'<span title="' . htmlspecialchars( $version ) . '">' . $versionName . '</span>';
 								} else {
-									$version		=	$versionName;
+									$version			=	$versionName;
 								}
 							}
 						}
@@ -1564,22 +1644,23 @@ class cbPluginHandler
 			if ( ( ! $version ) && ( ! $raw ) ) {
 				if ( $plugin->iscore ) {
 					// core plugins are same version as CB it self:
-					$cbVersionWithBuild				=	CBLib::versionWithBuild();
+					$cbVersionWithBuild					=	CBLib::versionWithBuild();
+
 					if ( $length && ( cbIsoUtf_strlen( $cbVersionWithBuild ) > $length ) ) {
-						$version					=	'<span title="' . htmlspecialchars( $cbVersionWithBuild ) . '">' . rtrim( trim( cbIsoUtf_substr( $cbVersionWithBuild, 0, $length ) ), '.' ) . '&hellip;</span>';
+						$version						=	'<span title="' . htmlspecialchars( $cbVersionWithBuild ) . '">' . rtrim( trim( cbIsoUtf_substr( $cbVersionWithBuild, 0, $length ) ), '.' ) . '&hellip;</span>';
 					} else {
-						$version					=	$cbVersionWithBuild;
+						$version						=	$cbVersionWithBuild;
 					}
 				} else {
-					$version						=	'-';
+					$version							=	'-';
 				}
 			}
 
 			if ( $raw === 2 ) {
-				$version							=	array( $version, $latestVersion, $isLatest, $latestURL );
+				$version								=	array( $version, $latestVersion, $isLatest, $latestURL, $isBuild );
 			}
 
-			$cache[$pluginId][$raw]					=	$version;
+			$cache[$pluginId][$raw]						=	$version;
 		}
 
 		return $cache[$pluginId][$raw];

@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 5/2/14 6:18 PM $
 * @package CB\Database\Table
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -318,7 +318,7 @@ class FieldTable extends OrderedTable
 
 			// Delete all current field values and Insert new field values:
 			$fieldValuesTable	=	new FieldValueTable( $this->_db );
-			$fieldValuesTable->updateFieldValues( $this->$k, $fieldValues );
+			$fieldValuesTable->updateFieldValues( $this, $fieldValues );
 		}
 
 		if ( ! $return ) {
@@ -476,7 +476,7 @@ class FieldTable extends OrderedTable
 		if ( $result ) {
 			//delete each field value related to a field
 			$rowFieldValues			=	new FieldValueTable( $this->_db );
-			$result					=	$rowFieldValues->updateFieldValues( $this->$k, array() );
+			$result					=	$rowFieldValues->updateFieldValues( $this, array() );
 
 			//Now delete the field itself without deleting the user data, preserving it for reinstall
 			//$this->deleteColumn( $this->table, $this->name );	// this would delete the user data

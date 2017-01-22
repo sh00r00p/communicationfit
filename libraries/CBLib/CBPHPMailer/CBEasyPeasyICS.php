@@ -23,12 +23,12 @@ class CBEasyPeasyICS
 {
     /**
      * The name of the calendar
-     * @type string
+     * @var string
      */
     protected $calendarName;
     /**
      * The array of events to add to this calendar
-     * @type array
+     * @var array
      */
     protected $events = array();
 

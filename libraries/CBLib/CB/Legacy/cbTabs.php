@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/17/14 11:26 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -384,6 +384,7 @@ class cbTabs extends cbTabHandler
 		$oMenu									=	array();
 		$oMenuNest								=	array();
 		$oVert									=	array();
+		$oAccord								=	array();
 		$i										=	0;
 
 		//Pass 3: generate formatted output for each position by display type (keeping tabs together in each position)
@@ -402,6 +403,7 @@ class cbTabs extends cbTabHandler
 				$oMenu[$pos]					=	'';
 				$oMenuNest[$pos]				=	'';
 				$oVert[$pos]					=	'';
+				$oAccord[$pos]					=	'';
 			}
 
 			// handles content of tab:
@@ -505,6 +507,20 @@ class cbTabs extends cbTabHandler
 											.	$this->endTab();
 						$i++;
 						break;
+					case "accordion":
+						$oAccord[$pos]		.=	'<div class="panel panel-default cbTabNavAccordion' . ( $oTab->cssclass ? ' ' . $oTab->cssclass : null ) . ' cbTabNavExternal" data-tab="' . $oTab->tabid . '">'
+											.		'<div class="panel-heading">'
+											.			'<h4 class="panel-title">'
+											.				'<a href="#cbtabpane' . $oTab->tabid . '">' . $tabTitle . '</a>'
+											.			'</h4>'
+											.		'</div>'
+											.	'</div>'
+											.	$this->startTab( $pos, null, $oTab->tabid, array( 'pane' => 'cbTabPaneAccordion panel panel-default' . ( $oTab->cssclass ? ' ' . $oTab->cssclass : null ) ) )
+											.		'<div class="cb_tab_content cb_tab_accordion panel-body" id="cb_tabid_' . $oTab->tabid . '">'
+											.			$tabContent
+											.		'</div>'
+											.	$this->endTab();
+						break;
 					case "tab":
 					default:
 						$results[$pos]		.=	$this->startTab( $pos, $tabTitle, $oTab->tabid, array( 'tab' => $oTab->cssclass, 'pane' => $oTab->cssclass ) )
@@ -576,7 +592,7 @@ class cbTabs extends cbTabHandler
 								.			"}"
 								.		"}"
 								.	"});"
-								.	"$( window ).load( function(){"
+								.	"$( window ).on( 'load', function() {"
 								.		"$( '.cbTabNavMenuMore' ).on( 'cbtooltip.show', function( e, cbtooltip, event, api ) {"
 								.			"if ( $( this ).siblings( '.active' ).length ) {"
 								.				"api.elements.content.find( '.cbTabNav' ).removeClass( 'active' );"
@@ -635,6 +651,23 @@ class cbTabs extends cbTabHandler
 			if ( $oVert[$pos] ) {
 				$html[$pos]		.=	$this->startPane( 'CBVertical' . $pos, array( 'container' => 'row cbTabsVertical', 'nav' => 'nav-stacked col-md-3 cbTabsNavVertical', 'content' => 'col-md-9 cbTabsContentVertical' ) )
 								.		$oVert[$pos]
+								.	$this->endPane();
+			}
+
+			if ( $oAccord[$pos] ) {
+				static $oAccordJs	=	0;
+
+				if ( ! $oAccordJs++ ) {
+					$js				=	"$( '.cbTabsAccordion' ).on( 'cbtabs.selected', function( e, event, cbtabs, tab ) {"
+									.		"tab.tabPane.siblings( '.cbTabNavAccordion' ).removeClass( 'active' );"
+									.		"tab.tabPane.prev( '.cbTabNavAccordion' ).addClass( 'active' );"
+									.	"});";
+
+					$_CB_framework->outputCbJQuery( $js );
+				}
+
+				$html[$pos]		.=	$this->startPane( 'CBAccordion' . $pos, array( 'container' => 'cbTabsAccordion', 'nav' => 'hidden', 'content' => 'cbTabsContentAccordion' ) )
+								.		$oAccord[$pos]
 								.	$this->endPane();
 			}
 
@@ -878,6 +911,9 @@ class cbTabs extends cbTabHandler
 						break;
 					case 'register':
 						$where[]	=	'f.registration > 0';
+						break;
+					case 'search':
+						$where[]	=	'f.searchable = 1';
 						break;
 					case 'adminfulllist':
 					default:

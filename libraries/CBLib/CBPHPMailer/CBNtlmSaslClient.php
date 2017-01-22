@@ -7,6 +7,7 @@
  */
 
 namespace CBPHPMailer;
+
 define("SASL_NTLM_STATE_START", 0);
 define("SASL_NTLM_STATE_IDENTIFY_DOMAIN", 1);
 define("SASL_NTLM_STATE_RESPOND_CHALLENGE", 2);
@@ -149,7 +150,6 @@ class CBNtlmSaslClient
             "workstation" => ""
         );
         $defaults = array();
-		/** @noinspection PhpUndefinedMethodInspection */
         $status = $client->GetCredentials($this->credentials, $defaults, $interactions);
         if ($status == SASL_CONTINUE) {
             $this->state = SASL_NTLM_STATE_IDENTIFY_DOMAIN;
@@ -158,16 +158,16 @@ class CBNtlmSaslClient
         return ($status);
     }
 
-    public function step(&$client, $response, &$message, /** @noinspection PhpUnusedParameterInspection */ &$interactions)
+    public function step(&$client, $response, &$message, &$interactions)
     {
         switch ($this->state) {
             case SASL_NTLM_STATE_IDENTIFY_DOMAIN:
-                $message = $this->TypeMsg1($this->credentials["realm"], $this->credentials["workstation"]);
+                $message = $this->typeMsg1($this->credentials["realm"], $this->credentials["workstation"]);
                 $this->state = SASL_NTLM_STATE_RESPOND_CHALLENGE;
                 break;
             case SASL_NTLM_STATE_RESPOND_CHALLENGE:
                 $ntlm_response = $this->NTLMResponse(substr($response, 24, 8), $this->credentials["password"]);
-                $message = $this->TypeMsg3(
+                $message = $this->typeMsg3(
                     $ntlm_response,
                     $this->credentials["user"],
                     $this->credentials["realm"],

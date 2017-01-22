@@ -3,7 +3,7 @@
 * CBLib, Community Builder Library(TM)
 * @version $Id: 5/17/14 6:15 PM $
 * @package CBLib\Cms\Joomla\Joomla3
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -27,12 +27,6 @@ class CmsUser implements CmsUserInterface
 	 * @var self[]
 	 */
 	protected static $cmsUsers;
-
-	/**
-	 * User id of logged-in user
-	 * @var int|boolean
-	 */
-	protected static $myId			=	false;
 
 	/**
 	 * The corresponding Joomla JUser object
@@ -166,10 +160,6 @@ class CmsUser implements CmsUserInterface
 	public function resetCache()
 	{
 		unset( self::$cmsUsers[$this->cmsOwnUser->id] );
-
-		if ( $this->cmsOwnUser->id == self::$myId ) {
-			self::$myId		=	false;
-		}
 	}
 
 	/**
@@ -179,11 +169,7 @@ class CmsUser implements CmsUserInterface
 	 */
 	public static function getMyId( )
 	{
-		if ( self::$myId === false ) {
-			self::$myId		=	(int) \JFactory::getUser()->id;
-		}
-
-		return self::$myId;
+		return (int) \JFactory::getUser()->id;
 	}
 
 	/**
@@ -219,13 +205,15 @@ class CmsUser implements CmsUserInterface
 	 */
 	public function getProperties( )
 	{
-		static $properties	=	null;
+		static $properties		=	array();
 
-		if ( $properties == null ) {
-			$properties		=	$this->cmsOwnUser->getProperties();
+		$id						=	$this->cmsOwnUser->id;
+
+		if ( ! isset( $properties[$id] ) ) {
+			$properties[$id]	=	$this->cmsOwnUser->getProperties();
 		}
 
-		return $properties;
+		return $properties[$id];
 	}
 
 	/**

@@ -2,7 +2,7 @@
 /**
 * CBLib, Community Builder Library(TM)
 * @version $Id: 6/17/14 11:08 PM $
-* @copyright (C) 2004-2016 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
+* @copyright (C) 2004-2017 www.joomlapolis.com / Lightning MultiCom SA - and its licensors, all rights reserved
 * @license http://www.gnu.org/licenses/old-licenses/gpl-2.0.html GNU/GPL version 2
 */
 
@@ -210,7 +210,7 @@ abstract class moscomprofilerHTML
 		$html						=	"\n" . '<select name="' . htmlspecialchars( $tagName ) . '" id="' . htmlspecialchars( $idName ) . '"' . ( trim( $tagAttributes ) ? ' ' . $tagAttributes : null ) . '>';
 
 		if ( $addBlank === null ) {
-			$addBlank				=	( ( ( ! $required ) || ( is_array( $selected ) ? ( count( $selected ) == 0 ) : ( $selected == '' ) ) ) && ( ! ( isset( $arr[0] ) && ( $arr[0]->$key == '' ) ) ) );
+			$addBlank				=	( ( ( ! $required ) || ( is_array( $selected ) ? ( count( $selected ) == 0 ) : ( $selected == '' ) ) ) && ( ( ! ( isset( $arr[0] ) && ( $arr[0]->$key == '' ) ) ) || ( isset( $arr[0]->group ) && $arr[0]->group ) ) );
 		}
 
 		if ( $addBlank ) {
@@ -232,7 +232,9 @@ abstract class moscomprofilerHTML
 				$extra				.=	' class="' . htmlspecialchars( $option->class ) . '"';
 			}
 
-			if ( is_array( $option->$key ) ) {
+			if ( isset( $option->group ) && $option->group ) {
+				$html				.=	"\n" . '<optgroup label="' . htmlspecialchars( $t ) . '"' . $extra . '>';
+			} elseif ( is_array( $option->$key ) ) {
 				$a					=	$option->$key;
 
 				if ( $a[0] == 'optgroup' ) {
@@ -437,53 +439,85 @@ abstract class moscomprofilerHTML
 	}
 
 	/**
-	 * transforms a list of $cellsHtml into an HTML table of $rows or of $cols
+	 * transforms a list of $cellsHtml into an HTML grid of $rows or of $cols
 	 *
 	 * @param  string[]  $cellsHtml       HTML content of cells
 	 * @param  int       $cols            Columns
 	 * @param  int       $rows            Rows
-	 * @param  int       $size            Width of table in em
-	 * @param  string    $cellAttributes  Attributes to add to cells <td HERE>
-	 * @return string                     Formatted HTML table
+	 * @param  int       $size            Width of grid in em
+	 * @param  string    $cellAttributes  Attributes to add to cells <span HERE>
+	 * @return string                     Formatted HTML grid
 	 */
 	public static function list2Table ( $cellsHtml, $cols, $rows, $size, $cellAttributes = null )
 	{
-		$cells					=	count( $cellsHtml );
+		$size							=	(int) ( ( $size - ( $size % 3 ) ) / 3  ) * 2;	// int div  3 * 2 width/heigh ratio
 
-		$size					=	(int) ( ( $size - ( $size % 3 ) ) / 3  ) * 2;	// int div  3 * 2 width/heigh ratio
 		if ( $size == 0 ) {
-			$localStyle			=	'';
+			$localStyle					=	'';
 		} else {
-			$localStyle			=	' style="width:' . $size . 'em;"';
+			$localStyle					=	' style="width:' . $size . 'em;"';
 		}
-		$return					=	'';
-		if ( $cells ) {
-			if ( $rows ) {
-				$return			=	"\n\t" . '<table class="cbMulti"' . $localStyle . '>';
 
-				for ( $lineIdx = 0, $n = min( $rows, $cells ) ; $lineIdx < $n ; $lineIdx++ ) {
-					$return		.=	"\n\t\t<tr>";
-					for ( $i = $lineIdx ; $i < $cells ; $i += $rows ) {
-						$return	.=	'<td' . ( trim( $cellAttributes ) ? ' ' . $cellAttributes : null ) . '>' . $cellsHtml[$i] . '</td>';
+		$return							=	'';
+
+		if ( $cellsHtml ) {
+			$colSize					=	( $cols ? ( $cols >= 12 ? 1 : round( 12 / $cols ) ) : 12 );
+
+			if ( $rows ) {
+				$rowCols				=	round( count( $cellsHtml ) / $rows );
+
+				$return					=	'<div class="cbMulti"' . $localStyle . '>';
+
+				foreach ( array_chunk( $cellsHtml, $rowCols ) as $row => $rowsHtml ) {
+					if ( ! $cols ) {
+						$colSize		=	( $rowCols ? ( $rowCols >= 12 ? 1 : round( 12 / $rowCols ) ) : 12 );
 					}
-					$return 	.=	"</tr>\n";
+
+					$colIndex			=	1;
+
+					$return				.=		'<div class="row cbMultiRow cbMultiRow' . ( $row + 1 ) . '">';
+
+					foreach ( $rowsHtml as $col => $rowHtml ) {
+						if ( $colIndex > ( $cols ? $cols : $rowCols ) ) {
+							$colIndex	=	1;
+						}
+
+						$return			.=			'<div class="col-sm-' . $colSize . ' cbMultiRowCol cbMultiRowCol' . $colIndex . '">'
+										.				'<span' . $cellAttributes . '>' . $rowHtml . '</span>'
+										.			'</div>';
+
+						$colIndex++;
+					}
+
+					$return				.=		'</div>';
 				}
-				$return			.=	"\t</table>\n";
+
+				$return					.=	'</div>';
 			} elseif ( $cols ) {
-				$return			=	"\n\t" . '<table class="cbMulti"' . $localStyle . '>';
-				$idx			=	0;
-				while ( $cells ) {
-					$return		.=	"\n\t\t<tr>";
-					for ( $i = 0, $n = min( $cells, $cols ); $i < $n; $i++, $cells-- ) {
-						$return .=	"<td" . ( trim( $cellAttributes ) ? ' ' . $cellAttributes : null ) . ">".$cellsHtml[$idx++]."</td>";
+				$colIndex				=	1;
+
+				$return					=	'<div class="row cbMulti"' . $localStyle . '>';
+
+				foreach ( $cellsHtml as $col => $cellHtml ) {
+					if ( $colIndex > $cols ) {
+						$colIndex		=	1;
 					}
-					$return		.=	"</tr>\n";
+
+					$return				.=		'<div class="col-sm-' . $colSize . ' cbMultiCol cbMultiCol' . $colIndex . '">'
+										.			'<span' . $cellAttributes . '>' . $cellHtml . '</span>'
+										.		'</div>';
+
+					$colIndex++;
 				}
-				$return			.=	"\t</table>\n";
+
+				$return					.=	'</div>';
 			} else {
-				$return			=	"\n\t" . '<span class="cbSnglCtrlLbl"' . ( trim( $cellAttributes ) ? ' ' . $cellAttributes : null ) . '>' . implode( '</span><span class="cbSnglCtrlLbl"' . $cellAttributes . '>', $cellsHtml ) . "</span>\n";
+				$return					=	'<span class="cbSnglCtrlLbl"' . $cellAttributes . '>'
+										.		implode( '</span><span class="cbSnglCtrlLbl"' . $cellAttributes . '>', $cellsHtml )
+										.	'</span>';
 			}
 		}
+
 		return $return;
 	}
 
